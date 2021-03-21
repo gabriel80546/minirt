@@ -1,0 +1,21 @@
+#include "libft.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
+
+
+int main()
+{
+	int fd;
+	char *string;
+
+	string = (char *)malloc(sizeof(char) * 450);
+	fd = open("/home/gabriel/Desktop/qd/projetos/libft/unit_test_three/libft-war-machine/arquivo", O_RDWR | O_APPEND);
+	// sprintf(string, "j = %d;\tsaida = %p;\tsaida[0] = %p;\ti = %i\n", j, saida, saida[0], i);
+	sprintf(string, "chegou ate aq\n");
+	ft_putstr_fd(string, fd);
+	close(fd);
+}

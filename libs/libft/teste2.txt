@@ -1,0 +1,2 @@
+# pwd => /home/gabriel/Desktop/qd/projetos/libft/unit_test_two/libft-unit-test
+source ../../refazer.sh 2 $PWD; rm -rf ../libft/; cp -r -v -n ../../teste/ ../libft; make f

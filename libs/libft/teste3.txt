@@ -1,0 +1,2 @@
+# pwd => /home/gabriel/Desktop/qd/projetos/libft/unit_test_three/libft-war-machine
+source ../../refazer.sh 3 $PWD; bash grademe.sh -n

@@ -1,0 +1,1 @@
+source ../refazer.sh 5 $PWD; rm -rf outside/; cp -r -v -n ../teste outside/; cp -r -v -n clone/ outside/; cd outside/clone/; make m; cd ../../

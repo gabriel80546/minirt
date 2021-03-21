@@ -1,0 +1,2 @@
+# pwd => /home/gabriel/Desktop/qd/projetos/libft/Libftest
+source ../refazer.sh 1 $PWD; bash grademe.sh -n
