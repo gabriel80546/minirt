@@ -1,4 +1,6 @@
 
+#include <stdio.h>
+#include <stdlib.h>
 #include "mlx.h"
 
 void draw_squares_test(void *mlx_ptr, void *win_ptr)
@@ -59,14 +61,51 @@ void draw_squares_test(void *mlx_ptr, void *win_ptr)
 	}
 }
 
+void	*param;
+
+
+
+typedef struct  s_vars {
+    void        *mlx;
+    void        *win;
+}               t_vars;
+
+int key_hook(int keycode, t_vars *vars)
+{
+	int *array;
+	int teste;
+	array = (int *)calloc(sizeof(int), 1);
+	if (keycode == 65507)
+	{
+		mlx_destroy_window(vars->mlx, vars->win);
+		mlx_destroy_display(vars->mlx);
+
+		teste = array[0];
+		free(vars->mlx);
+		//vars->mlx = NULL;
+		free(array);
+		exit(1);
+	}
+	printf("vars.mlx = %p, vars.win = %p\n", vars->mlx, vars->win);
+	printf("no events; keycode = %12d; param = %p\n", keycode, vars);
+	free(array);
+	return (0);
+}
+
+
 int	main(void)
 {
-	void *mlx_ptr;
-	void *win_ptr;
+	int (*teste)(int, t_vars*);
+	t_vars      vars;
 
-	mlx_ptr = mlx_init();
-	win_ptr = mlx_new_window(mlx_ptr, 640, 420, "minirt");
-	draw_squares_test(mlx_ptr, win_ptr);
-	mlx_loop(mlx_ptr);
+	vars.mlx = mlx_init();
+	vars.win = mlx_new_window(vars.mlx, 640, 420, "minirt");
+	draw_squares_test(vars.mlx, vars.win);
+
+	printf("vars.mlx = %p, vars.win = %p\n", vars.mlx, vars.win);
+
+	teste = key_hook;
+	mlx_key_hook(vars.win, teste, &vars);
+	mlx_loop(vars.mlx);
 	return (0);
 }
