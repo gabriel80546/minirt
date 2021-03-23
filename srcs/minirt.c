@@ -1,7 +1,12 @@
 
-#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+
+#include <stdio.h>
 #include "mlx.h"
+#include "get_next_line.h"
+#include <sys/stat.h>
+#include <fcntl.h>
 
 void draw_squares_test(void *mlx_ptr, void *win_ptr)
 {
@@ -97,12 +102,33 @@ int	main(void)
 {
 	int (*teste)(int, t_vars*);
 	t_vars      vars;
+	int fd;
+	char *linha;
+	int i;
+	int retorno;
 
 	vars.mlx = mlx_init();
 	vars.win = mlx_new_window(vars.mlx, 640, 420, "minirt");
-	draw_squares_test(vars.mlx, vars.win);
-
-	printf("vars.mlx = %p, vars.win = %p\n", vars.mlx, vars.win);
+	fd = open("../../files/example.rt", O_RDONLY);
+	i = 0;
+	retorno = 1;
+	while (retorno == 1)
+	{
+		retorno = get_next_line(fd, &linha);
+		if (retorno != 1)
+			break;
+		printf("1: linha[%d] = '%s'(%ld); retorno = %i\n", i, linha, strlen(linha), retorno);
+		free(linha);
+		i++;
+		// break;
+	}
+	if (retorno != -1)
+	{
+		printf("2: linha[%d] = '%s'(%ld); retorno = %i\n", i, linha, strlen(linha), retorno);
+		free(linha);
+	}
+	else
+		printf("get_next_line retornou -1\n");
 
 	teste = key_hook;
 	mlx_key_hook(vars.win, teste, &vars);
