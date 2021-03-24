@@ -4,9 +4,85 @@
 
 #include <stdio.h>
 #include "mlx.h"
-#include "get_next_line.h"
-#include <sys/stat.h>
-#include <fcntl.h>
+//#include "get_next_line.h"
+//#include <sys/stat.h>
+//#include <fcntl.h>
+
+# define LARGURA 640
+# define ALTURA 420
+
+
+typedef struct  s_vars {
+    void        *mlx;
+    void        *win;
+}               t_vars;
+
+typedef struct posicao {
+	double x;
+	double y;
+	double z;
+} posicao;
+
+typedef struct camera {
+	posicao pos;
+} camera;
+
+typedef struct esfera{
+	posicao pos;
+	double raio;
+} esfera;
+
+typedef struct tela{
+	posicao tleft;
+	posicao dright;
+} tela;
+
+void	raytrace(t_vars vars)
+{
+	int i;
+	int j;
+	int x;
+	int y;
+	camera cam;
+	esfera sp;
+	tela screen;
+	double d_raio;
+
+	d_raio = 10.0;
+
+	cam.pos.x = 0.0;
+	cam.pos.y = 0.0;
+	cam.pos.z = -2.0;
+
+	sp.pos.x = 0.0;
+	sp.pos.y = 0.0;
+	sp.pos.z = 2.0;
+	sp.raio = 2.0;
+
+	screen.tleft.x = -2.0;
+	screen.tleft.y = 2.0;
+	screen.tleft.z = 0.0;
+
+	screen.dright.x = 2.0;
+	screen.dright.y = -2.0;
+	screen.dright.z = 0.0;
+
+	x = 0;
+	y = 0;
+	while (x < LARGURA)
+	{
+		y = 0;
+		while (y < ALTURA)
+		{
+			if (((x*x) + (y*y) < (250*250)))
+				mlx_pixel_put(vars.mlx, vars.win, x, y, 0xE0A92A);
+				
+			y++;
+		}
+		x++;
+	}
+}
+
 
 void draw_squares_test(void *mlx_ptr, void *win_ptr)
 {
@@ -37,6 +113,7 @@ void draw_squares_test(void *mlx_ptr, void *win_ptr)
 					0xCC12A5, 0xD6C787, 0xE234B6, 0x598291, 0x2E489B,
 					0xCF82D9, 0x33B8C8, 0x074496, 0x73D3B2, 0x072846,
 					0x351DEA, 0x92D33A, 0x57A8FB, 0x6A9C74, 0x841AB1,
+					0xFF0000, 0x00FF00, 0x0000FF,
 					42 };
 
 	c_i = 0;
@@ -68,13 +145,6 @@ void draw_squares_test(void *mlx_ptr, void *win_ptr)
 
 void	*param;
 
-
-
-typedef struct  s_vars {
-    void        *mlx;
-    void        *win;
-}               t_vars;
-
 int key_hook(int keycode, t_vars *vars)
 {
 	int *array;
@@ -87,7 +157,6 @@ int key_hook(int keycode, t_vars *vars)
 
 		teste = array[0];
 		free(vars->mlx);
-		//vars->mlx = NULL;
 		free(array);
 		exit(1);
 	}
@@ -106,9 +175,18 @@ int	main(void)
 	char *linha;
 	int i;
 	int retorno;
+	int ray;
+
+	ray = 1;
 
 	vars.mlx = mlx_init();
 	vars.win = mlx_new_window(vars.mlx, 640, 420, "minirt");
+	if (ray == 0)
+		draw_squares_test(vars.mlx, vars.win);
+	else if (ray == 1)
+		raytrace(vars);
+
+/*
 	fd = open("../../files/example.rt", O_RDONLY);
 	i = 0;
 	retorno = 1;
@@ -117,10 +195,9 @@ int	main(void)
 		retorno = get_next_line(fd, &linha);
 		if (retorno != 1)
 			break;
-		printf("1: linha[%d] = '%s'(%ld); retorno = %i\n", i, linha, strlen(linha), retorno);
+		printf("1: linha[%d] = '%s'; retorno = %i\n", i, linha, strlen(linha), retorno);
 		free(linha);
 		i++;
-		// break;
 	}
 	if (retorno != -1)
 	{
@@ -129,7 +206,7 @@ int	main(void)
 	}
 	else
 		printf("get_next_line retornou -1\n");
-
+*/
 	teste = key_hook;
 	mlx_key_hook(vars.win, teste, &vars);
 	mlx_loop(vars.mlx);
