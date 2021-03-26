@@ -84,9 +84,9 @@ int	cruza(posicao A, posicao B, esfera C)
 
 	// printf("colapsing:\n");
 
-	exptemp1 = expand(A.x, B.x - A.x);
-	exptemp2 = expand(A.y, B.y - A.y);
-	exptemp3 = expand(A.z, B.z - A.z);
+	exptemp1 = expand(A.x - C.pos.x, B.x - A.x - C.pos.x);
+	exptemp2 = expand(A.y - C.pos.y, B.y - A.y - C.pos.y);
+	exptemp3 = expand(A.z - C.pos.z, B.z - A.z - C.pos.z);
 	// printf("%Lft^2 + %Lft + %Lf = ",
 	// 	exptemp1[2] + exptemp2[2] + exptemp3[2],
 	// 	exptemp1[1] + exptemp2[1] + exptemp3[1],
@@ -167,7 +167,7 @@ void	raytrace(t_vars vars)
 	sp.pos.x = 0.0;
 	sp.pos.y = 0.0;
 	sp.pos.z = 0.0;
-	sp.raio  = 95.0;
+	sp.raio  = 50.0;
 
 	x = 0;
 	y = 0;
