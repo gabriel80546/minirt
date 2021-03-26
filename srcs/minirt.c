@@ -18,9 +18,9 @@ typedef struct  s_vars {
 }               t_vars;
 
 typedef struct posicao {
-	double x;
-	double y;
-	double z;
+	long double x;
+	long double y;
+	long double z;
 } posicao;
 
 typedef struct camera {
@@ -29,13 +29,94 @@ typedef struct camera {
 
 typedef struct esfera{
 	posicao pos;
-	double raio;
+	long double raio;
 } esfera;
 
 typedef struct tela{
 	posicao tleft;
 	posicao dright;
 } tela;
+
+
+long double *expand(long double a, long double b)
+{
+	long double *saida;
+
+	saida = (long double *)malloc(sizeof(long double) * 3);
+	saida[0] = (a * a);
+	saida[1] = (2 * a * b);
+	saida[2] = (b * b);
+	return (saida);
+}
+
+int	cruza(posicao A, posicao B, esfera C)
+{
+	long double *exptemp1;
+	long double *exptemp2;
+	long double *exptemp3;
+
+	// printf("A = (%Lf, %Lf, %Lf)\n", A.x, A.y, A.z);
+	// printf("B = (%Lf, %Lf, %Lf)\n", B.x, B.y, B.z);
+	// printf("C = (%Lf, %Lf, %Lf, %Lf)\n", C.pos.x, C.pos.y, C.pos.z, C.raio);
+
+	// printf("parametric line equation:\n");
+
+	// printf("x = %Lf + %Lft\n", A.x, (B.x - A.x));
+	// printf("y = %Lf + %Lft\n", A.y, (B.y - A.y));
+	// printf("z = %Lf + %Lft\n", A.z, (B.z - A.z));
+
+	// printf("sphere equation:\n");
+
+	// printf("(x - %Lf)^2 + (y - %Lf)^2 + (z - %Lf)^2 = %Lf^2\n", C.pos.x, C.pos.y, C.pos.z, C.raio);
+
+	// printf("expanding:\n");
+	// exptemp1 = expand(A.x, B.x - A.x);
+	// printf("(%Lf + %Lft + %Lft^2) + ", exptemp1[0], exptemp1[1], exptemp1[2]);
+	// free(exptemp1);
+	// exptemp1 = expand(A.y, B.y - A.y);
+	// printf("(%Lf + %Lft + %Lft^2) + ", exptemp1[0], exptemp1[1], exptemp1[2]);
+	// free(exptemp1);
+	// exptemp1 = expand(A.z, B.z - A.z);
+	// printf("(%Lf + %Lft + %Lft^2) = ", exptemp1[0], exptemp1[1], exptemp1[2]);
+	// free(exptemp1);
+	// printf("%Lf^2\n", C.raio);
+
+
+	// printf("colapsing:\n");
+
+	exptemp1 = expand(A.x, B.x - A.x);
+	exptemp2 = expand(A.y, B.y - A.y);
+	exptemp3 = expand(A.z, B.z - A.z);
+	// printf("%Lft^2 + %Lft + %Lf = ",
+	// 	exptemp1[2] + exptemp2[2] + exptemp3[2],
+	// 	exptemp1[1] + exptemp2[1] + exptemp3[1],
+	// 	exptemp1[0] + exptemp2[0] + exptemp3[0] - (C.raio * C.raio));
+	// printf("0\n");
+	// printf("\n");
+
+
+	// printf("delta:\n");
+
+	long double a = exptemp1[2] + exptemp2[2] + exptemp3[2];
+	long double b = exptemp1[1] + exptemp2[1] + exptemp3[1];
+	long double c = exptemp1[0] + exptemp2[0] + exptemp3[0] - (C.raio * C.raio);
+
+	// printf("D = %Lf*%Lf - 4*%Lf*%Lf\n", b, b, a, c);
+
+	long double d = (b*b) + (-4*a*c);
+
+	// printf("D = %Lf -4 * %Lf * %Lf\n", (b*b), a, c);
+	// printf("D = %Lf - (%Lf)\n", (b*b), (-4*a*c));
+	// printf("D = %Lf\n", d);
+
+	free(exptemp1);
+	free(exptemp2);
+	free(exptemp3);
+	if (d > 0)
+		return (1);
+	else
+		return (0);
+}
 
 void	raytrace(t_vars vars)
 {
@@ -44,29 +125,49 @@ void	raytrace(t_vars vars)
 	int x;
 	int y;
 	camera cam;
+	posicao A;
+	posicao B;
 	esfera sp;
 	tela screen;
-	double d_raio;
+	long double d_raio;
 
 	d_raio = 10.0;
 
-	cam.pos.x = 0.0;
-	cam.pos.y = 0.0;
+	cam.pos.x =  0.0;
+	cam.pos.y =  0.0;
 	cam.pos.z = -2.0;
 
 	sp.pos.x = 0.0;
 	sp.pos.y = 0.0;
 	sp.pos.z = 2.0;
-	sp.raio = 2.0;
+	sp.raio  = 2.0;
 
 	screen.tleft.x = -2.0;
-	screen.tleft.y = 2.0;
-	screen.tleft.z = 0.0;
+	screen.tleft.y =  2.0;
+	screen.tleft.z =  0.0;
 
-	screen.dright.x = 2.0;
+	screen.dright.x =  2.0;
 	screen.dright.y = -2.0;
-	screen.dright.z = 0.0;
+	screen.dright.z =  0.0;
 
+
+	A.x = 10.0;
+	A.y =  5.0;
+	A.z =  2.0;
+
+	B.x = 12.0;
+	B.y =  6.0;
+	B.z =  2.0;
+
+	sp.pos.x = 0.0;
+	sp.pos.y = 0.0;
+	sp.pos.z = 0.0;
+	sp.raio  = 3.0;
+
+	if (cruza(A, B, sp))
+		printf("cruza\n");
+	else
+		printf("nao cruza\n");
 	x = 0;
 	y = 0;
 	while (x < LARGURA)
@@ -76,7 +177,6 @@ void	raytrace(t_vars vars)
 		{
 			if (((x*x) + (y*y) < (250*250)))
 				mlx_pixel_put(vars.mlx, vars.win, x, y, 0xE0A92A);
-				
 			y++;
 		}
 		x++;
@@ -150,8 +250,9 @@ int key_hook(int keycode, t_vars *vars)
 	int *array;
 	int teste;
 	array = (int *)calloc(sizeof(int), 1);
-	if (keycode == 65507)
+	if (keycode == 65307)
 	{
+		printf("fechando... :)\n");
 		mlx_destroy_window(vars->mlx, vars->win);
 		mlx_destroy_display(vars->mlx);
 
@@ -160,8 +261,8 @@ int key_hook(int keycode, t_vars *vars)
 		free(array);
 		exit(1);
 	}
-	printf("vars.mlx = %p, vars.win = %p\n", vars->mlx, vars->win);
-	printf("no events; keycode = %12d; param = %p\n", keycode, vars);
+	// printf("vars.mlx = %p, vars.win = %p\n", vars->mlx, vars->win);
+	// printf("no events; keycode = %12d; param = %p\n", keycode, vars);
 	free(array);
 	return (0);
 }
