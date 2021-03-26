@@ -109,10 +109,12 @@ int	cruza(posicao A, posicao B, esfera C)
 	// printf("D = %Lf - (%Lf)\n", (b*b), (-4*a*c));
 	// printf("D = %Lf\n", d);
 
+	// (-b +- sqrt(d)) / 2*a;
+
 	free(exptemp1);
 	free(exptemp2);
 	free(exptemp3);
-	if (d > 0)
+	if (d >= 0)
 		return (1);
 	else
 		return (0);
@@ -150,33 +152,53 @@ void	raytrace(t_vars vars)
 	screen.dright.y = -2.0;
 	screen.dright.z =  0.0;
 
+	// A.x = 10.0;
+	// A.y =  5.0;
+	// A.z =  2.0;
 
-	A.x = 10.0;
-	A.y =  5.0;
-	A.z =  2.0;
+	// B.x = 12.0;
+	// B.y =  6.0;
+	// B.z =  2.0;
 
-	B.x = 12.0;
-	B.y =  6.0;
-	B.z =  2.0;
+	A.x =    0.0;
+	A.y =    0.0;
+	A.z = -100.0;
 
 	sp.pos.x = 0.0;
 	sp.pos.y = 0.0;
 	sp.pos.z = 0.0;
-	sp.raio  = 3.0;
+	sp.raio  = 95.0;
 
-	if (cruza(A, B, sp))
-		printf("cruza\n");
-	else
-		printf("nao cruza\n");
 	x = 0;
 	y = 0;
 	while (x < LARGURA)
 	{
+
+
+
+// f(x):
+// f(LARGURA / 2) = 0;
+// f(LARGURA) = (LARGURA / 2);
+// f(0) = -(LARGURA / 2);
+
+// f(x) = x - (LARGURA / 2);
 		y = 0;
 		while (y < ALTURA)
 		{
-			if (((x*x) + (y*y) < (250*250)))
-				mlx_pixel_put(vars.mlx, vars.win, x, y, 0xE0A92A);
+			B.x = (long double)(x - (LARGURA / 2));
+			B.y = (long double)(y - (ALTURA / 2));
+			B.z = (long double)0.0;
+			if (cruza(A, B, sp))
+			{
+				// printf("x = %d; y = %d\n", x, y);
+				// printf("cruzou");
+				mlx_pixel_put(vars.mlx, vars.win, x, y, 0xFF0000);
+			}
+			else
+			{
+				// printf("x = %d; y = %d\n", x, y);
+				// printf("nao cruzou");
+			}
 			y++;
 		}
 		x++;
