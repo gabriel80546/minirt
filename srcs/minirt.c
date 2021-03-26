@@ -173,15 +173,6 @@ void	raytrace(t_vars vars)
 	y = 0;
 	while (x < LARGURA)
 	{
-
-
-
-// f(x):
-// f(LARGURA / 2) = 0;
-// f(LARGURA) = (LARGURA / 2);
-// f(0) = -(LARGURA / 2);
-
-// f(x) = x - (LARGURA / 2);
 		y = 0;
 		while (y < ALTURA)
 		{
@@ -189,16 +180,7 @@ void	raytrace(t_vars vars)
 			B.y = (long double)(y - (ALTURA / 2));
 			B.z = (long double)0.0;
 			if (cruza(A, B, sp))
-			{
-				// printf("x = %d; y = %d\n", x, y);
-				// printf("cruzou");
 				mlx_pixel_put(vars.mlx, vars.win, x, y, 0xFF0000);
-			}
-			else
-			{
-				// printf("x = %d; y = %d\n", x, y);
-				// printf("nao cruzou");
-			}
 			y++;
 		}
 		x++;
