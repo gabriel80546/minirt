@@ -194,7 +194,6 @@ void	raytrace(t_vars vars)
 	t_posicao B;
 	t_esfera sp;
 	t_reta_or_n result;
-	int i;
 	double d;
 	int di;
 	int cor;
@@ -252,16 +251,14 @@ void	raytrace(t_vars vars)
 		A.y =    0.0;
 		A.z = (double)(-(LARGURA / 2));
 
-		sp.pos.x =  00.0;
-		sp.pos.y =  00.0;
-		sp.pos.z =  30.0;
-		sp.raio  = 100.0;
+		sp.pos.x = -30.0;
+		sp.pos.y = +30.0;
+		sp.pos.z =  80.0;
+		sp.raio  = 150.0;
 
-		i = 0;
 		y = 0;
-		while (y < ALTURA && i < 1000)
+		while (y < ALTURA)
 		{
-			i++;
 			x = 0;
 			while (x < LARGURA)
 			{
@@ -276,17 +273,29 @@ void	raytrace(t_vars vars)
 				else
 				{
 					result = cruzamento_sp_reta(A, B, sp);
-					// printf("x = %d; y = %d; ", x, y);
 					if (result.n == 2)
 					{
-						d = distance(A, result.r.orig);
-						di = (int)d;
+						d = distance(A, result.r.dest);
+						if (d > distance(A, result.r.orig))
+							d = distance(A, result.r.orig);
+
+						B = sp.pos;
+						// B.z -= sp.raio;
+						d -= (distance(A, B) - sp.raio);
+						// printf("x = %d; y = %d; d = %lf; p/org = %lf\n", x, y, d, distance(A, B));
+						if (d < 0)
+							d = 0;
+						d = d / sp.raio;
+						while (d > 1)
+							d = d - 0.125;
+						if (d < 0)
+							d = 1 - d;
+						di = (int)(d * 255);
 						di = di % 255;
 						cor = 0xFF0000;
 						cor = cor | (di * 256);
-						// di *= 256;
 						// cor = cor | di;
-						// printf("cruza; distancia = %lf; di = %d \n", d, di);
+
 						mlx_pixel_put(vars.mlx, vars.win, x, y, cor);
 					}
 					// else
@@ -306,7 +315,6 @@ int key_hook(int keycode, t_vars *vars)
 		printf("fechando... :)\n");
 		mlx_destroy_window(vars->mlx, vars->win);
 		mlx_destroy_display(vars->mlx);
-
 		free(vars->mlx);
 		exit(1);
 	}
@@ -319,7 +327,8 @@ int	main(void)
 	t_vars      vars;
 
 	vars.mlx = mlx_init();
-	vars.win = mlx_new_window(vars.mlx, 640, 420, "minirt");
+
+	vars.win = mlx_new_window(vars.mlx, LARGURA, ALTURA, "minirt");
 	raytrace(vars);
 
 /*
