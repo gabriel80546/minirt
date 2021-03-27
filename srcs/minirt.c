@@ -58,6 +58,19 @@ typedef struct	t_esfera{
 // 	posicao dright;
 // } tela;
 
+t_reta		empty_reta(void)
+{
+	t_reta saida;
+
+	saida.orig.x = 0.0;
+	saida.orig.y = 0.0;
+	saida.orig.z = 0.0;
+	saida.dest.x = 0.0;
+	saida.dest.y = 0.0;
+	saida.dest.z = 0.0;
+	return (saida);
+}
+
 t_coeff	get_sp_coeff(t_posicao A, t_posicao B, t_esfera sp)
 {
 	t_coeff	saida;
@@ -89,7 +102,7 @@ t_coeff	get_sp_coeff(t_posicao A, t_posicao B, t_esfera sp)
 	return (saida);
 }
 
-int		cruza(t_posicao A, t_posicao B, t_esfera sp)
+int		cruza_sp(t_posicao A, t_posicao B, t_esfera sp)
 {
 	t_coeff coeff;
 	double d;
@@ -104,7 +117,7 @@ int		cruza(t_posicao A, t_posicao B, t_esfera sp)
 		return (0);
 }
 
-double	cruzamento_delta(t_posicao A, t_posicao B, t_esfera sp)
+double	cruzamento_sp_delta(t_posicao A, t_posicao B, t_esfera sp)
 {
 	t_coeff coeff;
 	double d;
@@ -116,23 +129,9 @@ double	cruzamento_delta(t_posicao A, t_posicao B, t_esfera sp)
 	return (d);
 }
 
-t_reta		empty_reta(void)
-{
-	t_reta saida;
-
-	saida.orig.x = 0.0;
-	saida.orig.y = 0.0;
-	saida.orig.z = 0.0;
-	saida.dest.x = 0.0;
-	saida.dest.y = 0.0;
-	saida.dest.z = 0.0;
-	return (saida);
-}
-
-t_reta_or_n	cruzamento_reta(t_posicao A, t_posicao B, t_esfera sp)
+t_reta_or_n	cruzamento_sp_reta(t_posicao A, t_posicao B, t_esfera sp)
 {
 	t_coeff coeff;
-	// t_reta	reta;
 	t_reta_or_n saida;
 	double	d;
 	double	x1;
@@ -148,7 +147,7 @@ t_reta_or_n	cruzamento_reta(t_posicao A, t_posicao B, t_esfera sp)
 		saida.n = 0;
 	else if (d == 0)
 	{
-		x1 = (-coeff.b + sqrt(d)) / (2*coeff.a);
+		x1 = (-coeff.b) / (2*coeff.a);
 
 		saida.r.orig.x = A.x + ((B.x - A.x) * x1);
 		saida.r.orig.y = A.y + ((B.y - A.y) * x1);
@@ -173,8 +172,19 @@ t_reta_or_n	cruzamento_reta(t_posicao A, t_posicao B, t_esfera sp)
 	return (saida);
 }
 
+double	distance(t_posicao A, t_posicao B)
+{
+	double a;
+	double b;
+	double c;
+	double d;
 
-
+	a = (A.x - B.x);
+	b = (A.y - B.y);
+	c = (A.z - B.z);
+	d = sqrt((a * a) + (b * b) + (c * c));
+	return (d);
+}
 
 void	raytrace(t_vars vars)
 {
@@ -184,8 +194,12 @@ void	raytrace(t_vars vars)
 	t_posicao B;
 	t_esfera sp;
 	t_reta_or_n result;
+	int i;
+	double d;
+	int di;
+	int cor;
 
-	if (1)
+	if (0)
 	{
 		A.x = 10.0;
 		A.y =  5.0;
@@ -200,11 +214,11 @@ void	raytrace(t_vars vars)
 		sp.pos.z = 0.0;
 		sp.raio  = 3.0;
 
-		printf("delta = %lf\n", cruzamento_delta(A, B, sp));
+		printf("delta = %lf\n", cruzamento_sp_delta(A, B, sp));
 		// t_reta teste;
 
-		// teste = cruzamento_reta(A, B, sp);
-		result = cruzamento_reta(A, B, sp);
+		// teste = cruzamento_sp_reta(A, B, sp);
+		result = cruzamento_sp_reta(A, B, sp);
 
 		printf("cruzou em %d pontos\n", result.n);
 		if (result.n == 2)
@@ -216,6 +230,8 @@ void	raytrace(t_vars vars)
 			printf("teste.dest.x = %lf\n", result.r.dest.x);
 			printf("teste.dest.y = %lf\n", result.r.dest.y);
 			printf("teste.dest.z = %lf\n", result.r.dest.z);
+
+			printf("a distancia entre esses pontos eh %lf\n", distance(result.r.orig, result.r.dest));
 		}
 		else if (result.n == 1)
 		{
@@ -224,13 +240,11 @@ void	raytrace(t_vars vars)
 			printf("teste.orig.z = %lf\n", result.r.orig.z);
 		}
 		else
-		{
 			printf("nao cruzou em nenhum ponto\n");
-		}
-		// if (cruza(A, B, sp))
-		// 	printf("cruza\n");
+		// if (cruza_sp(A, B, sp))
+		// 	printf("cruza_sp\n");
 		// else
-		// 	printf("nao cruza\n");
+		// 	printf("nao cruza_sp\n");
 	}
 	else
 	{
@@ -240,20 +254,44 @@ void	raytrace(t_vars vars)
 
 		sp.pos.x =  00.0;
 		sp.pos.y =  00.0;
-		sp.pos.z = 100.0;
+		sp.pos.z =  30.0;
 		sp.raio  = 100.0;
 
+		i = 0;
 		y = 0;
-		while (y < ALTURA)
+		while (y < ALTURA && i < 1000)
 		{
+			i++;
 			x = 0;
 			while (x < LARGURA)
 			{
 				B.x = (double)(x - (LARGURA / 2));
 				B.y = (double)((ALTURA / 2) - y);
 				B.z = (double)0.0;
-				if (cruza(A, B, sp))
-					mlx_pixel_put(vars.mlx, vars.win, x, y, 0xFF0000);
+				if (0)
+				{
+					if (cruza_sp(A, B, sp))
+						mlx_pixel_put(vars.mlx, vars.win, x, y, 0xFF0000);
+				}
+				else
+				{
+					result = cruzamento_sp_reta(A, B, sp);
+					// printf("x = %d; y = %d; ", x, y);
+					if (result.n == 2)
+					{
+						d = distance(A, result.r.orig);
+						di = (int)d;
+						di = di % 255;
+						cor = 0xFF0000;
+						cor = cor | (di * 256);
+						// di *= 256;
+						// cor = cor | di;
+						// printf("cruza; distancia = %lf; di = %d \n", d, di);
+						mlx_pixel_put(vars.mlx, vars.win, x, y, cor);
+					}
+					// else
+					// 	printf("nao cruza\n");
+				}
 				x++;
 			}
 			y++;
