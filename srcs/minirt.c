@@ -18,9 +18,9 @@ typedef struct  s_vars {
 }               t_vars;
 
 typedef struct posicao {
-	long double x;
-	long double y;
-	long double z;
+	double x;
+	double y;
+	double z;
 } posicao;
 
 typedef struct camera {
@@ -29,7 +29,7 @@ typedef struct camera {
 
 typedef struct esfera{
 	posicao pos;
-	long double raio;
+	double raio;
 } esfera;
 
 typedef struct tela{
@@ -38,11 +38,11 @@ typedef struct tela{
 } tela;
 
 
-long double *expand(long double a, long double b)
+double *expand(double a, double b)
 {
-	long double *saida;
+	double *saida;
 
-	saida = (long double *)malloc(sizeof(long double) * 3);
+	saida = (double *)malloc(sizeof(double) * 3);
 	saida[0] = (a * a);
 	saida[1] = (2 * a * b);
 	saida[2] = (b * b);
@@ -51,66 +51,16 @@ long double *expand(long double a, long double b)
 
 int	cruza(posicao A, posicao B, esfera C)
 {
-	long double *exptemp1;
-	long double *exptemp2;
-	long double *exptemp3;
-
-	// printf("A = (%Lf, %Lf, %Lf)\n", A.x, A.y, A.z);
-	// printf("B = (%Lf, %Lf, %Lf)\n", B.x, B.y, B.z);
-	// printf("C = (%Lf, %Lf, %Lf, %Lf)\n", C.pos.x, C.pos.y, C.pos.z, C.raio);
-
-	// printf("parametric line equation:\n");
-
-	// printf("x = %Lf + %Lft\n", A.x, (B.x - A.x));
-	// printf("y = %Lf + %Lft\n", A.y, (B.y - A.y));
-	// printf("z = %Lf + %Lft\n", A.z, (B.z - A.z));
-
-	// printf("sphere equation:\n");
-
-	// printf("(x - %Lf)^2 + (y - %Lf)^2 + (z - %Lf)^2 = %Lf^2\n", C.pos.x, C.pos.y, C.pos.z, C.raio);
-
-	// printf("expanding:\n");
-	// exptemp1 = expand(A.x, B.x - A.x);
-	// printf("(%Lf + %Lft + %Lft^2) + ", exptemp1[0], exptemp1[1], exptemp1[2]);
-	// free(exptemp1);
-	// exptemp1 = expand(A.y, B.y - A.y);
-	// printf("(%Lf + %Lft + %Lft^2) + ", exptemp1[0], exptemp1[1], exptemp1[2]);
-	// free(exptemp1);
-	// exptemp1 = expand(A.z, B.z - A.z);
-	// printf("(%Lf + %Lft + %Lft^2) = ", exptemp1[0], exptemp1[1], exptemp1[2]);
-	// free(exptemp1);
-	// printf("%Lf^2\n", C.raio);
-
-
-	// printf("colapsing:\n");
-
+	double *exptemp1;
+	double *exptemp2;
+	double *exptemp3;
 	exptemp1 = expand(A.x - C.pos.x, B.x - A.x - C.pos.x);
 	exptemp2 = expand(A.y - C.pos.y, B.y - A.y - C.pos.y);
 	exptemp3 = expand(A.z - C.pos.z, B.z - A.z - C.pos.z);
-	// printf("%Lft^2 + %Lft + %Lf = ",
-	// 	exptemp1[2] + exptemp2[2] + exptemp3[2],
-	// 	exptemp1[1] + exptemp2[1] + exptemp3[1],
-	// 	exptemp1[0] + exptemp2[0] + exptemp3[0] - (C.raio * C.raio));
-	// printf("0\n");
-	// printf("\n");
-
-
-	// printf("delta:\n");
-
-	long double a = exptemp1[2] + exptemp2[2] + exptemp3[2];
-	long double b = exptemp1[1] + exptemp2[1] + exptemp3[1];
-	long double c = exptemp1[0] + exptemp2[0] + exptemp3[0] - (C.raio * C.raio);
-
-	// printf("D = %Lf*%Lf - 4*%Lf*%Lf\n", b, b, a, c);
-
-	long double d = (b*b) + (-4*a*c);
-
-	// printf("D = %Lf -4 * %Lf * %Lf\n", (b*b), a, c);
-	// printf("D = %Lf - (%Lf)\n", (b*b), (-4*a*c));
-	// printf("D = %Lf\n", d);
-
-	// (-b +- sqrt(d)) / 2*a;
-
+	double a = exptemp1[2] + exptemp2[2] + exptemp3[2];
+	double b = exptemp1[1] + exptemp2[1] + exptemp3[1];
+	double c = exptemp1[0] + exptemp2[0] + exptemp3[0] - (C.raio * C.raio);
+	double d = (b*b) + (-4*a*c);
 	free(exptemp1);
 	free(exptemp2);
 	free(exptemp3);
@@ -131,7 +81,7 @@ void	raytrace(t_vars vars)
 	posicao B;
 	esfera sp;
 	tela screen;
-	long double d_raio;
+	double d_raio;
 
 	d_raio = 10.0;
 
@@ -162,28 +112,27 @@ void	raytrace(t_vars vars)
 
 	A.x =    0.0;
 	A.y =    0.0;
-	A.z = -100.0;
+	A.z = (double)(-(LARGURA / 2));
 
 	sp.pos.x = 0.0;
-	sp.pos.y = 0.0;
+	sp.pos.y = 50.0;
 	sp.pos.z = 0.0;
-	sp.raio  = 50.0;
+	sp.raio  = 90.0;
 
-	x = 0;
 	y = 0;
-	while (x < LARGURA)
+	while (y < ALTURA)
 	{
-		y = 0;
-		while (y < ALTURA)
+		x = 0;
+		while (x < LARGURA)
 		{
-			B.x = (long double)(x - (LARGURA / 2));
-			B.y = (long double)(y - (ALTURA / 2));
-			B.z = (long double)0.0;
+			B.x = (double)(x - (LARGURA / 2));
+			B.y = (double)(y - (ALTURA / 2));
+			B.z = (double)0.0;
 			if (cruza(A, B, sp))
 				mlx_pixel_put(vars.mlx, vars.win, x, y, 0xFF0000);
-			y++;
+			x++;
 		}
-		x++;
+		y++;
 	}
 }
 
@@ -276,20 +225,17 @@ int	main(void)
 {
 	int (*teste)(int, t_vars*);
 	t_vars      vars;
-	int fd;
-	char *linha;
-	int i;
-	int retorno;
-	int ray;
-
-	ray = 1;
+	// int fd;
+	// char *linha;
+	// int i;
+	// int retorno;
 
 	vars.mlx = mlx_init();
 	vars.win = mlx_new_window(vars.mlx, 640, 420, "minirt");
-	if (ray == 0)
-		draw_squares_test(vars.mlx, vars.win);
-	else if (ray == 1)
-		raytrace(vars);
+	// if (ray == 0)
+	// 	draw_squares_test(vars.mlx, vars.win);
+	// else if (ray == 1)
+	raytrace(vars);
 
 /*
 	fd = open("../../files/example.rt", O_RDONLY);
