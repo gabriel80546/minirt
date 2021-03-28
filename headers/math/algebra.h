@@ -17,6 +17,7 @@ typedef struct	s_vec
 	double		x;
 	double		y;
 	double		z;
+	double		w;
 }				t_vec;
 
 

@@ -18,9 +18,16 @@ int	main(/* int argc, char **argv */)
 {
 	t_vars      vars;
 
+	vars.largura = 640;
+	vars.altura = 400;
 	vars.mlx = mlx_init();
-	vars.win = mlx_new_window(vars.mlx, LARGURA, ALTURA, "minirt");
-	draw(vars);
+	vars.win = mlx_new_window(vars.mlx, vars.largura, vars.altura, "minirt");
+	if (0)
+		draw_indiano();
+	else if(1)
+		draw_yellow_sp(vars);
+	else
+		draw(vars);
 	mlx_key_hook(vars.win, key_hook, &vars);
 	mlx_loop(vars.mlx);
 	return (0);

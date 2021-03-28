@@ -7,22 +7,18 @@ double	cruzamento_sp_delta(t_vec A, t_vec B, t_esfera sp)
 	double d;
 
 	coeff = get_sp_coeff(A, B, sp);
-
 	d = (coeff.b*coeff.b) + (-4*coeff.a*coeff.c);
-
 	return (d);
 }
 
 int		cruza_sp(t_vec A, t_vec B, t_esfera sp)
 {
 	t_coeff coeff;
-	double d;
+	t_solution solution;
 
 	coeff = get_sp_coeff(A, B, sp);
-
-	d = (coeff.b*coeff.b) + (-4*coeff.a*coeff.c);
-
-	if (d >= 0)
+	solution = solve_equation(coeff.a, coeff.b, coeff.c);
+	if (solution.n >= 1 && solution.n <= 2)
 		return (1);
 	else
 		return (0);
@@ -31,42 +27,24 @@ int		cruza_sp(t_vec A, t_vec B, t_esfera sp)
 t_reta_or_n	cruzamento_sp_reta(t_vec A, t_vec B, t_esfera sp)
 {
 	t_coeff coeff;
+	t_solution solution;
 	t_reta_or_n saida;
-	double	d;
-	double	x1;
-	double	x2;
 
 	saida.r = empty_reta();
-
 	coeff = get_sp_coeff(A, B, sp);
-
-	d = (coeff.b*coeff.b) + (-4*coeff.a*coeff.c);
-
-	if (d < 0)
-		saida.n = 0;
-	else if (d == 0)
+	solution = solve_equation(coeff.a, coeff.b, coeff.c);
+	saida.n = solution.n;
+	if (solution.n >= 1 && solution.n <= 2)
 	{
-		x1 = (-coeff.b) / (2*coeff.a);
-
-		saida.r.orig.x = A.x + ((B.x - A.x) * x1);
-		saida.r.orig.y = A.y + ((B.y - A.y) * x1);
-		saida.r.orig.z = A.z + ((B.z - A.z) * x1);
-
-		saida.n = 1;
+		saida.r.orig.x = A.x + ((B.x - A.x) * solution.s1);
+		saida.r.orig.y = A.y + ((B.y - A.y) * solution.s1);
+		saida.r.orig.z = A.z + ((B.z - A.z) * solution.s1);
 	}
-	else
+	if (solution.n == 2)
 	{
-		x1 = (-coeff.b + sqrt(d)) / (2*coeff.a);
-		x2 = (-coeff.b - sqrt(d)) / (2*coeff.a);
-
-		saida.r.orig.x = A.x + ((B.x - A.x) * x1);
-		saida.r.orig.y = A.y + ((B.y - A.y) * x1);
-		saida.r.orig.z = A.z + ((B.z - A.z) * x1);
-
-		saida.r.dest.x = A.x + ((B.x - A.x) * x2);
-		saida.r.dest.y = A.y + ((B.y - A.y) * x2);
-		saida.r.dest.z = A.z + ((B.z - A.z) * x2);
-		saida.n = 2;
+		saida.r.dest.x = A.x + ((B.x - A.x) * solution.s2);
+		saida.r.dest.y = A.y + ((B.y - A.y) * solution.s2);
+		saida.r.dest.z = A.z + ((B.z - A.z) * solution.s2);
 	}
 	return (saida);
 }
