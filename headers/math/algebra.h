@@ -12,8 +12,17 @@ typedef struct	s_solution
 	int			n;
 }				t_solution;
 
+typedef struct	s_vec
+{
+	double		x;
+	double		y;
+	double		z;
+}				t_vec;
+
+
 t_solution		solve_equation(double a, double b, double c);
 double			min(double a, double b);
 double			max(double a, double b);
+double			distance(t_vec A, t_vec B);
 
 #endif
