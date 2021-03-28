@@ -46,6 +46,7 @@ typedef struct  s_vars {
     void        *win;
 	int			largura;
 	int			altura;
+	t_vec		cam;
 	t_esfera	sp;
 }               t_vars;
 

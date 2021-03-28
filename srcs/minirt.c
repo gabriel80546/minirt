@@ -14,21 +14,32 @@ int key_hook(int keycode, t_vars *vars)
 	return (0);
 }
 
-int	main(/* int argc, char **argv */)
+t_vars config_scene(void)
 {
-	t_vars      vars;
+	t_vars vars;
 
 	vars.largura = 640;
 	vars.altura = 400;
 	vars.sp.pos.x = -30.0;
-	vars.sp.pos.y = +30.0;
+	vars.sp.pos.y =  30.0;
 	vars.sp.pos.z =  80.0;
 	vars.sp.raio  = 150.0;
+	vars.cam.x = 0.0;
+	vars.cam.y = 0.0;
+	vars.cam.z = (double)(-(vars.largura / 2));
+	return (vars);
+}
+
+int	main(/* int argc, char **argv */)
+{
+	t_vars      vars;
+
+	vars = config_scene();
 	vars.mlx = mlx_init();
 	vars.win = mlx_new_window(vars.mlx, vars.largura, vars.altura, "minirt");
 	if (0)
 		draw_indiano();
-	else if(0)
+	else if (0)
 		draw_yellow_sp(vars);
 	else
 		draw(vars);
