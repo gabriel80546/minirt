@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include "mlx.h"
 #include "algebra.h"
+#include "list.h"
 #include <math.h>
 
 //#include "get_next_line.h"
@@ -45,19 +46,10 @@ typedef struct	s_reta_or_n
 }				t_reta_or_n;
 
 
-// typedef struct camera {
-// 	posicao pos;
-// } camera;
-
 typedef struct	t_esfera{
 	t_posicao	pos;
 	double		raio;
 }				t_esfera;
-
-// typedef struct tela{
-// 	posicao tleft;
-// 	posicao dright;
-// } tela;
 
 t_reta		empty_reta(void)
 {
@@ -280,10 +272,7 @@ void	raytrace(t_vars vars)
 						if (d > distance(A, result.r.orig))
 							d = distance(A, result.r.orig);
 
-						B = sp.pos;
-						// B.z -= sp.raio;
-						d -= (distance(A, B) - sp.raio);
-						// printf("x = %d; y = %d; d = %lf; p/org = %lf\n", x, y, d, distance(A, B));
+						d -= (distance(A, sp.pos) - sp.raio);
 						if (d < 0)
 							d = 0;
 						d = d / sp.raio;
@@ -295,12 +284,8 @@ void	raytrace(t_vars vars)
 						di = di % 255;
 						cor = 0xFF0000;
 						cor = cor | (di * 256);
-						// cor = cor | di;
-
 						mlx_pixel_put(vars.mlx, vars.win, x, y, cor);
 					}
-					// else
-					// 	printf("nao cruza\n");
 				}
 				x++;
 			}
@@ -324,62 +309,11 @@ int key_hook(int keycode, t_vars *vars)
 
 int	main(void)
 {
-	int (*teste)(int, t_vars*);
 	t_vars      vars;
-	t_solution	s;
-	double		a;
-	double		b;
-	double		c;
-
-	a =  1.0;
-	b = -6.0;
-	c =  9.0;
-	printf("hello world!\n");
-	s = solve_equation(a, b, c);
-	printf("%4.1lfx² + %4.1lfx + %4.1lf = 0; tem %d solucoes\n", a, b, c, s.n);
-	if (s.n == 2)
-	{
-		printf("%4.1lfx² + %4.1lfx + %4.1lf = 0; s1 = %4.1lf, s2 = %4.1lf\n", a, b, c, s.s1, s.s2);
-		printf("%4.1lfx² + %4.1lfx + %4.1lf = 0; menor solucao = %4.1lf\n", a, b, c, min(s.s1, s.s2));
-		printf("%4.1lfx² + %4.1lfx + %4.1lf = 0; maior solucao = %4.1lf\n", a, b, c, max(s.s1, s.s2));
-	}
-	else if (s.n == 1)
-		printf("%4.1lfx² + %4.1lfx + %4.1lf = 0; unica solucao s1 = %4.1lf\n", a, b, c, s.s1);
-	else
-		printf("%4.1lfx² + %4.1lfx + %4.1lf = 0; nao tem solucao\n", a, b, c);
-
 	vars.mlx = mlx_init();
-
 	vars.win = mlx_new_window(vars.mlx, LARGURA, ALTURA, "minirt");
 	raytrace(vars);
-
-/*
-	// int fd;
-	// char *linha;
-	// int i;
-	// int retorno;
-	fd = open("../../files/example.rt", O_RDONLY);
-	i = 0;
-	retorno = 1;
-	while (retorno == 1)
-	{
-		retorno = get_next_line(fd, &linha);
-		if (retorno != 1)
-			break;
-		printf("1: linha[%d] = '%s'; retorno = %i\n", i, linha, strlen(linha), retorno);
-		free(linha);
-		i++;
-	}
-	if (retorno != -1)
-	{
-		printf("2: linha[%d] = '%s'(%ld); retorno = %i\n", i, linha, strlen(linha), retorno);
-		free(linha);
-	}
-	else
-		printf("get_next_line retornou -1\n");
-*/
-	teste = key_hook;
-	mlx_key_hook(vars.win, teste, &vars);
+	mlx_key_hook(vars.win, key_hook, &vars);
 	mlx_loop(vars.mlx);
 	return (0);
 }
