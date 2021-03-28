@@ -20,11 +20,15 @@ int	main(/* int argc, char **argv */)
 
 	vars.largura = 640;
 	vars.altura = 400;
+	vars.sp.pos.x = -30.0;
+	vars.sp.pos.y = +30.0;
+	vars.sp.pos.z =  80.0;
+	vars.sp.raio  = 150.0;
 	vars.mlx = mlx_init();
 	vars.win = mlx_new_window(vars.mlx, vars.largura, vars.altura, "minirt");
 	if (0)
 		draw_indiano();
-	else if(1)
+	else if(0)
 		draw_yellow_sp(vars);
 	else
 		draw(vars);

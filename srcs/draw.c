@@ -7,17 +7,11 @@ void	draw(t_vars vars)
 	int y;
 	t_vec A;
 	t_vec B;
-	t_esfera sp;
 	t_reta_or_n result;
 
-	A.x =    0.0;
-	A.y =    0.0;
+	A.x = 0.0;
+	A.y = 0.0;
 	A.z = (double)(-(vars.largura / 2));
-
-	sp.pos.x = -30.0;
-	sp.pos.y = +30.0;
-	sp.pos.z =  80.0;
-	sp.raio  = 150.0;
 
 	y = 0;
 	while (y < vars.altura)
@@ -28,7 +22,7 @@ void	draw(t_vars vars)
 			B.x = (double)(x - (vars.largura / 2));
 			B.y = (double)((vars.altura / 2) - y);
 			B.z = (double)0.0;
-			result = cruzamento_sp_reta(A, B, sp);
+			result = cruzamento_sp_reta(A, B, vars.sp);
 			if (result.n >= 1 && result.n <= 2)
 				mlx_pixel_put(vars.mlx, vars.win, x, y, 0xFF0000);
 			x++;
@@ -43,21 +37,14 @@ void	draw_yellow_sp(t_vars vars)
 	int y;
 	t_vec A;
 	t_vec B;
-	t_esfera sp;
 	t_reta_or_n result;
 	double d;
 	int di;
 	int cor;
 
-	A.x =    0.0;
-	A.y =    0.0;
+	A.x = 0.0;
+	A.y = 0.0;
 	A.z = (double)(-(vars.largura / 2));
-
-	sp.pos.x = -30.0;
-	sp.pos.y = +30.0;
-	sp.pos.z =  80.0;
-	sp.raio  = 150.0;
-
 	y = 0;
 	while (y < vars.altura)
 	{
@@ -67,17 +54,17 @@ void	draw_yellow_sp(t_vars vars)
 			B.x = (double)(x - (vars.largura / 2));
 			B.y = (double)((vars.altura / 2) - y);
 			B.z = (double)0.0;
-			result = cruzamento_sp_reta(A, B, sp);
+			result = cruzamento_sp_reta(A, B, vars.sp);
 			if (result.n >= 1 && result.n <= 2)
 			{
 				d = distance(A, result.r.dest);
 				if (d > distance(A, result.r.orig))
 					d = distance(A, result.r.orig);
 
-				d -= (distance(A, sp.pos) - sp.raio);
+				d -= (distance(A, vars.sp.pos) - vars.sp.raio);
 				if (d < 0)
 					d = 0;
-				d = d / sp.raio;
+				d = d / vars.sp.raio;
 				while (d > 1)
 					d = d - 0.125;
 				if (d < 0)

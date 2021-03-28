@@ -10,13 +10,6 @@
 #include "list.h"
 #include <math.h>
 
-typedef struct  s_vars {
-    void        *mlx;
-    void        *win;
-	int			largura;
-	int			altura;
-}               t_vars;
-
 typedef struct	t_posicao {
 	double		x;
 	double		y;
@@ -47,6 +40,14 @@ typedef struct	t_esfera{
 	t_vec		pos;
 	double		raio;
 }				t_esfera;
+
+typedef struct  s_vars {
+    void        *mlx;
+    void        *win;
+	int			largura;
+	int			altura;
+	t_esfera	sp;
+}               t_vars;
 
 t_reta		empty_reta(void);
 t_coeff		get_sp_coeff(t_vec A, t_vec B, t_esfera sp);
