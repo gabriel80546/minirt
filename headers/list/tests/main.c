@@ -1,7 +1,6 @@
 
 #include "list.h"
 #include <stdio.h>
-// #include <stdlib.h>
 
 int main()
 {
@@ -14,12 +13,22 @@ int main()
 	list_add(lista, &conteudo[1]);
 	while (lista != NULL)
 	{
-		printf("51: prev = %p\n", lista->prev);
-		printf("52: data = %p\n", lista->data);
-		printf("53: next = %p\n", lista->next);
-		printf("54: loop, item = %d\n\n", *((int *)lista->data));
+		printf("16: prev = %p\n", lista->prev);
+		printf("17: data = %p\n", lista->data);
+		printf("18: next = %p\n", lista->next);
+		printf("19: loop, item = %d\n\n", *((int *)lista->data));
 		temp_list = lista;
 		lista = lista->next;
+	}
+	lista = last_item(temp_list);
+	while (lista != NULL)
+	{
+		printf("26: prev = %p\n", lista->prev);
+		printf("27: data = %p\n", lista->data);
+		printf("28: next = %p\n", lista->next);
+		printf("29: loop, item = %d\n\n", *((int *)lista->data));
+		temp_list = lista;
+		lista = lista->prev;
 	}
 	clear_list(temp_list);
 	return (0);

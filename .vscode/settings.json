@@ -3,6 +3,7 @@
 		"typeinfo": "c",
 		"math.h": "c",
 		"mlx.h": "c",
-		"minirt.h": "c"
+		"minirt.h": "c",
+		"list.h": "c"
 	}
 }
