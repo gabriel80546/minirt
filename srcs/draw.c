@@ -36,33 +36,19 @@ void	draw(t_vars vars)
 					resolvido = result;
 				if (result.n > 0)
 				{
+					n = (t_hit *)malloc(sizeof(t_hit));
+					n->obj = *((t_objeto *)vars.objs->data);
+					n->ponto = result.r.orig;
 					if (hits == NULL)
-					{
-						n = (t_hit *)malloc(sizeof(t_hit));
-						n->obj = *((t_objeto *)vars.objs->data);
-						n->ponto = result.r.orig;
 						hits = list_init(n);
-						if (result.n == 2)
-						{
-							n = (t_hit *)malloc(sizeof(t_hit));
-							n->obj = *((t_objeto *)vars.objs->data);
-							n->ponto = result.r.dest;
-							list_add(hits, n);
-						}
-					}
 					else
+						list_add(hits, n);
+					if (result.n == 2)
 					{
 						n = (t_hit *)malloc(sizeof(t_hit));
 						n->obj = *((t_objeto *)vars.objs->data);
-						n->ponto = result.r.orig;
+						n->ponto = result.r.dest;
 						list_add(hits, n);
-						if (result.n == 2)
-						{
-							n = (t_hit *)malloc(sizeof(t_hit));
-							n->obj = *((t_objeto *)vars.objs->data);
-							n->ponto = result.r.dest;
-							list_add(hits, n);
-						}
 					}
 				}
 				temp_list = vars.objs;
@@ -83,8 +69,8 @@ void	draw(t_vars vars)
 					temp_hit = hits;
 					hits = hits->next;
 				}
-				mlx_pixel_put(vars.mlx, vars.win, x, y, cor);
 				hits = first_item(temp_hit);
+				mlx_pixel_put(vars.mlx, vars.win, x, y, cor);
 				clear_list_all(hits);
 				hits = NULL;
 			}
