@@ -18,8 +18,6 @@ t_vars config_scene(void)
 {
 	t_vars vars;
 	t_objeto *obj;
-	t_list *temp_list;
-	// t_esfera sp;
 
 	vars.largura = 640;
 	vars.altura = 400;
@@ -31,7 +29,17 @@ t_vars config_scene(void)
 	obj->sp.pos.y =  30.0;
 	obj->sp.pos.z =  80.0;
 	obj->sp.raio  = 150.0;
+	obj->sp.cor   = 0xFF0000;
 	vars.objs = list_init(obj);
+
+	obj = (t_objeto *)malloc(sizeof(t_objeto));
+	obj->tipo = SPHERE;
+	obj->sp.pos.x =  30.0;
+	obj->sp.pos.y = -30.0;
+	obj->sp.pos.z =  80.0;
+	obj->sp.raio  = 150.0;
+	obj->sp.cor   = 0x0000FF;
+	list_add(vars.objs, obj);
 
 	vars.cam.x = 0.0;
 	vars.cam.y = 0.0;
@@ -42,7 +50,6 @@ t_vars config_scene(void)
 int	main(/* int argc, char **argv */)
 {
 	t_vars      vars;
-	t_list *temp_list;
 
 	vars = config_scene();
 
@@ -50,8 +57,8 @@ int	main(/* int argc, char **argv */)
 	vars.win = mlx_new_window(vars.mlx, vars.largura, vars.altura, "minirt");
 	if (0)
 		draw_indiano();
-	/* else if (0)
-		draw_yellow_sp(vars); */
+	else if (0)
+		draw_yellow_sp(vars);
 	else
 		draw(vars);
 	clear_list_all(vars.objs);

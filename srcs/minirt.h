@@ -42,6 +42,7 @@ typedef struct	s_reta_or_n
 typedef struct	s_esfera{
 	t_vec		pos;
 	double		raio;
+	int			cor;
 }				t_esfera;
 
 typedef struct	s_objeto
