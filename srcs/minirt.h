@@ -10,7 +10,10 @@
 #include "list.h"
 #include <math.h>
 
-typedef struct	t_posicao {
+# define SPHERE 1
+# define PLANE 2
+
+typedef struct	s_posicao {
 	double		x;
 	double		y;
 	double		z;
@@ -36,10 +39,17 @@ typedef struct	s_reta_or_n
 }				t_reta_or_n;
 
 
-typedef struct	t_esfera{
+typedef struct	s_esfera{
 	t_vec		pos;
 	double		raio;
 }				t_esfera;
+
+typedef struct	s_objeto
+{
+	t_esfera	sp;
+	int			tipo;
+}				t_objeto;
+
 
 typedef struct  s_vars {
     void        *mlx;
@@ -47,7 +57,7 @@ typedef struct  s_vars {
 	int			largura;
 	int			altura;
 	t_vec		cam;
-	t_esfera	sp;
+	t_list		*objs;
 }               t_vars;
 
 t_reta		empty_reta(void);

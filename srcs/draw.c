@@ -7,7 +7,22 @@ void	draw(t_vars vars)
 	int y;
 	t_vec tela;
 	t_reta_or_n result;
+	t_list	*temp_list;
 
+	while (vars.objs != NULL)
+	{
+		printf("draw: 14: prev = %p\n", vars.objs->prev);
+		printf("draw: 15: data = %p\n", vars.objs->data);
+		printf("draw: 16: next = %p\n", vars.objs->next);
+		printf("draw: 17: sp.pos.x = %lf\n", ((t_esfera *)vars.objs->data)->pos.x);
+		printf("draw: 18: sp.raio = %lf\n", ((t_esfera *)vars.objs->data)->raio);
+		// printf("19: loop, item = %d\n\n", *((int *)vars.objs->data));
+		temp_list = vars.objs;
+		vars.objs = vars.objs->next;
+	}
+	vars.objs = temp_list;
+
+	temp_list = NULL;
 	y = 0;
 	while (y < vars.altura)
 	{
@@ -17,15 +32,23 @@ void	draw(t_vars vars)
 			tela.x = (double)(x - (vars.largura / 2));
 			tela.y = (double)((vars.altura / 2) - y);
 			tela.z = (double)0.0;
-			result = cruzamento_sp_reta(vars.cam, tela, vars.sp);
-			if (result.n >= 1 && result.n <= 2)
-				mlx_pixel_put(vars.mlx, vars.win, x, y, 0xFF0000);
+			while (vars.objs != NULL)
+			{
+				result = cruzamento_sp_reta(vars.cam, tela, *((t_esfera *)vars.objs->data));
+				if (result.n >= 1 && result.n <= 2)
+					mlx_pixel_put(vars.mlx, vars.win, x, y, 0xFF0000);
+				temp_list = vars.objs;
+				vars.objs = vars.objs->next;
+			}
+			if (temp_list != NULL)
+				vars.objs = first_item(temp_list);
 			x++;
 		}
 		y++;
 	}
 }
 
+/*
 void	draw_yellow_sp(t_vars vars)
 {
 	int x;
@@ -71,6 +94,7 @@ void	draw_yellow_sp(t_vars vars)
 		y++;
 	}
 }
+*/
 
 void	draw_indiano(/* t_vars vars */)
 {

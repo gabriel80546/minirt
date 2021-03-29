@@ -30,6 +30,12 @@ t_reta_or_n	cruzamento_sp_reta(t_vec A, t_vec B, t_esfera sp)
 	t_solution solution;
 	t_reta_or_n saida;
 
+
+	// printf("sp.raio = %lf\n", sp.raio);
+	// printf("sp.pos.x = %lf\n", sp.pos.x);
+	// printf("sp.pos.y = %lf\n", sp.pos.y);
+	// printf("sp.pos.z = %lf\n", sp.pos.z);
+
 	saida.r = empty_reta();
 	coeff = get_sp_coeff(A, B, sp);
 	solution = solve_equation(coeff.a, coeff.b, coeff.c);
