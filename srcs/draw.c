@@ -3,12 +3,21 @@
 
 void	draw(t_vars vars)
 {
-	int x;
-	int y;
-	t_vec tela;
-	t_reta_or_n result;
-	t_list	*temp_list;
+	int			x;
+	int			y;
+	t_vec		tela;
+	t_reta_or_n	result;
+	t_list		*temp_list;
+	t_reta_or_n	resolvido;
+	t_list		*hits;
+	t_list		*temp_hit;
+	t_hit		*n;
+	double		dist;
+	double		smaller;
+	int			cor;
 
+	hits = NULL;
+	temp_hit = NULL;
 	temp_list = NULL;
 	y = 0;
 	while (y < vars.altura)
@@ -19,16 +28,80 @@ void	draw(t_vars vars)
 			tela.x = (double)(x - (vars.largura / 2));
 			tela.y = (double)((vars.altura / 2) - y);
 			tela.z = (double)0.0;
+			resolvido.n = -1;
 			while (vars.objs != NULL)
 			{
 				result = cruzamento_sp_reta(vars.cam, tela, *((t_esfera *)vars.objs->data));
 				if (result.n >= 1 && result.n <= 2)
-					mlx_pixel_put(vars.mlx, vars.win, x, y, ((t_esfera *)vars.objs->data)->cor);
+					resolvido = result;
+				if (result.n > 0)
+				{
+					if (hits == NULL)
+					{
+						n = (t_hit *)malloc(sizeof(t_hit));
+						// n->ponto = result.r.orig;
+						n->obj = *((t_objeto *)vars.objs->data);
+						n->ponto = result.r.orig;
+						hits = list_init(n);
+						if (result.n == 2)
+						{
+							// printf("entrou aq\n");
+							n = (t_hit *)malloc(sizeof(t_hit));
+							// n->ponto = result.r.orig;
+							n->obj = *((t_objeto *)vars.objs->data);
+							n->ponto = result.r.dest;
+							// hits = list_init(n);
+							list_add(hits, n);
+						}
+					}
+					else
+					{
+						n = (t_hit *)malloc(sizeof(t_hit));
+						// n->ponto = result.r.orig;
+						n->obj = *((t_objeto *)vars.objs->data);
+						n->ponto = result.r.orig;
+						list_add(hits, n);
+						if (result.n == 2)
+						{
+							// printf("entrou aq\n");
+							n = (t_hit *)malloc(sizeof(t_hit));
+							// n->ponto = result.r.orig;
+							n->obj = *((t_objeto *)vars.objs->data);
+							n->ponto = result.r.dest;
+							// hits = list_init(n);
+							list_add(hits, n);
+						}
+					}
+				}
 				temp_list = vars.objs;
 				vars.objs = vars.objs->next;
 			}
-			if (temp_list != NULL)
-				vars.objs = first_item(temp_list);
+			if (resolvido.n >= 1 && resolvido.n <= 2)
+			{
+				vars.objs = temp_list;
+				// mlx_pixel_put(vars.mlx, vars.win, x, y, ((t_esfera *)vars.objs->data)->cor);
+				smaller = 1000000.0;
+				printf("62: hits:\n");
+				while (hits != NULL)
+				{
+					dist = distance(((t_hit *)hits->data)->ponto, vars.cam);
+					printf("65: hit; hits->data = %lf\n", dist);
+					if (dist < smaller)
+					{
+						smaller = dist;
+						cor = ((t_objeto)((t_hit *) hits->data)->obj).sp.cor;
+					}
+					printf("65: hit cor = 0x%06X\n", ((t_objeto)((t_hit *) hits->data)->obj).sp.cor);
+					temp_hit = hits;
+					hits = hits->next;
+				}
+				printf("a cor mais proxima eh 0x%06X\n", cor);
+				mlx_pixel_put(vars.mlx, vars.win, x, y, cor);
+				hits = first_item(temp_hit);
+				clear_list_all(hits);
+				hits = NULL;
+			}
+			vars.objs = first_item(temp_list);
 			x++;
 		}
 		y++;

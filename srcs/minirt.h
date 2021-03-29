@@ -51,6 +51,11 @@ typedef struct	s_objeto
 	int			tipo;
 }				t_objeto;
 
+typedef struct	s_hit
+{
+	t_objeto	obj;
+	t_vec		ponto;
+}				t_hit;
 
 typedef struct  s_vars {
     void        *mlx;
