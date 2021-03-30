@@ -16,7 +16,9 @@ void	draw(t_vars vars)
 	double		smaller;
 	int			cor;
 	double		ttan;
+	int			first;
 
+	first = 0;
 	hits = NULL;
 	temp_hit = NULL;
 	temp_list = NULL;
@@ -27,15 +29,36 @@ void	draw(t_vars vars)
 		x = 0;
 		while (x < vars.largura)
 		{
-			tela.x = vars.cam.pos.x + ((((2*ttan)/vars.largura) * x) - ttan);
-			tela.y = vars.cam.pos.y - ((((2*ttan)/vars.altura)  * y) - ttan);
+			if (vars.altura > vars.largura)
+			{
+				tela.x = vars.cam.pos.x + ((((2*ttan)/vars.largura) * x) - ttan);
+				tela.y = vars.cam.pos.y - ((((2*ttan)/vars.largura) * y) - ttan);
+			}
+			else
+			{
+				tela.x = vars.cam.pos.x + ((((2*ttan)/vars.altura) * x) - ttan);
+				tela.y = vars.cam.pos.y - ((((2*ttan)/vars.altura) * y) - ttan);
+			}
 			tela.z = vars.cam.pos.z + 1.0;
 			resolvido.n = -1;
 			while (vars.objs != NULL)
 			{
 				result = cruzamento_sp_reta(vars.cam.pos, tela, *((t_esfera *)vars.objs->data));
 				if (result.n >= 1 && result.n <= 2)
+				{
 					resolvido = result;
+					if (first == 0)
+					{
+						first = 1;
+						printf("result.r.orig.x = %02lf\n", result.r.orig.x);
+						printf("result.r.orig.y = %02lf\n", result.r.orig.y);
+						printf("result.r.orig.z = %02lf\n", result.r.orig.z);
+						printf("result.r.dest.x = %02lf\n", result.r.dest.x);
+						printf("result.r.dest.y = %02lf\n", result.r.dest.y);
+						printf("result.r.dest.z = %02lf\n", result.r.dest.z);
+						printf("\n");
+					}
+				}
 				if (result.n > 0)
 				{
 					n = (t_hit *)malloc(sizeof(t_hit));
