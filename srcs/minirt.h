@@ -13,6 +13,8 @@
 # define SPHERE 1
 # define PLANE 2
 
+# define PI 3.1415926535897932384626433832795028841971
+
 typedef struct	s_posicao {
 	double		x;
 	double		y;
@@ -57,17 +59,24 @@ typedef struct	s_hit
 	t_vec		ponto;
 }				t_hit;
 
+typedef struct	s_cam
+{
+	t_vec		pos;
+	t_vec		normal;
+	double		fov;
+}				t_cam;
+
 typedef struct  s_vars {
     void        *mlx;
     void        *win;
 	int			largura;
 	int			altura;
-	t_vec		cam;
+	t_cam		cam;
 	t_list		*objs;
 }               t_vars;
 
 t_reta		empty_reta(void);
-t_coeff		get_sp_coeff(t_vec A, t_vec B, t_esfera sp);
+t_coeff		get_sp_coeff(t_vec A, t_vec B, t_esfera sp/* , int print_flag */);
 t_reta_or_n	cruzamento_sp_reta(t_vec A, t_vec B, t_esfera sp);
 double		cruzamento_sp_delta(t_vec A, t_vec B, t_esfera sp);
 int			cruza_sp(t_vec A, t_vec B, t_esfera sp);

@@ -15,23 +15,25 @@ void	draw(t_vars vars)
 	double		dist;
 	double		smaller;
 	int			cor;
+	double		ttan;
 
 	hits = NULL;
 	temp_hit = NULL;
 	temp_list = NULL;
+	ttan = (tan((((vars.cam.fov)/2.0)*PI)/180.0));
 	y = 0;
 	while (y < vars.altura)
 	{
 		x = 0;
 		while (x < vars.largura)
 		{
-			tela.x = (double)(x - (vars.largura / 2));
-			tela.y = (double)((vars.altura / 2) - y);
-			tela.z = (double)0.0;
+			tela.x = vars.cam.pos.x + ((((2*ttan)/vars.largura) * x) - ttan);
+			tela.y = vars.cam.pos.y - ((((2*ttan)/vars.altura)  * y) - ttan);
+			tela.z = vars.cam.pos.z + 1.0;
 			resolvido.n = -1;
 			while (vars.objs != NULL)
 			{
-				result = cruzamento_sp_reta(vars.cam, tela, *((t_esfera *)vars.objs->data));
+				result = cruzamento_sp_reta(vars.cam.pos, tela, *((t_esfera *)vars.objs->data));
 				if (result.n >= 1 && result.n <= 2)
 					resolvido = result;
 				if (result.n > 0)
@@ -60,7 +62,7 @@ void	draw(t_vars vars)
 				smaller = 1000000.0;
 				while (hits != NULL)
 				{
-					dist = distance(((t_hit *)hits->data)->ponto, vars.cam);
+					dist = distance(((t_hit *)hits->data)->ponto, vars.cam.pos);
 					if (dist < smaller)
 					{
 						smaller = dist;

@@ -30,11 +30,6 @@ t_reta_or_n	cruzamento_sp_reta(t_vec A, t_vec B, t_esfera sp)
 	t_solution solution;
 	t_reta_or_n saida;
 
-	// printf("sp.raio = %lf\n", sp.raio);
-	// printf("sp.pos.x = %lf\n", sp.pos.x);
-	// printf("sp.pos.y = %lf\n", sp.pos.y);
-	// printf("sp.pos.z = %lf\n", sp.pos.z);
-
 	saida.r = empty_reta();
 	coeff = get_sp_coeff(A, B, sp);
 	solution = solve_equation(coeff.a, coeff.b, coeff.c);
@@ -63,20 +58,24 @@ t_coeff	get_sp_coeff(t_vec A, t_vec B, t_esfera sp)
 	saida.a = 0.0;
 	saida.b = 0.0;
 	saida.c = 0.0;
+
 	x = A.x - sp.pos.x;
-	y = B.x - A.x - sp.pos.x;
+	// y = B.x - A.x - sp.pos.x;
+	y = B.x - A.x;
 	saida.a += (y * y);
 	saida.b += (2 * x * y);
 	saida.c += (x * x);
 
 	x = A.y - sp.pos.y;
-	y = B.y - A.y - sp.pos.y;
+	// y = B.y - A.y - sp.pos.y;
+	y = B.y - A.y;
 	saida.a += (y * y);
 	saida.b += (2 * x * y);
 	saida.c += (x * x);
 
 	x = A.z - sp.pos.z;
-	y = B.z - A.z - sp.pos.z;
+	// y = B.z - A.z - sp.pos.z;
+	y = B.z - A.z;
 	saida.a += (y * y);
 	saida.b += (2 * x * y);
 	saida.c += (x * x);
