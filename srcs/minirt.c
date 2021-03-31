@@ -25,8 +25,8 @@ t_vars config_scene_easy(void)
 	// top_down_left = -320 x, y =  200, z = 0
 	// top_down_right = 320 x, y = -200, z = 0
 
-	vars.largura = 400;
-	vars.altura = 400;
+	vars.largura = 800;
+	vars.altura = 600;
 
 	obj = (t_objeto *)malloc(sizeof(t_objeto));
 	obj->tipo = SPHERE;
@@ -76,8 +76,8 @@ t_vars config_scene(void)
 	t_vars vars;
 	t_objeto *obj;
 
-	vars.largura =  640;
-	vars.altura  =  480;
+	vars.largura =  800;
+	vars.altura  =  600;
 
 	obj = (t_objeto *)malloc(sizeof(t_objeto));
 	obj->tipo = SPHERE;
@@ -112,6 +112,7 @@ t_vars config_scene(void)
 	vars.cam.fov   =  90.0;
 	// vars.cam.pos.z = (double)(-(vars.largura / 2));
 
+	vars.light.bright = 1.0;
 	vars.light.pos.x =  0.0;
   	vars.light.pos.y =  2.0;
    	vars.light.pos.z =  4.0;
