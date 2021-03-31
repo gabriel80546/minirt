@@ -14,7 +14,7 @@ void	draw(t_vars vars)
 	t_hit		*n;
 	double		dist;
 	double		smaller;
-	int			cor;
+	// int			cor;
 	double		ttan;
 	double		tcam;
 	t_hit		*temp_temp_hit;
