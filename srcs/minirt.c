@@ -69,14 +69,14 @@ t_vars config_scene(void)
 	t_vars vars;
 	t_objeto *obj;
 
-	vars.largura = 600;
-	vars.altura  = 600;
+	vars.largura =  640;
+	vars.altura  =  480;
 
 	obj = (t_objeto *)malloc(sizeof(t_objeto));
 	obj->tipo = SPHERE;
 	obj->sp.pos.x =  -2.0;
 	obj->sp.pos.y =  -2.0;
-	obj->sp.pos.z =   7.8;
+	obj->sp.pos.z =  11.5;
 	obj->sp.raio  =   3.0;
 	obj->sp.cor   = 0xFF0000;
 	vars.objs = list_init(obj);
@@ -92,10 +92,10 @@ t_vars config_scene(void)
 
 	obj = (t_objeto *)malloc(sizeof(t_objeto));
 	obj->tipo = SPHERE;
-	obj->sp.pos.x =  -4.0;
+	obj->sp.pos.x =  -5.0;
 	obj->sp.pos.y =  -2.0;
-	obj->sp.pos.z =  -6.0;
-	obj->sp.raio  =   3.0;
+	obj->sp.pos.z =  11.5;
+	obj->sp.raio  =   2.5;
 	obj->sp.cor   = 0x00FF00;
 	list_add(vars.objs, obj);
 

@@ -16,6 +16,7 @@ void	draw(t_vars vars)
 	double		smaller;
 	int			cor;
 	double		ttan;
+	double		tcam;
 	// int			first;
 
 	// first = 0;
@@ -29,16 +30,9 @@ void	draw(t_vars vars)
 		x = 0;
 		while (x < vars.largura)
 		{
-			if (vars.altura > vars.largura)
-			{
-				tela.x = vars.cam.pos.x + ((((2*ttan)/vars.largura) * x) - ttan);
-				tela.y = vars.cam.pos.y - ((((2*ttan)/vars.largura) * y) - ttan);
-			}
-			else
-			{
-				tela.x = vars.cam.pos.x + ((((2*ttan)/vars.altura) * x) - ttan);
-				tela.y = vars.cam.pos.y - ((((2*ttan)/vars.altura) * y) - ttan);
-			}
+			tcam = (((vars.largura - vars.altura) / 2));
+			tela.x = vars.cam.pos.x + ((((2*ttan)/vars.largura) * x) - ttan);
+			tela.y = vars.cam.pos.y - ((((2*ttan)/vars.largura) * (y + tcam)) - ttan);
 			tela.z = vars.cam.pos.z + 1.0;
 			resolvido.n = -1;
 			while (vars.objs != NULL)
@@ -46,9 +40,7 @@ void	draw(t_vars vars)
 				result = cruzamento_sp_reta(vars.cam.pos, tela, *((t_esfera *)vars.objs->data));
 				result = sanitize_cruz(vars.cam.pos, tela, result);
 				if (result.n >= 1 && result.n <= 2)
-				{
 					resolvido = result;
-				}
 				if (result.n > 0)
 				{
 					n = (t_hit *)malloc(sizeof(t_hit));
