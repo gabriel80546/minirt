@@ -18,9 +18,9 @@ void	draw(t_vars vars)
 	double		ttan;
 	double		tcam;
 	t_hit		*temp_temp_hit;
-	// int			first;
+	int			first;
 
-	// first = 0;
+	first = 0;
 	hits = NULL;
 	temp_hit = NULL;
 	temp_list = NULL;
@@ -80,10 +80,40 @@ void	draw(t_vars vars)
 					hits = hits->next;
 				}
 				hits = first_item(temp_hit);
-				if (distance(temp_temp_hit->ponto, vars.light.pos) > 2.5)
-					mlx_pixel_put(vars.mlx, vars.win, x, y, temp_temp_hit->obj.sp.cor);
+
+				result = cruzamento_sp_reta(temp_temp_hit->ponto, vars.light.pos, (((t_hit *)temp_temp_hit)->obj).sp);
+				// result = sanitize_cruz(vars.cam.pos, tela, result);
+
+				if (result.n >= 1 && result.n <= 2)
+				{
+					if (first == 0)
+					{
+						first = 1;
+						printf("result.n = %d\n", result.n);
+						printf("distance(result.r.orig, vars.light.pos) = %lf\n", distance(result.r.orig, vars.light.pos));
+						printf("distance(result.r.dest, vars.light.pos) = %lf\n", distance(result.r.dest, vars.light.pos));
+						printf("distance(temp_temp_hit->ponto, vars.light.pos) = %lf\n", distance(temp_temp_hit->ponto, vars.light.pos));
+					}
+					if (distance(result.r.orig, vars.light.pos) + 0.0078125 < distance(temp_temp_hit->ponto, vars.light.pos)
+					|| distance(result.r.dest, vars.light.pos) + 0.0078125 < distance(temp_temp_hit->ponto, vars.light.pos))
+						mlx_pixel_put(vars.mlx, vars.win, x, y, temp_temp_hit->obj.sp.cor);
+					else
+						mlx_pixel_put(vars.mlx, vars.win, x, y, (vars.light.cor | temp_temp_hit->obj.sp.cor));
+						// mlx_pixel_put(vars.mlx, vars.win, x, y, vars.light.cor);
+				}
 				else
-					mlx_pixel_put(vars.mlx, vars.win, x, y, (vars.light.cor | temp_temp_hit->obj.sp.cor));
+					mlx_pixel_put(vars.mlx, vars.win, x, y, temp_temp_hit->obj.sp.cor);
+
+
+				// if (distance(temp_temp_hit->ponto, vars.light.pos) > 4.0)
+				// 	mlx_pixel_put(vars.mlx, vars.win, x, y, temp_temp_hit->obj.sp.cor);
+				// else
+				// 	mlx_pixel_put(vars.mlx, vars.win, x, y, (vars.light.cor | temp_temp_hit->obj.sp.cor));
+
+
+
+
+
 				clear_list_all(hits);
 				hits = NULL;
 			}
