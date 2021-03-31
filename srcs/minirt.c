@@ -25,8 +25,8 @@ t_vars config_scene_easy(void)
 	// top_down_left = -320 x, y =  200, z = 0
 	// top_down_right = 320 x, y = -200, z = 0
 
-	vars.largura = 800;
-	vars.altura = 600;
+	vars.largura = 480;
+	vars.altura = 320;
 
 	obj = (t_objeto *)malloc(sizeof(t_objeto));
 	obj->tipo = SPHERE;
@@ -56,6 +56,7 @@ t_vars config_scene_easy(void)
 	// // vars.objs = list_init(obj);
 	// list_add(vars.objs, obj);
 
+	vars.light.bright = 1.0;
 	vars.light.pos.x =  2.0;
   	vars.light.pos.y =  2.0;
    	vars.light.pos.z =  4.0;
