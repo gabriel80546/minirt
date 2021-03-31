@@ -17,6 +17,7 @@ void	draw(t_vars vars)
 	int			cor;
 	double		ttan;
 	double		tcam;
+	t_hit		*temp_temp_hit;
 	// int			first;
 
 	// first = 0;
@@ -65,19 +66,24 @@ void	draw(t_vars vars)
 			{
 				vars.objs = temp_list;
 				smaller = 1000000.0;
+				temp_temp_hit = NULL;
 				while (hits != NULL)
 				{
 					dist = distance(((t_hit *)hits->data)->ponto, vars.cam.pos);
 					if (dist < smaller)
 					{
 						smaller = dist;
-						cor = ((t_objeto)((t_hit *) hits->data)->obj).sp.cor;
+						temp_temp_hit = ((t_hit *)hits->data);
+						// cor = ((t_objeto)((t_hit *)hits->data)->obj).sp.cor;
 					}
 					temp_hit = hits;
 					hits = hits->next;
 				}
 				hits = first_item(temp_hit);
-				mlx_pixel_put(vars.mlx, vars.win, x, y, cor);
+				if (distance(temp_temp_hit->ponto, vars.light.pos) > 2.5)
+					mlx_pixel_put(vars.mlx, vars.win, x, y, temp_temp_hit->obj.sp.cor);
+				else
+					mlx_pixel_put(vars.mlx, vars.win, x, y, (vars.light.cor | temp_temp_hit->obj.sp.cor));
 				clear_list_all(hits);
 				hits = NULL;
 			}
