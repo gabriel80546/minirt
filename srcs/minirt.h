@@ -66,6 +66,12 @@ typedef struct	s_cam
 	double		fov;
 }				t_cam;
 
+typedef struct	s_light
+{
+	t_vec		pos;
+	int			cor;
+}				t_light;
+
 typedef struct  s_vars {
     void        *mlx;
     void        *win;
@@ -73,6 +79,7 @@ typedef struct  s_vars {
 	int			altura;
 	t_cam		cam;
 	t_list		*objs;
+	t_light		light;
 }               t_vars;
 
 t_reta		empty_reta(void);
