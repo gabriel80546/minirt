@@ -1,9 +1,7 @@
 {
 	"files.associations": {
-		"typeinfo": "c",
-		"math.h": "c",
-		"mlx.h": "c",
 		"minirt.h": "c",
-		"list.h": "c"
+		"mlx.h": "c",
+		"type_traits": "c"
 	}
 }

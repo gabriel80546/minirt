@@ -16,9 +16,9 @@ void	draw(t_vars vars)
 	double		smaller;
 	int			cor;
 	double		ttan;
-	int			first;
+	// int			first;
 
-	first = 0;
+	// first = 0;
 	hits = NULL;
 	temp_hit = NULL;
 	temp_list = NULL;
@@ -44,20 +44,10 @@ void	draw(t_vars vars)
 			while (vars.objs != NULL)
 			{
 				result = cruzamento_sp_reta(vars.cam.pos, tela, *((t_esfera *)vars.objs->data));
+				result = sanitize_cruz(vars.cam.pos, tela, result);
 				if (result.n >= 1 && result.n <= 2)
 				{
 					resolvido = result;
-					if (first == 0)
-					{
-						first = 1;
-						printf("result.r.orig.x = %02lf\n", result.r.orig.x);
-						printf("result.r.orig.y = %02lf\n", result.r.orig.y);
-						printf("result.r.orig.z = %02lf\n", result.r.orig.z);
-						printf("result.r.dest.x = %02lf\n", result.r.dest.x);
-						printf("result.r.dest.y = %02lf\n", result.r.dest.y);
-						printf("result.r.dest.z = %02lf\n", result.r.dest.z);
-						printf("\n");
-					}
 				}
 				if (result.n > 0)
 				{

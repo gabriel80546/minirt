@@ -78,6 +78,7 @@ typedef struct  s_vars {
 t_reta		empty_reta(void);
 t_coeff		get_sp_coeff(t_vec A, t_vec B, t_esfera sp/* , int print_flag */);
 t_reta_or_n	cruzamento_sp_reta(t_vec A, t_vec B, t_esfera sp);
+t_reta_or_n	sanitize_cruz(t_vec cam, t_vec tela, t_reta_or_n result);
 double		cruzamento_sp_delta(t_vec A, t_vec B, t_esfera sp);
 int			cruza_sp(t_vec A, t_vec B, t_esfera sp);
 void		draw(t_vars vars);
