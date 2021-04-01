@@ -6,21 +6,22 @@ void	draw(t_vars vars)
 	int			x;
 	int			y;
 	t_vec		tela;
-	t_reta_or_n	result;
+	t_list		*result;
+	t_list		*temp_result;
 	t_list		*temp_list;
-	t_reta_or_n	resolvido;
+	t_list		*resolvido;
 	t_list		*hits;
 	t_list		*temp_hit;
 	t_hit		*n;
 	double		dist;
 	double		smaller;
-	// int			cor;
 	double		ttan;
 	double		tcam;
 	t_hit		*temp_temp_hit;
-	int			first;
+	// int			first;
+	int			flag;
 
-	first = 0;
+	// first = 0;
 	hits = NULL;
 	temp_hit = NULL;
 	temp_list = NULL;
@@ -35,34 +36,36 @@ void	draw(t_vars vars)
 			tela.x = vars.cam.pos.x + ((((2*ttan)/vars.largura) * x) - ttan);
 			tela.y = vars.cam.pos.y - ((((2*ttan)/vars.largura) * (y + tcam)) - ttan);
 			tela.z = vars.cam.pos.z + 1.0;
-			resolvido.n = -1;
+			resolvido = NULL;
 			while (vars.objs != NULL)
 			{
 				result = cruzamento_sp_reta(vars.cam.pos, tela, *((t_esfera *)vars.objs->data));
-				result = sanitize_cruz(vars.cam.pos, tela, result);
-				if (result.n >= 1 && result.n <= 2)
+				// result = sanitize_cruz(vars.cam.pos, tela, result);
+
+				if (result != NULL)
 					resolvido = result;
-				if (result.n > 0)
+				if (result != NULL)
+					result = first_item(result);
+				temp_result = NULL;
+				while(result != NULL)
 				{
 					n = (t_hit *)malloc(sizeof(t_hit));
+					n->ponto = *((t_vec *)result->data);
 					n->obj = *((t_objeto *)vars.objs->data);
-					n->ponto = result.r.orig;
 					if (hits == NULL)
 						hits = list_init(n);
 					else
 						list_add(hits, n);
-					if (result.n == 2)
-					{
-						n = (t_hit *)malloc(sizeof(t_hit));
-						n->obj = *((t_objeto *)vars.objs->data);
-						n->ponto = result.r.dest;
-						list_add(hits, n);
-					}
+					temp_result = result;
+					result = result->next;
 				}
+				result = temp_result;
+				if (result != NULL)
+					clear_list_all(result);
 				temp_list = vars.objs;
 				vars.objs = vars.objs->next;
 			}
-			if (resolvido.n >= 1 && resolvido.n <= 2)
+			if (resolvido != NULL)
 			{
 				vars.objs = temp_list;
 				smaller = 1000000.0;
@@ -74,7 +77,6 @@ void	draw(t_vars vars)
 					{
 						smaller = dist;
 						temp_temp_hit = ((t_hit *)hits->data);
-						// cor = ((t_objeto)((t_hit *)hits->data)->obj).sp.cor;
 					}
 					temp_hit = hits;
 					hits = hits->next;
@@ -83,37 +85,22 @@ void	draw(t_vars vars)
 
 				result = cruzamento_sp_reta(temp_temp_hit->ponto, vars.light.pos, (((t_hit *)temp_temp_hit)->obj).sp);
 				// result = sanitize_cruz(vars.cam.pos, tela, result);
-
-				if (result.n >= 1 && result.n <= 2)
+				flag = 0;
+				while (result != NULL)
 				{
-					if (first == 0)
-					{
-						first = 1;
-						printf("result.n = %d\n", result.n);
-						printf("distance(result.r.orig, vars.light.pos) = %lf\n", distance(result.r.orig, vars.light.pos));
-						printf("distance(result.r.dest, vars.light.pos) = %lf\n", distance(result.r.dest, vars.light.pos));
-						printf("distance(temp_temp_hit->ponto, vars.light.pos) = %lf\n", distance(temp_temp_hit->ponto, vars.light.pos));
-					}
-					if (distance(result.r.orig, vars.light.pos) + 0.0078125 < distance(temp_temp_hit->ponto, vars.light.pos)
-					|| distance(result.r.dest, vars.light.pos) + 0.0078125 < distance(temp_temp_hit->ponto, vars.light.pos))
-						mlx_pixel_put(vars.mlx, vars.win, x, y, temp_temp_hit->obj.sp.cor);
-					else
-						mlx_pixel_put(vars.mlx, vars.win, x, y, (vars.light.cor | temp_temp_hit->obj.sp.cor));
-						// mlx_pixel_put(vars.mlx, vars.win, x, y, vars.light.cor);
+					if (distance(vars.light.pos, *(t_vec *)result->data) + 0.0078125 <
+						distance(vars.light.pos, temp_temp_hit->ponto))
+						flag = 1;
+					temp_result = result;
+					result = result->next;
 				}
-				else
+				result = temp_result;
+				if (result != NULL)
+					clear_list_all(result);
+				if (flag == 1)
 					mlx_pixel_put(vars.mlx, vars.win, x, y, temp_temp_hit->obj.sp.cor);
-
-
-				// if (distance(temp_temp_hit->ponto, vars.light.pos) > 4.0)
-				// 	mlx_pixel_put(vars.mlx, vars.win, x, y, temp_temp_hit->obj.sp.cor);
-				// else
-				// 	mlx_pixel_put(vars.mlx, vars.win, x, y, (vars.light.cor | temp_temp_hit->obj.sp.cor));
-
-
-
-
-
+				else
+					mlx_pixel_put(vars.mlx, vars.win, x, y, (vars.light.cor | temp_temp_hit->obj.sp.cor));
 				clear_list_all(hits);
 				hits = NULL;
 			}
@@ -172,7 +159,9 @@ void	draw_yellow_sp(t_vars vars)
 }
 */
 
-void	draw_indiano(/* t_vars vars */)
+/*
+void	draw_indiano(// t_vars vars 
+)
 {
 	t_vec A;
 	t_vec B;
@@ -193,9 +182,9 @@ void	draw_indiano(/* t_vars vars */)
 	sp.raio  = 3.0;
 
 	printf("delta = %lf\n", cruzamento_sp_delta(A, B, sp));
-	result = cruzamento_sp_reta(A, B, sp);
+	// result = cruzamento_sp_reta(A, B, sp);
 
-	printf("cruzou em %d pontos\n", result.n);
+	// printf("cruzou em %d pontos\n", result.n);
 	if (result.n == 2)
 	{
 		printf("teste.orig.x = %lf\n", result.r.orig.x);
@@ -217,3 +206,4 @@ void	draw_indiano(/* t_vars vars */)
 	else
 		printf("nao cruzou em nenhum ponto\n");
 }
+*/

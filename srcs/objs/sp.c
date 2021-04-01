@@ -24,29 +24,64 @@ int		cruza_sp(t_vec A, t_vec B, t_esfera sp)
 		return (0);
 }
 
-t_reta_or_n	cruzamento_sp_reta(t_vec A, t_vec B, t_esfera sp)
+/*
+	obj = (t_objeto *)malloc(sizeof(t_objeto));
+	obj->tipo = SPHERE;
+	obj->sp.pos.x =  -1.0;
+	obj->sp.pos.y =   0.5;
+	obj->sp.pos.z =   5.5;
+	obj->sp.raio  =   1.75;
+	obj->sp.cor   = 0x800000;
+	vars.objs = list_init(obj);
+
+	obj = (t_objeto *)malloc(sizeof(t_objeto));
+	obj->tipo = SPHERE;
+	obj->sp.pos.x =   1.0;
+	obj->sp.pos.y =   0.0;
+	obj->sp.pos.z =   5.0;
+	obj->sp.raio  =   2.0;
+	obj->sp.cor   = 0x000080;
+	list_add(vars.objs, obj);
+*/
+
+
+t_list	*cruzamento_sp_reta(t_vec A, t_vec B, t_esfera sp)
 {
 	t_coeff coeff;
 	t_solution solution;
 	t_reta_or_n saida;
+	t_list		*ssaida;
+	t_vec		*vec_ssaida;
 
 	saida.r = empty_reta();
 	coeff = get_sp_coeff(A, B, sp);
 	solution = solve_equation(coeff.a, coeff.b, coeff.c);
 	saida.n = solution.n;
+	ssaida = NULL;
 	if (solution.n >= 1 && solution.n <= 2)
 	{
 		saida.r.orig.x = A.x + ((B.x - A.x) * solution.s1);
 		saida.r.orig.y = A.y + ((B.y - A.y) * solution.s1);
 		saida.r.orig.z = A.z + ((B.z - A.z) * solution.s1);
+		vec_ssaida = (t_vec *)malloc(sizeof(t_vec));
+		vec_ssaida->x = saida.r.orig.x;
+		vec_ssaida->y = saida.r.orig.y;
+		vec_ssaida->z = saida.r.orig.z;
+		ssaida = list_init(vec_ssaida);
 	}
 	if (solution.n == 2)
 	{
 		saida.r.dest.x = A.x + ((B.x - A.x) * solution.s2);
 		saida.r.dest.y = A.y + ((B.y - A.y) * solution.s2);
 		saida.r.dest.z = A.z + ((B.z - A.z) * solution.s2);
+		vec_ssaida = (t_vec *)malloc(sizeof(t_vec));
+		vec_ssaida->x = saida.r.dest.x;
+		vec_ssaida->y = saida.r.dest.y;
+		vec_ssaida->z = saida.r.dest.z;
+		// ssaida = list_init(vec_ssaida);
+		list_add(ssaida, vec_ssaida);
 	}
-	return (saida);
+	return (ssaida);
 }
 
 t_coeff	get_sp_coeff(t_vec A, t_vec B, t_esfera sp)
@@ -84,10 +119,10 @@ t_coeff	get_sp_coeff(t_vec A, t_vec B, t_esfera sp)
 	return (saida);
 }
 
-
-t_reta_or_n	sanitize_cruz(t_vec cam, t_vec tela, t_reta_or_n result)
+/*
+t_reta_or_n	sanitize_cruz(t_vec cam, t_vec tela, t_list *result)
 {
-	t_reta_or_n saida;
+	t_list	*saida;
 	// static int	primeiro = 0;
 
 	saida = result;
@@ -171,3 +206,4 @@ t_reta_or_n	sanitize_cruz(t_vec cam, t_vec tela, t_reta_or_n result)
 	}
 	return (saida);
 }
+*/
