@@ -40,7 +40,7 @@ void	draw(t_vars vars)
 			while (vars.objs != NULL)
 			{
 				result = cruzamento_sp_reta(vars.cam.pos, tela, *((t_esfera *)vars.objs->data));
-				// result = sanitize_cruz(vars.cam.pos, tela, result);
+				result = sanitize_cruz(vars.cam.pos, tela, result);
 
 				if (result != NULL)
 					resolvido = result;
@@ -84,11 +84,10 @@ void	draw(t_vars vars)
 				hits = first_item(temp_hit);
 
 				result = cruzamento_sp_reta(temp_temp_hit->ponto, vars.light.pos, (((t_hit *)temp_temp_hit)->obj).sp);
-				// result = sanitize_cruz(vars.cam.pos, tela, result);
 				flag = 0;
 				while (result != NULL)
 				{
-					if (distance(vars.light.pos, *(t_vec *)result->data) + 0.0078125 <
+					if (distance(vars.light.pos, *(t_vec *)result->data) + EPSILON <
 						distance(vars.light.pos, temp_temp_hit->ponto))
 						flag = 1;
 					temp_result = result;

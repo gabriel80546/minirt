@@ -5,7 +5,7 @@ int key_hook(int keycode, t_vars *vars)
 {
 	if (keycode == 65307)
 	{
-		printf("key_hook: 8: fechando... :)\n");
+		printf("minirt.c(key_hook): 8: fechando... :)\n");
 		mlx_destroy_window(vars->mlx, vars->win);
 		mlx_destroy_display(vars->mlx);
 		free(vars->mlx);
@@ -45,6 +45,15 @@ t_vars config_scene_easy(void)
 	obj->sp.raio  =   2.0;
 	obj->sp.cor   = 0x000080;
 	list_add(vars.objs, obj);
+
+	// obj = (t_objeto *)malloc(sizeof(t_objeto));
+	// obj->tipo = SPHERE;
+	// obj->sp.pos.x =   -1.0;
+	// obj->sp.pos.y =   0.0;
+	// obj->sp.pos.z =  -3.0;
+	// obj->sp.raio  =   1.5;
+	// obj->sp.cor   = 0x008000;
+	// list_add(vars.objs, obj);
 
 	obj = (t_objeto *)malloc(sizeof(t_objeto));
 	obj->tipo = SPHERE;

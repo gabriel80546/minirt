@@ -119,91 +119,32 @@ t_coeff	get_sp_coeff(t_vec A, t_vec B, t_esfera sp)
 	return (saida);
 }
 
-/*
-t_reta_or_n	sanitize_cruz(t_vec cam, t_vec tela, t_list *result)
+
+t_list		*sanitize_cruz(t_vec cam, t_vec tela, t_list *result)
 {
 	t_list	*saida;
-	// static int	primeiro = 0;
+	t_list	*temp_saida;
+	int		count;
 
 	saida = result;
-	if (result.n == 1)
+	if (saida != NULL)
+		saida = first_item(saida);
+	temp_saida = NULL;
+	count = 0;
+	while (saida != NULL)
 	{
-		if (distance(result.r.orig, tela) > distance(result.r.orig, cam))
-		{
-			saida.n -= 1;
-			saida.r.orig.x = 0;
-			saida.r.orig.y = 0;
-			saida.r.orig.z = 0;
-			saida.r.orig.w = 0;
-		}
-		else if (distance(result.r.orig, cam) < distance(cam, tela))
-		{
-			saida.n -= 1;
-			saida.r.orig.x = 0;
-			saida.r.orig.y = 0;
-			saida.r.orig.z = 0;
-			saida.r.orig.w = 0;
-		}
+		if (distance(*(t_vec *)saida->data, tela) > distance(*(t_vec *)saida->data, cam) ||
+			distance(*(t_vec *)saida->data, cam) < distance(cam, tela))
+			count++;
+		temp_saida = saida;
+		saida = saida->next;
 	}
-	else if (result.n == 2)
+	if (temp_saida != NULL)
+		saida = first_item(temp_saida);
+	if (count == 2)
 	{
-		if (distance(result.r.dest, tela) > distance(result.r.dest, cam))
-		{
-			saida.n -= 1;
-			saida.r.dest.x = 0;
-			saida.r.dest.y = 0;
-			saida.r.dest.z = 0;
-			saida.r.dest.w = 0;
-		}
-		else if (distance(result.r.dest, cam) < distance(cam, tela))
-		{
-			saida.n -= 1;
-			saida.r.dest.x = 0;
-			saida.r.dest.y = 0;
-			saida.r.dest.z = 0;
-			saida.r.dest.w = 0;
-		}
-		if (distance(result.r.orig, tela) > distance(result.r.orig, cam))
-		{
-			saida.n -= 1;
-			saida.r.orig.x = 0;
-			saida.r.orig.y = 0;
-			saida.r.orig.z = 0;
-			saida.r.orig.w = 0;
-		}
-		else if (distance(result.r.orig, cam) < distance(cam, tela))
-		{
-			saida.n -= 1;
-			saida.r.orig.x = 0;
-			saida.r.orig.y = 0;
-			saida.r.orig.z = 0;
-			saida.r.orig.w = 0;
-		}
-	}
-	if (saida.n >= 1 && saida.n <= 2)
-	{
-		// if (primeiro == 0)
-		// {
-		// 	primeiro = 1;
-		if (((saida.r.orig.z < tela.z) && (saida.r.orig.z != 0.0)) || ((saida.r.dest.z < tela.z) && saida.r.dest.z != 0.0))
-		{
-			printf("saida.n = %d\n", saida.n);
-			printf("distance(saida.r.orig, cam)  = %lf\n",  distance(saida.r.orig, cam));
-			printf("distance(saida.r.orig, tela) = %lf\n",  distance(saida.r.orig, tela));
-			printf("distance(saida.r.dest, cam)  = %lf\n",  distance(saida.r.dest, cam));
-			printf("distance(saida.r.dest, tela) = %lf\n",  distance(saida.r.dest, tela));
-			printf("distance(cam, tela) = %lf\n",           distance(cam, tela));
-
-			printf("saida.r.orig.x = %02lf\n", saida.r.orig.x);
-			printf("saida.r.orig.y = %02lf\n", saida.r.orig.y);
-			printf("saida.r.orig.z = %02lf\n", saida.r.orig.z);
-			printf("saida.r.dest.x = %02lf\n", saida.r.dest.x);
-			printf("saida.r.dest.y = %02lf\n", saida.r.dest.y);
-			printf("saida.r.dest.z = %02lf\n", saida.r.dest.z);
-			printf("\n");
-		}
-		// }
+		clear_list_all(saida);
+		saida = NULL;
 	}
 	return (saida);
 }
-*/

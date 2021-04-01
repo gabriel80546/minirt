@@ -13,6 +13,8 @@
 # define SPHERE 1
 # define PLANE 2
 
+# define EPSILON 0.0000305176
+
 # define PI 3.1415926535897932384626433832795028841971
 
 typedef struct	s_posicao {
@@ -87,6 +89,7 @@ t_reta		empty_reta(void);
 t_coeff		get_sp_coeff(t_vec A, t_vec B, t_esfera sp/* , int print_flag */);
 t_list		*cruzamento_sp_reta(t_vec A, t_vec B, t_esfera sp);
 // t_list		*sanitize_cruz(t_vec cam, t_vec tela, t_list *result);
+t_list		*sanitize_cruz(t_vec cam, t_vec tela, t_list *result);
 double		cruzamento_sp_delta(t_vec A, t_vec B, t_esfera sp);
 int			cruza_sp(t_vec A, t_vec B, t_esfera sp);
 void		draw(t_vars vars);

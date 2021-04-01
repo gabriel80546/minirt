@@ -15,3 +15,14 @@ t_reta		empty_reta(void)
 	saida.dest.w = 0.0;
 	return (saida);
 }
+t_vec		empty_vec(void)
+{
+	t_vec saida;
+
+	saida.x = 0.0;
+	saida.y = 0.0;
+	saida.z = 0.0;
+	saida.w = 0.0;
+	return (saida);
+}
+
