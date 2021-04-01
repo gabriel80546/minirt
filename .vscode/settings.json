@@ -2,6 +2,8 @@
 	"files.associations": {
 		"minirt.h": "c",
 		"mlx.h": "c",
-		"type_traits": "c"
+		"type_traits": "c",
+		"cstdlib": "cpp",
+		"new": "cpp"
 	}
 }

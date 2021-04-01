@@ -17,5 +17,7 @@ void	clear_list(t_list *lista);
 void	clear_list_all(t_list *lista);
 t_list	*first_item(t_list *lista);
 t_list	*last_item(t_list *lista);
+t_list	*list_delone(t_list *lista);
+t_list	*list_delone_free(t_list *lista);
 
 #endif

@@ -153,10 +153,10 @@ t_reta_or_n	sanitize_cruz(t_vec cam, t_vec tela, t_reta_or_n result)
 		if (((saida.r.orig.z < tela.z) && (saida.r.orig.z != 0.0)) || ((saida.r.dest.z < tela.z) && saida.r.dest.z != 0.0))
 		{
 			printf("saida.n = %d\n", saida.n);
-			printf("distance(saida.r.orig, cam) = %lf\n",  distance(saida.r.orig, cam));
-			printf("distance(saida.r.orig, tela) = %lf\n", distance(saida.r.orig, tela));
-			printf("distance(saida.r.dest, cam) = %lf\n",  distance(saida.r.dest, cam));
-			printf("distance(saida.r.dest, tela) = %lf\n", distance(saida.r.dest, tela));
+			printf("distance(saida.r.orig, cam)  = %lf\n",  distance(saida.r.orig, cam));
+			printf("distance(saida.r.orig, tela) = %lf\n",  distance(saida.r.orig, tela));
+			printf("distance(saida.r.dest, cam)  = %lf\n",  distance(saida.r.dest, cam));
+			printf("distance(saida.r.dest, tela) = %lf\n",  distance(saida.r.dest, tela));
 			printf("distance(cam, tela) = %lf\n",           distance(cam, tela));
 
 			printf("saida.r.orig.x = %02lf\n", saida.r.orig.x);
