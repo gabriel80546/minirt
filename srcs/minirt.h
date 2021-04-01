@@ -86,12 +86,16 @@ typedef struct  s_vars {
 }               t_vars;
 
 t_reta		empty_reta(void);
+t_vec		empty_vec(void);
 t_coeff		get_sp_coeff(t_vec A, t_vec B, t_esfera sp/* , int print_flag */);
 t_list		*cruzamento_sp_reta(t_vec A, t_vec B, t_esfera sp);
 // t_list		*sanitize_cruz(t_vec cam, t_vec tela, t_list *result);
 t_list		*sanitize_cruz(t_vec cam, t_vec tela, t_list *result);
 double		cruzamento_sp_delta(t_vec A, t_vec B, t_esfera sp);
 int			cruza_sp(t_vec A, t_vec B, t_esfera sp);
+
+t_hit		closest_hit(t_list *hits, t_vec pos);
+
 void		draw(t_vars vars);
 void		draw_yellow_sp(t_vars vars);
 void		draw_indiano(/* t_vars vars */);

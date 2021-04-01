@@ -11,19 +11,15 @@ void	draw(t_vars vars)
 	t_list		*temp_list;
 	t_list		*resolvido;
 	t_list		*hits;
-	t_list		*temp_hit;
 	t_hit		*n;
-	double		dist;
-	double		smaller;
 	double		ttan;
 	double		tcam;
-	t_hit		*temp_temp_hit;
-	// int			first;
+	t_hit		temp_temp_hit;
 	int			flag;
 
 	// first = 0;
 	hits = NULL;
-	temp_hit = NULL;
+	// temp_hit = NULL;
 	temp_list = NULL;
 	ttan = (tan((((vars.cam.fov)/2.0)*PI)/180.0));
 	y = 0;
@@ -67,28 +63,13 @@ void	draw(t_vars vars)
 			}
 			if (resolvido != NULL)
 			{
-				vars.objs = temp_list;
-				smaller = 1000000.0;
-				temp_temp_hit = NULL;
-				while (hits != NULL)
-				{
-					dist = distance(((t_hit *)hits->data)->ponto, vars.cam.pos);
-					if (dist < smaller)
-					{
-						smaller = dist;
-						temp_temp_hit = ((t_hit *)hits->data);
-					}
-					temp_hit = hits;
-					hits = hits->next;
-				}
-				hits = first_item(temp_hit);
-
-				result = cruzamento_sp_reta(temp_temp_hit->ponto, vars.light.pos, (((t_hit *)temp_temp_hit)->obj).sp);
+				temp_temp_hit = closest_hit(hits, vars.cam.pos);
+				result = cruzamento_sp_reta(temp_temp_hit.ponto, vars.light.pos, temp_temp_hit.obj.sp);
 				flag = 0;
 				while (result != NULL)
 				{
 					if (distance(vars.light.pos, *(t_vec *)result->data) + EPSILON <
-						distance(vars.light.pos, temp_temp_hit->ponto))
+						distance(vars.light.pos, temp_temp_hit.ponto))
 						flag = 1;
 					temp_result = result;
 					result = result->next;
@@ -97,9 +78,9 @@ void	draw(t_vars vars)
 				if (result != NULL)
 					clear_list_all(result);
 				if (flag == 1)
-					mlx_pixel_put(vars.mlx, vars.win, x, y, temp_temp_hit->obj.sp.cor);
+					mlx_pixel_put(vars.mlx, vars.win, x, y, temp_temp_hit.obj.sp.cor);
 				else
-					mlx_pixel_put(vars.mlx, vars.win, x, y, (vars.light.cor | temp_temp_hit->obj.sp.cor));
+					mlx_pixel_put(vars.mlx, vars.win, x, y, (vars.light.cor | temp_temp_hit.obj.sp.cor));
 				clear_list_all(hits);
 				hits = NULL;
 			}

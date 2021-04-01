@@ -15,6 +15,7 @@ t_reta		empty_reta(void)
 	saida.dest.w = 0.0;
 	return (saida);
 }
+
 t_vec		empty_vec(void)
 {
 	t_vec saida;
