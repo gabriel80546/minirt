@@ -61,6 +61,7 @@ void	draw(t_vars vars)
 				temp_list = vars.objs;
 				vars.objs = vars.objs->next;
 			}
+
 			if (resolvido != NULL)
 			{
 				temp_temp_hit = closest_hit(hits, vars.cam.pos);
