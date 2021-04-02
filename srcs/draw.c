@@ -29,7 +29,7 @@ void	draw(t_vars vars)
 			{
 				hit = closest_hit(hits, vars.cam.pos);
 				result = cruzamento_sp_reta(hit.ponto, vars.light.pos, hit.obj.sp);
-				flag = can_light_see_this_hit(hit, vars, result);
+				flag = can_light_see_this_hit_one_obj(hit, vars, result);
 				if (result != NULL)
 					clear_list_all(result);
 				if (flag == 0)
