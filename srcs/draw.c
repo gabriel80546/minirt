@@ -8,19 +8,12 @@ void	draw(t_vars vars)
 	t_vec		tela;
 	t_list		*result;
 	t_list		*temp_result;
-	t_list		*temp_list;
-	t_list		*resolvido;
 	t_list		*hits;
-	t_hit		*n;
 	double		ttan;
 	double		tcam;
 	t_hit		temp_temp_hit;
 	int			flag;
 
-	// first = 0;
-	hits = NULL;
-	// temp_hit = NULL;
-	temp_list = NULL;
 	ttan = (tan((((vars.cam.fov)/2.0)*PI)/180.0));
 	y = 0;
 	while (y < vars.altura)
@@ -32,37 +25,8 @@ void	draw(t_vars vars)
 			tela.x = vars.cam.pos.x + ((((2*ttan)/vars.largura) * x) - ttan);
 			tela.y = vars.cam.pos.y - ((((2*ttan)/vars.largura) * (y + tcam)) - ttan);
 			tela.z = vars.cam.pos.z + 1.0;
-			resolvido = NULL;
-			while (vars.objs != NULL)
-			{
-				result = cruzamento_sp_reta(vars.cam.pos, tela, *((t_esfera *)vars.objs->data));
-				result = sanitize_cruz(vars.cam.pos, tela, result);
-
-				if (result != NULL)
-					resolvido = result;
-				if (result != NULL)
-					result = first_item(result);
-				temp_result = NULL;
-				while(result != NULL)
-				{
-					n = (t_hit *)malloc(sizeof(t_hit));
-					n->ponto = *((t_vec *)result->data);
-					n->obj = *((t_objeto *)vars.objs->data);
-					if (hits == NULL)
-						hits = list_init(n);
-					else
-						list_add(hits, n);
-					temp_result = result;
-					result = result->next;
-				}
-				result = temp_result;
-				if (result != NULL)
-					clear_list_all(result);
-				temp_list = vars.objs;
-				vars.objs = vars.objs->next;
-			}
-
-			if (resolvido != NULL)
+			hits = get_all_hits(vars, tela);
+			if (hits != NULL)
 			{
 				temp_temp_hit = closest_hit(hits, vars.cam.pos);
 				result = cruzamento_sp_reta(temp_temp_hit.ponto, vars.light.pos, temp_temp_hit.obj.sp);
@@ -85,7 +49,6 @@ void	draw(t_vars vars)
 				clear_list_all(hits);
 				hits = NULL;
 			}
-			vars.objs = first_item(temp_list);
 			x++;
 		}
 		y++;

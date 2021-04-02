@@ -25,8 +25,8 @@ t_vars config_scene_easy(void)
 	// top_down_left = -320 x, y =  200, z = 0
 	// top_down_right = 320 x, y = -200, z = 0
 
-	vars.largura = 640;
-	vars.altura = 480;
+	vars.largura = 480;
+	vars.altura = 320;
 
 	obj = (t_objeto *)malloc(sizeof(t_objeto));
 	obj->tipo = SPHERE;

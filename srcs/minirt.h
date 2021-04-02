@@ -95,6 +95,7 @@ double		cruzamento_sp_delta(t_vec A, t_vec B, t_esfera sp);
 int			cruza_sp(t_vec A, t_vec B, t_esfera sp);
 
 t_hit		closest_hit(t_list *hits, t_vec pos);
+t_list		*get_all_hits(t_vars vars, t_vec tela);
 
 void		draw(t_vars vars);
 void		draw_yellow_sp(t_vars vars);
