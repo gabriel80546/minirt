@@ -55,21 +55,21 @@ t_vars config_scene_easy(void)
 	// obj->sp.cor   = 0x008000;
 	// list_add(vars.objs, obj);
 
-	obj = (t_objeto *)malloc(sizeof(t_objeto));
-	obj->tipo = SPHERE;
-	obj->sp.pos.x =   3.0;
-	obj->sp.pos.y =   3.0;
-	obj->sp.pos.z =   5.0;
-	obj->sp.raio  =   0.25;
-	obj->sp.cor   = 0xFFFFFF;
-	// vars.objs = list_init(obj);
-	list_add(vars.objs, obj);
-
 	vars.light.bright = 1.0;
-	vars.light.pos.x =  3.0;
+	vars.light.pos.x = -3.0;
   	vars.light.pos.y =  3.0;
    	vars.light.pos.z =  5.0;
   	vars.light.cor = 0x3F3F3F;
+
+	// obj = (t_objeto *)malloc(sizeof(t_objeto));
+	// obj->tipo = SPHERE;
+	// obj->sp.pos.x = vars.light.pos.x;
+	// obj->sp.pos.y = vars.light.pos.y;
+	// obj->sp.pos.z = vars.light.pos.z;
+	// obj->sp.raio  =   0.25;
+	// obj->sp.cor   = 0xFFFFFF;
+	// // vars.objs = list_init(obj);
+	// list_add(vars.objs, obj);
 
 	vars.cam.pos.x =  0.0;
 	vars.cam.pos.y =  0.0;

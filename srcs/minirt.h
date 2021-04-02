@@ -14,6 +14,7 @@
 # define PLANE 2
 
 # define EPSILON 0.0000305176
+# define EPSILON_ZERO 0.00000000305176
 
 # define PI 3.1415926535897932384626433832795028841971
 
@@ -98,7 +99,7 @@ t_hit		closest_hit(t_list *hits, t_vec pos);
 t_list		*get_all_hits(t_vars vars, t_vec tela);
 
 int			can_light_see_this_hit_one_obj(t_hit temp_temp_hit, t_vars vars, t_list *result);
-int			can_light_see_this_hit(t_hit temp_temp_hit, t_vars vars, t_list *result);
+int			can_light_see_this_hit(/*t_hit temp_temp_hit, t_vars vars*/);
 
 void		draw(t_vars vars);
 void		draw_yellow_sp(t_vars vars);
