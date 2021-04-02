@@ -6,7 +6,7 @@ void	draw(t_vars vars)
 	int			x;
 	int			y;
 	t_vec		tela;
-	t_list		*result;
+	// t_list		*result;
 	t_list		*hits;
 	double		ttan;
 	double		tcam;

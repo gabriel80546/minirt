@@ -46,14 +46,14 @@ t_vars config_scene_easy(void)
 	obj->sp.cor   = 0x000080;
 	list_add(vars.objs, obj);
 
-	// obj = (t_objeto *)malloc(sizeof(t_objeto));
-	// obj->tipo = SPHERE;
-	// obj->sp.pos.x =   -1.0;
-	// obj->sp.pos.y =   0.0;
-	// obj->sp.pos.z =  -3.0;
-	// obj->sp.raio  =   1.5;
-	// obj->sp.cor   = 0x008000;
-	// list_add(vars.objs, obj);
+	obj = (t_objeto *)malloc(sizeof(t_objeto));
+	obj->tipo = SPHERE;
+	obj->sp.pos.x =  -2.0;
+	obj->sp.pos.y =   2.35;
+	obj->sp.pos.z =   4.65;
+	obj->sp.raio  =   0.125;
+	obj->sp.cor   = 0x008000;
+	list_add(vars.objs, obj);
 
 	vars.light.bright = 1.0;
 	vars.light.pos.x = -3.0;
