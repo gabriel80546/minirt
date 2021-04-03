@@ -12,6 +12,7 @@ void	draw(t_vars vars)
 	double		tcam;
 	t_hit		hit;
 	int			flag;
+	int			temp;
 
 	ttan = (tan((((vars.cam.fov)/2.0)*PI)/180.0));
 	y = 0;
@@ -36,7 +37,20 @@ void	draw(t_vars vars)
 				if (flag == 0)
 					mlx_pixel_put(vars.mlx, vars.win, x, y, hit.obj.sp.cor);
 				else
-					mlx_pixel_put(vars.mlx, vars.win, x, y, (vars.light.cor | hit.obj.sp.cor));
+				{
+					// printf("cos(θ) = %lf\n", cosine_law(vars.cam.pos, hit.ponto, hit.obj.sp.pos));
+					temp = 0;
+					// printf("θ in degrees = %lf\n", ((acos(cosine_law(vars.light.pos, hit.ponto, hit.obj.sp.pos)) * (180.0/PI)) / 90.0));
+					temp = (int)(255 * ((acos(cosine_law(vars.light.pos, hit.ponto, hit.obj.sp.pos)) * (180.0/PI) - 90.0) / 90.0) );
+					// temp = acos(cosine_law(vars.light.pos, hit.ponto, hit.obj.sp.pos);
+					// printf("angulo = %d\n", (int)(255 * (acos(cosine_law(vars.light.pos, hit.ponto, hit.obj.sp.pos)) * (180.0/PI) - 90.0) / 90.0));
+					// printf("θ in degrees = %lf\n", 255 * (-90.0 + acos(cosine_law(vars.light.pos, hit.ponto, hit.obj.sp.pos)) * (180.0/PI)) / 90.0);
+					// printf("temp = %d\n", temp);
+					temp = (temp << 16 | temp << 8 | temp);
+					mlx_pixel_put(vars.mlx, vars.win, x, y, temp);
+					// mlx_pixel_put(vars.mlx, vars.win, x, y, (vars.light.cor | hit.obj.sp.cor));
+					// mlx_pixel_put(vars.mlx, vars.win, x, y, (vars.light.cor | (hit.obj.sp.cor * (-90.0 + acos(cosine_law(vars.cam.pos, hit.ponto, hit.obj.sp.pos)) * (180.0/PI)) / 90.0)));
+				}
 				clear_list_all(hits);
 				hits = NULL;
 			}
