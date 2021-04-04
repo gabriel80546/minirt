@@ -13,6 +13,13 @@ void	draw(t_vars vars)
 	t_hit		hit;
 	int			flag;
 	int			temp;
+	int			temp1;
+	int			temp2;
+	int			temp3;
+	double		temp6;
+	double		temp7;
+	double		temp8;
+	double		temp9;
 
 	ttan = (tan((((vars.cam.fov)/2.0)*PI)/180.0));
 	y = 0;
@@ -35,21 +42,49 @@ void	draw(t_vars vars)
 				// if (result != NULL)
 				// 	clear_list_all(result);
 				if (flag == 0)
-					mlx_pixel_put(vars.mlx, vars.win, x, y, hit.obj.sp.cor);
+				{
+					temp = 0;
+					temp1 = hit.obj.sp.cor & 0x0000FF;
+					temp2 = hit.obj.sp.cor & 0x00FF00;
+					temp3 = hit.obj.sp.cor & 0xFF0000;
+					temp6 = temp1;
+					temp7 = temp2 >> 8;
+					temp8 = temp3 >> 16;
+					temp6 = temp6 / 255;
+					temp7 = temp7 / 255;
+					temp8 = temp8 / 255;
+					temp6 = temp6 * 0.1;
+					temp7 = temp7 * 0.1;
+					temp8 = temp8 * 0.1;
+					temp6 = temp6 * 255;
+					temp7 = temp7 * 255;
+					temp8 = temp8 * 255;
+					temp = ((int)temp8 << 16 | (int)temp7 << 8 | (int)temp6);
+					mlx_pixel_put(vars.mlx, vars.win, x, y, temp);
+				}
 				else
 				{
-					// printf("cos(θ) = %lf\n", cosine_law(vars.cam.pos, hit.ponto, hit.obj.sp.pos));
 					temp = 0;
-					// printf("θ in degrees = %lf\n", ((acos(cosine_law(vars.light.pos, hit.ponto, hit.obj.sp.pos)) * (180.0/PI)) / 90.0));
-					temp = (int)(255 * ((acos(cosine_law(vars.light.pos, hit.ponto, hit.obj.sp.pos)) * (180.0/PI) - 90.0) / 90.0) );
-					// temp = acos(cosine_law(vars.light.pos, hit.ponto, hit.obj.sp.pos);
-					// printf("angulo = %d\n", (int)(255 * (acos(cosine_law(vars.light.pos, hit.ponto, hit.obj.sp.pos)) * (180.0/PI) - 90.0) / 90.0));
-					// printf("θ in degrees = %lf\n", 255 * (-90.0 + acos(cosine_law(vars.light.pos, hit.ponto, hit.obj.sp.pos)) * (180.0/PI)) / 90.0);
-					// printf("temp = %d\n", temp);
-					temp = (temp << 16 | temp << 8 | temp);
+					temp9 = (1 * ((acos(cosine_law(vars.light.pos, hit.ponto, hit.obj.sp.pos)) * (180.0/PI) - 90.0) / 90.0) );
+					if (temp9 < 0.1)
+						temp9 = 0.1;
+					temp1 = hit.obj.sp.cor & 0x0000FF;
+					temp2 = hit.obj.sp.cor & 0x00FF00;
+					temp3 = hit.obj.sp.cor & 0xFF0000;
+					temp6 = temp1;
+					temp7 = temp2 >> 8;
+					temp8 = temp3 >> 16;
+					temp6 = temp6 / 255;
+					temp7 = temp7 / 255;
+					temp8 = temp8 / 255;
+					temp6 = temp6 * temp9;
+					temp7 = temp7 * temp9;
+					temp8 = temp8 * temp9;
+					temp6 = temp6 * 255;
+					temp7 = temp7 * 255;
+					temp8 = temp8 * 255;
+					temp = ((int)temp8 << 16 | (int)temp7 << 8 | (int)temp6);
 					mlx_pixel_put(vars.mlx, vars.win, x, y, temp);
-					// mlx_pixel_put(vars.mlx, vars.win, x, y, (vars.light.cor | hit.obj.sp.cor));
-					// mlx_pixel_put(vars.mlx, vars.win, x, y, (vars.light.cor | (hit.obj.sp.cor * (-90.0 + acos(cosine_law(vars.cam.pos, hit.ponto, hit.obj.sp.pos)) * (180.0/PI)) / 90.0)));
 				}
 				clear_list_all(hits);
 				hits = NULL;
