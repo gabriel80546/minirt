@@ -119,6 +119,34 @@ t_coeff	get_sp_coeff(t_vec A, t_vec B, t_esfera sp)
 	return (saida);
 }
 
+t_list		*sanitize_cruz_two(t_vec cam, t_vec tela, t_list *result)
+{
+	t_list	*saida;
+	t_list	*save_to_delete;
+	t_list	*temp_list;
+
+	saida = result;
+	while (1)
+	{
+		save_to_delete = NULL;
+		temp_list = NULL;
+		while (saida != NULL)
+		{
+			if (save_to_delete == NULL &&
+				(distance(*(t_vec *)saida->data, tela) > distance(*(t_vec *)saida->data, cam) ||
+				distance(*(t_vec *)saida->data, cam) < distance(cam, tela)))
+				save_to_delete = saida;
+			temp_list = saida;
+			saida = saida->next;
+		}
+		if (save_to_delete != NULL)
+			temp_list = list_delone_free(save_to_delete);
+		saida = first_item(temp_list);
+		if (save_to_delete == NULL)
+			break;
+	}
+	return (saida);
+}
 
 t_list		*sanitize_cruz(t_vec cam, t_vec tela, t_list *result)
 {

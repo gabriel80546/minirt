@@ -15,6 +15,7 @@ t_list	*list_delone_free(t_list *lista)
 		return (NULL);
 	if (lista->prev == NULL && lista->next == NULL)
 	{
+		free(lista->data);
 		lista->data = NULL;
 		free(lista);
 		lista = NULL;

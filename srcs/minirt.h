@@ -92,6 +92,7 @@ t_coeff		get_sp_coeff(t_vec A, t_vec B, t_esfera sp/* , int print_flag */);
 t_list		*cruzamento_sp_reta(t_vec A, t_vec B, t_esfera sp);
 // t_list		*sanitize_cruz(t_vec cam, t_vec tela, t_list *result);
 t_list		*sanitize_cruz(t_vec cam, t_vec tela, t_list *result);
+t_list		*sanitize_cruz_two(t_vec cam, t_vec tela, t_list *result);
 double		cruzamento_sp_delta(t_vec A, t_vec B, t_esfera sp);
 int			cruza_sp(t_vec A, t_vec B, t_esfera sp);
 
@@ -100,7 +101,7 @@ t_list		*get_all_hits(t_vars vars, t_vec tela);
 
 int			can_light_see_this_hit_one_obj(t_hit temp_temp_hit, t_vars vars, t_list *result);
 int			can_light_see_this_hit(/*t_hit temp_temp_hit, t_vars vars*/);
-int			compute_color(double temp9, int input);
+int			compute_color(double intensity, int input);
 
 void		draw(t_vars vars);
 void		draw_yellow_sp(t_vars vars);

@@ -65,21 +65,21 @@ int	can_light_see_this_hit(t_hit hit, t_vars vars)
 	return (saida);
 }
 
-int	compute_color(double temp9, int input)
+int	compute_color(double intensity, int input)
 {
 	int			temp;
 	double		temp6;
 	double		temp7;
 	double		temp8;
 
-	if (temp9 < 0.1)
-		temp9 = 0.1;
+	if (intensity < 0.1)
+		intensity = 0.1;
 	temp6 = (input & 0x0000FF) >> 0;
 	temp7 = (input & 0x00FF00) >> 8;
 	temp8 = (input & 0xFF0000) >> 16;
-	temp6 = ((temp6 / 255) * temp9) * 255;
-	temp7 = ((temp7 / 255) * temp9) * 255;
-	temp8 = ((temp8 / 255) * temp9) * 255;
+	temp6 = ((temp6 / 255) * intensity) * 255;
+	temp7 = ((temp7 / 255) * intensity) * 255;
+	temp8 = ((temp8 / 255) * intensity) * 255;
 	temp = ((int)temp8 << 16 | (int)temp7 << 8 | (int)temp6);
 	return (temp);
 }
