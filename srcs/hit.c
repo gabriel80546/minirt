@@ -13,7 +13,7 @@ t_list	*get_all_hits(t_vars vars, t_vec tela)
 	while (vars.objs != NULL)
 	{
 		result = cruzamento_sp_reta(vars.cam.pos, tela, *((t_esfera *)vars.objs->data));
-		// result = sanitize_cruz_two(vars.cam.pos, tela, result);
+		result = sanitize_cruz_two(vars.cam.pos, tela, result);
 		if (result != NULL)
 			result = first_item(result);
 		temp_result = NULL;

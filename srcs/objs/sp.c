@@ -95,21 +95,18 @@ t_coeff	get_sp_coeff(t_vec A, t_vec B, t_esfera sp)
 	saida.c = 0.0;
 
 	x = A.x - sp.pos.x;
-	// y = B.x - A.x - sp.pos.x;
 	y = B.x - A.x;
 	saida.a += (y * y);
 	saida.b += (2 * x * y);
 	saida.c += (x * x);
 
 	x = A.y - sp.pos.y;
-	// y = B.y - A.y - sp.pos.y;
 	y = B.y - A.y;
 	saida.a += (y * y);
 	saida.b += (2 * x * y);
 	saida.c += (x * x);
 
 	x = A.z - sp.pos.z;
-	// y = B.z - A.z - sp.pos.z;
 	y = B.z - A.z;
 	saida.a += (y * y);
 	saida.b += (2 * x * y);
@@ -144,35 +141,6 @@ t_list		*sanitize_cruz_two(t_vec cam, t_vec tela, t_list *result)
 		saida = first_item(temp_list);
 		if (save_to_delete == NULL)
 			break;
-	}
-	return (saida);
-}
-
-t_list		*sanitize_cruz(t_vec cam, t_vec tela, t_list *result)
-{
-	t_list	*saida;
-	t_list	*temp_saida;
-	int		count;
-
-	saida = result;
-	if (saida != NULL)
-		saida = first_item(saida);
-	temp_saida = NULL;
-	count = 0;
-	while (saida != NULL)
-	{
-		if (distance(*(t_vec *)saida->data, tela) > distance(*(t_vec *)saida->data, cam) ||
-			distance(*(t_vec *)saida->data, cam) < distance(cam, tela))
-			count++;
-		temp_saida = saida;
-		saida = saida->next;
-	}
-	if (temp_saida != NULL)
-		saida = first_item(temp_saida);
-	if (count == 2)
-	{
-		clear_list_all(saida);
-		saida = NULL;
 	}
 	return (saida);
 }
