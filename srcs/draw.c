@@ -89,6 +89,8 @@ void	draw(t_vars vars)
 				clear_list_all(hits);
 				hits = NULL;
 			}
+			else
+				mlx_pixel_put(vars.mlx, vars.win, x, y, 0x191919);
 			x++;
 		}
 		y++;
