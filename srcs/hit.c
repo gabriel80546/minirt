@@ -14,11 +14,10 @@ t_list	*get_all_hits(t_vars vars, t_vec tela)
 	{
 		result = cruzamento_sp_reta(vars.cam.pos, tela, *((t_esfera *)vars.objs->data));
 		result = sanitize_cruz(vars.cam.pos, tela, result);
-
 		if (result != NULL)
 			result = first_item(result);
 		temp_result = NULL;
-		while(result != NULL)
+		while (result != NULL)
 		{
 			n = (t_hit *)malloc(sizeof(t_hit));
 			n->ponto = *((t_vec *)result->data);
@@ -36,7 +35,7 @@ t_list	*get_all_hits(t_vars vars, t_vec tela)
 		temp_list = vars.objs;
 		vars.objs = vars.objs->next;
 	}
-	vars.objs = first_item(temp_list);;
+	vars.objs = first_item(temp_list);
 	return (hits);
 }
 
