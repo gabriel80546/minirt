@@ -1,14 +1,14 @@
 
 #include "minirt.h"
 
-int	can_light_see_this_hit_one_obj(t_hit hit, t_vars vars, t_list *result)
+int	can_light_see_this_hit_one_obj(t_hit hit, /* t_vars vars, */ t_list *result, t_light light)
 {
 	t_list	*temp_result;
 
 	while (result != NULL)
 	{
-		if (distance(vars.light.pos, *(t_vec *)result->data) + EPSILON <
-			distance(vars.light.pos, hit.ponto))
+		if (distance(light.pos, *(t_vec *)result->data) + EPSILON <
+			distance(light.pos, hit.ponto))
 			return (0);
 		temp_result = result;
 		result = result->next;
@@ -17,7 +17,7 @@ int	can_light_see_this_hit_one_obj(t_hit hit, t_vars vars, t_list *result)
 	return (1);
 }
 
-int	can_light_see_this_hit(t_hit hit, t_vars vars)
+int	can_light_see_this_hit(t_hit hit, t_vars vars, t_light light)
 {
 	t_list		*result;
 	t_list		*temp_result;
@@ -34,13 +34,13 @@ int	can_light_see_this_hit(t_hit hit, t_vars vars)
 	first = 0;
 	while (vars.objs != NULL)
 	{
-		result = cruzamento_sp_reta(hit.ponto, vars.light.pos, *((t_esfera *)vars.objs->data));
+		result = cruzamento_sp_reta(hit.ponto, light.pos, *((t_esfera *)vars.objs->data));
 		if (result != NULL)
 			result = first_item(result);
 		temp_result = NULL;
 		while (result != NULL)
 		{
-			dist = distance(*((t_vec *)result->data), vars.light.pos);
+			dist = distance(*((t_vec *)result->data), light.pos);
 			if (dist < smaller || first == 0)
 			{
 				first = 1;
@@ -57,8 +57,8 @@ int	can_light_see_this_hit(t_hit hit, t_vars vars)
 		vars.objs = vars.objs->next;
 	}
 	vars.objs = first_item(temp_list);
-	if (distance(vars.light.pos, ponto_teste) + EPSILON <
-		distance(vars.light.pos, hit.ponto))
+	if (distance(light.pos, ponto_teste) + EPSILON <
+		distance(light.pos, hit.ponto))
 		saida = 0;
 	else
 		saida = 1;

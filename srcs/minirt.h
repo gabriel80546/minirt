@@ -83,7 +83,8 @@ typedef struct  s_vars {
 	int			altura;
 	t_cam		cam;
 	t_list		*objs;
-	t_light		light;
+	t_list		*lights;
+	// t_light		light;
 }               t_vars;
 
 t_reta		empty_reta(void);
@@ -99,8 +100,8 @@ int			cruza_sp(t_vec A, t_vec B, t_esfera sp);
 t_hit		closest_hit(t_list *hits, t_vec pos);
 t_list		*get_all_hits(t_vars vars, t_vec tela);
 
-int			can_light_see_this_hit_one_obj(t_hit temp_temp_hit, t_vars vars, t_list *result);
-int			can_light_see_this_hit(/*t_hit temp_temp_hit, t_vars vars*/);
+int			can_light_see_this_hit_one_obj(t_hit temp_temp_hit, /* t_vars vars, */ t_list *result, t_light light);
+int			can_light_see_this_hit(t_hit hit, t_vars vars, t_light light);
 int			compute_color(double intensity, int input);
 
 void		draw(t_vars vars);

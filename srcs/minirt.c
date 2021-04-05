@@ -18,6 +18,7 @@ t_vars	config_scene_easy(void)
 {
 	t_vars		vars;
 	t_objeto	*obj;
+	t_light		*light;
 
 	vars.largura = 800;
 	vars.altura = 600;
@@ -45,11 +46,23 @@ t_vars	config_scene_easy(void)
 	obj->sp.raio = 0.5;
 	obj->sp.cor = 0xe0d61d;
 	list_add(vars.objs, obj);
-	vars.light.bright = 1.0;
-	vars.light.pos.x = 1.0;
-	vars.light.pos.y = 2.0;
-	vars.light.pos.z = -2.0;
-	vars.light.cor = 0xFFFFFF;
+
+	light = (t_light *)malloc(sizeof(t_light));
+	light->bright = 1.0;
+	light->pos.x = 1.0;
+	light->pos.y = 2.0;
+	light->pos.z = -2.0;
+	light->cor = 0xFFFFFF;
+	vars.lights = list_init(light);
+
+	light = (t_light *)malloc(sizeof(t_light));
+	light->bright = 1.0;
+	light->pos.x = -1.0;
+	light->pos.y = 2.0;
+	light->pos.z = -2.0;
+	light->cor = 0xFFFFFF;
+	list_add(vars.lights, light);
+
 	vars.cam.pos.x = 0.0;
 	vars.cam.pos.y = 0.0;
 	vars.cam.pos.z = 0.0;
@@ -61,6 +74,7 @@ t_vars	config_scene(void)
 {
 	t_vars		vars;
 	t_objeto	*obj;
+	t_light		*light;
 
 	vars.largura = 320;
 	vars.altura = 180;
@@ -92,11 +106,15 @@ t_vars	config_scene(void)
 	vars.cam.pos.y = -2.0;
 	vars.cam.pos.z = 4.0;
 	vars.cam.fov = 90.0;
-	vars.light.bright = 1.0;
-	vars.light.pos.x = 0.0;
-	vars.light.pos.y = 2.0;
-	vars.light.pos.z = 4.0;
-	vars.light.cor = 0xFFFFFF;
+
+	light = (t_light *)malloc(sizeof(t_light));
+	light->bright = 1.0;
+	light->pos.x = 0.0;
+	light->pos.y = 2.0;
+	light->pos.z = 4.0;
+	light->cor = 0xFFFFFF;
+	vars.lights = list_init(light);
+
 	return (vars);
 }
 
