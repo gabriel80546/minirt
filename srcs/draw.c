@@ -24,21 +24,21 @@ void	draw_main(t_vars vars, int x, int y)
 	double		intensity;
 	t_list		*iluminados;
 	t_light		*iluminado;
+	int			counter;
 
 	tela = setup_tela(vars, x, y);
 	hits = get_all_hits(vars, tela);
+	counter = 0;
 	if (hits != NULL)
 	{
 		hit = closest_hit(hits, vars.cam.pos);
 		iluminados = NULL;
+		
 		while (vars.lights != NULL)
 		{
 			flag = can_light_see_this_hit(hit, vars, *((t_light *)vars.lights->data));
 			if (flag == 0)
-			{
-				// printf("x = %d, y = %d, nao esta iluminado por essa luz\n", x, y);
-				flag = flag + 0;
-			}
+				mlx_pixel_put(vars.mlx, vars.win, x, y, compute_color(0.1, hit.obj.sp.cor));
 			else
 			{
 				if (iluminados == NULL)
@@ -53,29 +53,24 @@ void	draw_main(t_vars vars, int x, int y)
 					iluminado = &(*((t_light *)vars.lights->data));
 					list_add(iluminados, iluminado);
 				}
-				// printf("x = %d, y = %d, esta iluminado por essa luz\n", x, y);
 			}	
-			// if (flag == 0)
-			// 	mlx_pixel_put(vars.mlx, vars.win, x, y, compute_color(0.1, hit.obj.sp.cor));
-			// else
-			// {
-			// 	intensity = ((acos(cosine_law(((t_light *)vars.lights->data)->pos /* vars.light.pos */, hit.ponto, hit.obj.sp.pos)) * (180.0 / PI) - 90.0) / 90.0);
-			// 	if (intensity < 0.1)
-			// 		intensity = 0.1;
-			// 	mlx_pixel_put(vars.mlx, vars.win, x, y, compute_color(intensity, hit.obj.sp.cor));
-			// }
 			vars.lights = vars.lights->next;
 		}
 		while (iluminados != NULL)
 		{
-			// printf("x = %d, y = %d; light.x = %lf\n", x, y, ((t_light *)iluminados->data)->pos.x);
-			intensity = ((acos(cosine_law(((t_light *)iluminados->data)->pos /* vars.light.pos */, hit.ponto, hit.obj.sp.pos)) * (180.0 / PI) - 90.0) / 90.0);
+			intensity = ((acos(cosine_law(((t_light *)iluminados->data)->pos, hit.ponto, hit.obj.sp.pos)) * (180.0 / PI) - 90.0) / 90.0);
+			if (counter == 1)
+				intensity -= 0.1;
+			else if (counter == 2)
+				intensity += 0.6;
 			if (intensity < 0.1)
 				intensity = 0.1;
+			if (intensity > 1.0)
+				intensity = 1.0;
+			counter++;
 			mlx_pixel_put(vars.mlx, vars.win, x, y, compute_color(intensity, hit.obj.sp.cor));
 			iluminados = iluminados->next;
 		}
-		// printf("x = %d, y = %d; tem %d luzes iluminando\n", x, y, counter);
 		clear_list_all(hits);
 		hits = NULL;
 	}
