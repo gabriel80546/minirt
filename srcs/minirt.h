@@ -87,6 +87,15 @@ typedef struct  s_vars {
 	// t_light		light;
 }               t_vars;
 
+typedef struct	s_cor_had
+{
+	double		r;
+	double		g;
+	double		b;
+}				t_cor_had;
+
+
+
 t_reta		empty_reta(void);
 t_vec		empty_vec(void);
 t_coeff		get_sp_coeff(t_vec A, t_vec B, t_esfera sp/* , int print_flag */);
@@ -107,5 +116,8 @@ int			compute_color(double intensity, int input);
 void		draw(t_vars vars);
 void		draw_yellow_sp(t_vars vars);
 void		draw_indiano(/* t_vars vars */);
+
+int			to_rgb(t_cor_had cor);
+t_cor_had	to_had(int rgb);
 
 #endif

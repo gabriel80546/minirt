@@ -74,6 +74,7 @@ int	compute_color(double intensity, int input)
 
 	if (intensity < 0.1)
 		intensity = 0.1;
+
 	temp6 = (input & 0x0000FF) >> 0;
 	temp7 = (input & 0x00FF00) >> 8;
 	temp8 = (input & 0xFF0000) >> 16;

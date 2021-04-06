@@ -20,8 +20,9 @@ t_vars	config_scene_easy(void)
 	t_objeto	*obj;
 	t_light		*light;
 
-	vars.largura = 800;
-	vars.altura = 600;
+	vars.largura = 400;
+	vars.altura = 300;
+	vars.objs = NULL;
 	obj = (t_objeto *)malloc(sizeof(t_objeto));
 	obj->tipo = SPHERE;
 	obj->sp.pos.x = -2.0;
@@ -43,10 +44,11 @@ t_vars	config_scene_easy(void)
 	obj->sp.pos.x = 0.0;
 	obj->sp.pos.y = 1.0;
 	obj->sp.pos.z = 2.0;
-	obj->sp.raio = 0.5;
+	obj->sp.raio = 0.75;
 	obj->sp.cor = 0xe0d61d;
 	list_add(vars.objs, obj);
 
+	vars.lights = NULL;
 	light = (t_light *)malloc(sizeof(t_light));
 	light->bright = 1.0;
 	light->pos.x = 1.0;
@@ -61,6 +63,16 @@ t_vars	config_scene_easy(void)
 	light->pos.y = 2.0;
 	light->pos.z = -2.0;
 	light->cor = 0xFFFFFF;
+	// vars.lights = list_init(light);
+	list_add(vars.lights, light);
+
+	light = (t_light *)malloc(sizeof(t_light));
+	light->bright = 1.0;
+	light->pos.x = -3.0;
+	light->pos.y = 5.0;
+	light->pos.z = -2.0;
+	light->cor = 0xFFFFFF;
+	// vars.lights = list_init(light);
 	list_add(vars.lights, light);
 
 	vars.cam.pos.x = 0.0;
@@ -78,6 +90,7 @@ t_vars	config_scene(void)
 
 	vars.largura = 320;
 	vars.altura = 180;
+	vars.objs = NULL;
 	obj = (t_objeto *)malloc(sizeof(t_objeto));
 	obj->tipo = SPHERE;
 	obj->sp.pos.x = -2.0;
@@ -102,11 +115,13 @@ t_vars	config_scene(void)
 	obj->sp.raio = 2.5;
 	obj->sp.cor = 0x00FF00;
 	list_add(vars.objs, obj);
+
 	vars.cam.pos.x = -3.0;
 	vars.cam.pos.y = -2.0;
 	vars.cam.pos.z = 4.0;
 	vars.cam.fov = 90.0;
 
+	vars.lights = NULL;
 	light = (t_light *)malloc(sizeof(t_light));
 	light->bright = 1.0;
 	light->pos.x = 0.0;
@@ -116,6 +131,14 @@ t_vars	config_scene(void)
 	vars.lights = list_init(light);
 
 	return (vars);
+}
+
+void	clean_all(t_vars vars)
+{
+	if (vars.objs != NULL)
+		clear_list_all(vars.objs);
+	if (vars.lights != NULL)
+		clear_list_all(vars.lights);
 }
 
 int		main(void)
@@ -131,7 +154,7 @@ int		main(void)
 		draw_yellow_sp(vars);
 	else
 		draw(vars);
-	clear_list_all(vars.objs);
+	clean_all(vars);
 	mlx_key_hook(vars.win, key_hook, &vars);
 	mlx_loop(vars.mlx);
 	return (0);
