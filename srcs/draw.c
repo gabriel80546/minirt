@@ -59,9 +59,9 @@ void	draw_main(t_vars vars, int x, int y)
 		while (iluminados != NULL)
 		{
 			intensity = ((acos(cosine_law(((t_light *)iluminados->data)->pos, hit.ponto, hit.obj.sp.pos)) * (180.0 / PI) - 90.0) / 90.0);
-			had.r += intensity;
-			had.g += intensity;
-			had.b += intensity;
+			had.r += (intensity * ((t_light *)iluminados->data)->bright);
+			had.g += (intensity * ((t_light *)iluminados->data)->bright);
+			had.b += (intensity * ((t_light *)iluminados->data)->bright);
 			counter++;
 			temp_luz = iluminados;
 			iluminados = iluminados->next;

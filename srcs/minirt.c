@@ -51,7 +51,7 @@ t_vars	config_scene_easy(void)
 
 	vars.lights = NULL;
 	light = (t_light *)malloc(sizeof(t_light));
-	light->bright = 1.0;
+	light->bright = 0.3;
 	light->pos.x = 1.0;
 	light->pos.y = 2.0;
 	light->pos.z = -2.0;
@@ -59,7 +59,7 @@ t_vars	config_scene_easy(void)
 	vars.lights = list_init(light);
 
 	light = (t_light *)malloc(sizeof(t_light));
-	light->bright = 1.0;
+	light->bright = 0.3;
 	light->pos.x = -1.0;
 	light->pos.y = 2.0;
 	light->pos.z = -2.0;
@@ -68,7 +68,7 @@ t_vars	config_scene_easy(void)
 	list_add(vars.lights, light);
 
 	light = (t_light *)malloc(sizeof(t_light));
-	light->bright = 1.0;
+	light->bright = 0.3;
 	light->pos.x = -3.0;
 	light->pos.y = 5.0;
 	light->pos.z = -2.0;
@@ -142,6 +142,32 @@ void	clean_all(t_vars vars)
 		clear_list_all(vars.lights);
 }
 
+void	draw_circulo(t_vars vars)
+{
+	double	centro_x = 50;
+	double	centro_y = 50;
+	double	raio = 30;
+	double	x;
+	double	y;
+
+	y = 0.0;
+	while (y < vars.altura)
+	{
+		x = 0.0;
+		while (x < vars.largura)
+		{
+			// draw_main(vars, x, y);
+			if (sqrt(((centro_x - x) * (centro_x - x)) + ((centro_y - y) * (centro_y - y))) > raio)
+				mlx_pixel_put(vars.mlx, vars.win, x, y, 0x000000);
+			else
+				mlx_pixel_put(vars.mlx, vars.win, x, y, 0xFF0000);
+			// if (x > 10 && y > 10)
+			x += 1.0;
+		}
+		y += 1.0;
+	}
+}
+
 int		main(void)
 {
 	t_vars	vars;
@@ -151,6 +177,8 @@ int		main(void)
 	vars.win = mlx_new_window(vars.mlx, vars.largura, vars.altura, "minirt");
 	if (0)
 		draw_indiano();
+	else if (0)
+		draw_circulo(vars);
 	else if (0)
 		draw_yellow_sp(vars);
 	else
