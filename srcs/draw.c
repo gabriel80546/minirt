@@ -55,25 +55,20 @@ void	draw_main(t_vars vars, int x, int y)
 		counter = 0;
 		cor = hit.obj.sp.cor;
 		// cor = 0xFFFFFF;
-		had.r = 0.0;
-		had.g = 0.0;
-		had.b = 0.0;
+		had.r = 0.2;
+		had.g = 0.2;
+		had.b = 0.2;
 		temp_luz = NULL;
 		while (iluminados != NULL)
 		{
 			intensity = ((acos(cosine_law(((t_light *)iluminados->data)->pos, hit.ponto, hit.obj.sp.pos)) * (180.0 / PI) - 90.0) / 90.0);
-			// if (intensity < 0.5)
-			// 	intensity = 0.5;
-			// had = to_had(had);
 			had.r += intensity;
 			had.g += intensity;
 			had.b += intensity;
-			// cor = to_rgb(had);
 			counter++;
 			temp_luz = iluminados;
 			iluminados = iluminados->next;
 		}
-		// printf("76: cor = 0x%6.6X\n", cor);
 		final = to_had(cor);
 		final.r *= had.r;
 		final.g *= had.g;
@@ -85,21 +80,11 @@ void	draw_main(t_vars vars, int x, int y)
 		if (final.b > 1.0)
 			final.b = 1.0;
 		cor = to_rgb(final);
-		// printf("88: cor = 0x%6.6X\n", cor);
 		iluminados = first_item(temp_luz);
-		if (counter > 0)
+		if (counter >= 0)
 			mlx_pixel_put(vars.mlx, vars.win, x, y, cor);
-		else if (counter == 0)
-			mlx_pixel_put(vars.mlx, vars.win, x, y, compute_color(0.08, hit.obj.sp.cor));
 		// else if (counter == 0)
-		// 	mlx_pixel_put(vars.mlx, vars.win, x, y, 0x303030);
-		// cor = 0x0;
-		// while (counter >= 0)
-		// {
-		// 	cor += 0x202020;
-		// 	mlx_pixel_put(vars.mlx, vars.win, x, y, cor);
-		// 	counter--;
-		// }
+		// 	mlx_pixel_put(vars.mlx, vars.win, x, y, compute_color(0.08, hit.obj.sp.cor));
 		clear_list(iluminados);
 		clear_list_all(hits);
 		hits = NULL;
