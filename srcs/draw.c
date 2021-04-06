@@ -28,6 +28,7 @@ void	draw_main(t_vars vars, int x, int y)
 	int			counter;
 	int			cor;
 	t_cor_had	had;
+	t_cor_had	result;
 	// t_cor_had	final;
 
 	tela = setup_tela(vars, x, y);
@@ -36,7 +37,6 @@ void	draw_main(t_vars vars, int x, int y)
 	{
 		hit = closest_hit(hits, vars.cam.pos);
 		iluminados = NULL;
-		
 		while (vars.lights != NULL)
 		{
 			flag = can_light_see_this_hit(hit, vars, *((t_light *)vars.lights->data));
@@ -66,7 +66,16 @@ void	draw_main(t_vars vars, int x, int y)
 			temp_luz = iluminados;
 			iluminados = iluminados->next;
 		}
-		cor = to_rgb(norm_had(mult_had(to_had(cor), had)));
+		result = norm_had(mult_had(to_had(cor), had));
+		// 0.299R + 0.587G + 0.114B;
+		if (vars.gray == 1)
+		{
+			result.r = (result.r * 0.299) + (result.g * 0.587) + (result.b * 0.114);
+			result.g = result.r;
+			result.b = result.r;
+		}
+		cor = to_rgb(result);
+		// printf("cor\n")
 		iluminados = first_item(temp_luz);
 		if (counter >= 0)
 			mlx_pixel_put(vars.mlx, vars.win, x, y, cor);

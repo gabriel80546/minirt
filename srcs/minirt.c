@@ -20,8 +20,9 @@ t_vars	config_scene_easy(void)
 	t_objeto	*obj;
 	t_light		*light;
 
-	vars.largura = 400;
-	vars.altura = 300;
+	vars.largura = 600;
+	vars.altura = 400;
+	vars.gray = 0;
 	vars.ambient = 0x333333;
 	vars.objs = NULL;
 	obj = (t_objeto *)malloc(sizeof(t_objeto));
@@ -40,6 +41,7 @@ t_vars	config_scene_easy(void)
 	obj->sp.raio = 2.0;
 	obj->sp.cor = 0x711de0;
 	list_add(vars.objs, obj);
+
 	obj = (t_objeto *)malloc(sizeof(t_objeto));
 	obj->tipo = SPHERE;
 	obj->sp.pos.x = 0.0;
@@ -91,6 +93,7 @@ t_vars	config_scene(void)
 
 	vars.largura = 320;
 	vars.altura = 180;
+	vars.gray = 1;
 	vars.objs = NULL;
 	obj = (t_objeto *)malloc(sizeof(t_objeto));
 	obj->tipo = SPHERE;

@@ -85,6 +85,7 @@ typedef struct  s_vars {
 	t_list		*objs;
 	t_list		*lights;
 	int			ambient;
+	int			gray;
 	// t_light		light;
 }               t_vars;
 
