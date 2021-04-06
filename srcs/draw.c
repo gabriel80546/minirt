@@ -28,7 +28,7 @@ void	draw_main(t_vars vars, int x, int y)
 	int			counter;
 	int			cor;
 	t_cor_had	had;
-	t_cor_had	final;
+	// t_cor_had	final;
 
 	tela = setup_tela(vars, x, y);
 	hits = get_all_hits(vars, tela);
@@ -54,10 +54,7 @@ void	draw_main(t_vars vars, int x, int y)
 		}
 		counter = 0;
 		cor = hit.obj.sp.cor;
-		// cor = 0xFFFFFF;
-		had.r = 0.2;
-		had.g = 0.2;
-		had.b = 0.2;
+		had = to_had(vars.ambient);
 		temp_luz = NULL;
 		while (iluminados != NULL)
 		{
@@ -69,22 +66,10 @@ void	draw_main(t_vars vars, int x, int y)
 			temp_luz = iluminados;
 			iluminados = iluminados->next;
 		}
-		final = to_had(cor);
-		final.r *= had.r;
-		final.g *= had.g;
-		final.b *= had.b;
-		if (final.r > 1.0)
-			final.r = 1.0;
-		if (final.g > 1.0)
-			final.g = 1.0;
-		if (final.b > 1.0)
-			final.b = 1.0;
-		cor = to_rgb(final);
+		cor = to_rgb(norm_had(mult_had(to_had(cor), had)));
 		iluminados = first_item(temp_luz);
 		if (counter >= 0)
 			mlx_pixel_put(vars.mlx, vars.win, x, y, cor);
-		// else if (counter == 0)
-		// 	mlx_pixel_put(vars.mlx, vars.win, x, y, compute_color(0.08, hit.obj.sp.cor));
 		clear_list(iluminados);
 		clear_list_all(hits);
 		hits = NULL;
