@@ -40,16 +40,14 @@ void	draw_main(t_vars vars, int x, int y)
 		while (vars.lights != NULL)
 		{
 			flag = can_light_see_this_hit(hit, vars, *((t_light *)vars.lights->data));
-			if (flag == 0)
-				mlx_pixel_put(vars.mlx, vars.win, x, y, compute_color(0.8, hit.obj.sp.cor));
-			else
+			if (flag != 0)
 			{
 				iluminado = ((t_light *)vars.lights->data);
 				if (iluminados == NULL)
 					iluminados = list_init(iluminado);
 				else
 					list_add(iluminados, iluminado);
-			}	
+			}
 			vars.lights = vars.lights->next;
 		}
 		counter = 0;
@@ -97,6 +95,24 @@ void	draw(t_vars vars)
 		while (x < vars.largura)
 		{
 			draw_main(vars, x, y);
+			x++;
+		}
+		y++;
+	}
+}
+
+void	clear_screen(t_vars vars)
+{
+	int	x;
+	int	y;
+
+	y = 0;
+	while (y < vars.altura)
+	{
+		x = 0;
+		while (x < vars.largura)
+		{
+			mlx_pixel_put(vars.mlx, vars.win, x, y, 0x000000);
 			x++;
 		}
 		y++;

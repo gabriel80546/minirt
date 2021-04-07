@@ -4,6 +4,7 @@
 		"mlx.h": "c",
 		"type_traits": "c",
 		"cstdlib": "cpp",
-		"new": "cpp"
+		"new": "cpp",
+		"concepts": "c"
 	}
 }

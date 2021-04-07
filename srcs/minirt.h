@@ -84,6 +84,7 @@ typedef struct  s_vars {
 	t_cam		cam;
 	t_list		*objs;
 	t_list		*lights;
+	t_list		*cams;
 	int			ambient;
 	int			gray;
 	// t_light		light;
@@ -118,11 +119,13 @@ int			compute_color(double intensity, int input);
 void		draw(t_vars vars);
 void		draw_yellow_sp(t_vars vars);
 void		draw_indiano(/* t_vars vars */);
+void		clear_screen(t_vars vars);
 
 int			to_rgb(t_cor_had cor);
 t_cor_had	to_had(int rgb);
 t_cor_had	norm_had(t_cor_had input);
 t_cor_had	mult_had(t_cor_had a, t_cor_had b);
 t_cor_had	sum_had(t_cor_had a, t_cor_had b);
+
 
 #endif
