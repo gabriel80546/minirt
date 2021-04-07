@@ -8,8 +8,8 @@ t_vars	config_scene_easy(t_vars input)
 	t_light		*light;
 
 	vars = input;
-	vars.largura = 600;
-	vars.altura = 400;
+	vars.largura = 200;
+	vars.altura = 160;
 	vars.gray = 0;
 	vars.ambient = 0x333333;
 	vars.objs = NULL;
@@ -181,6 +181,7 @@ void	draw_circulo(t_vars vars)
 int		key_hook(int keycode, t_vars *vars)
 {
 	static int flipflop = 0;
+	printf("keycode = %d\n", keycode);
 	if (keycode == 65307)
 	{
 		printf("minirt.c(key_hook): 8: fechando... :)\n");
@@ -218,7 +219,7 @@ int		main(void)
 	vars = config_scene_easy(vars);
 	vars.mlx = mlx_init();
 	vars.win = mlx_new_window(vars.mlx, vars.largura, vars.altura, "minirt");
-	vars = config_scene_easy(vars);
+	// vars = config_scene_easy(vars);
 	// clear_screen(vars);
 	draw(vars);
 	clean_all(vars);
