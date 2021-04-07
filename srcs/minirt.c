@@ -1,6 +1,36 @@
 
 #include "minirt.h"
 
+t_vars	config_cams(t_vars input)
+{
+	t_vars	saida;
+	t_cam	*cam;
+
+	saida = input;
+
+	cam = (t_cam *)malloc(sizeof(t_cam));
+	cam->pos.x = 0.0;
+	cam->pos.y = 0.0;
+	cam->pos.z = 0.0;
+	cam->fov = 90.0;
+	saida.cams = list_init(cam);
+
+	cam = (t_cam *)malloc(sizeof(t_cam));
+	cam->pos.x = -1.0;
+	cam->pos.y = 0.0;
+	cam->pos.z = 0.0;
+	cam->fov = 90.0;
+	list_add(saida.cams, cam);
+
+	cam = (t_cam *)malloc(sizeof(t_cam));
+	cam->pos.x = 1.0;
+	cam->pos.y = 0.0;
+	cam->pos.z = 0.0;
+	cam->fov = 90.0;
+	list_add(saida.cams, cam);
+	return (saida);
+}
+
 t_vars	config_scene_easy(t_vars input)
 {
 	t_vars		vars;
@@ -66,10 +96,10 @@ t_vars	config_scene_easy(t_vars input)
 	// vars.lights = list_init(light);
 	list_add(vars.lights, light);
 
-	vars.cam.pos.x = 0.0;
-	vars.cam.pos.y = 0.0;
-	vars.cam.pos.z = 0.0;
-	vars.cam.fov = 90.0;
+	// vars.cam.pos.x = 0.0;
+	// vars.cam.pos.y = 0.0;
+	// vars.cam.pos.z = 0.0;
+	// vars.cam.fov = 90.0;
 
 	return (vars);
 }
@@ -180,47 +210,56 @@ void	draw_circulo(t_vars vars)
 
 int		key_hook(int keycode, t_vars *vars)
 {
-	static int flipflop = 0;
-	printf("keycode = %d\n", keycode);
 	if (keycode == 65307)
 	{
 		printf("minirt.c(key_hook): 8: fechando... :)\n");
 		mlx_destroy_window(vars->mlx, vars->win);
 		mlx_destroy_display(vars->mlx);
 		free(vars->mlx);
+		clear_list_all(vars->cams);
 		exit(1);
 	}
 	else if (keycode == 32)
 	{
-		if (flipflop == 0)
+		if (vars->cams != NULL)
 		{
-			flipflop = 1;
-			*vars = config_scene(*vars);
-			clear_screen(*vars);
-			draw(*vars);
-			clean_all(*vars);
+			if (vars->cams->next != NULL)
+				vars->cams = vars->cams->next;
+			else
+				vars->cams = first_item(vars->cams);
+			vars->cam = *((t_cam *)vars->cams->data);
 		}
-		else if (flipflop == 1)
-		{
-			flipflop = 0;
-			*vars = config_scene_easy(*vars);
-			clear_screen(*vars);
-			draw(*vars);
-			clean_all(*vars);
-		}
+		*vars = config_scene_easy(*vars);
+		clear_screen(*vars);
+		draw(*vars);
+		clean_all(*vars);
 	}
 	return (0);
+}
+t_cam	empty_cam(void)
+{
+	t_cam	saida;
+
+	saida.pos.x = 0.0;
+	saida.pos.y = 0.0;
+	saida.pos.z = 0.0;
+	saida.fov = 90.0;
+	return (saida);
 }
 
 int		main(void)
 {
 	t_vars	vars;
 
+	vars.cams = NULL;
+	vars = config_cams(vars);
+	if (vars.cams != NULL)
+		vars.cam = *((t_cam *)vars.cams->data);
+	else
+		vars.cam = empty_cam();
 	vars = config_scene_easy(vars);
 	vars.mlx = mlx_init();
 	vars.win = mlx_new_window(vars.mlx, vars.largura, vars.altura, "minirt");
-	// vars = config_scene_easy(vars);
-	// clear_screen(vars);
 	draw(vars);
 	clean_all(vars);
 	mlx_key_hook(vars.win, key_hook, &vars);
