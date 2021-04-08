@@ -97,6 +97,14 @@ typedef struct	s_cor_had
 	double		b;
 }				t_cor_had;
 
+typedef struct	s_mat3by3
+{
+	double		a[3];
+	double		b[3];
+	double		c[3];
+}				t_mat3by3;
+
+
 
 
 t_reta		empty_reta(void);
