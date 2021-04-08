@@ -1,4 +1,6 @@
 
+#include "../minirt.h"
+
 void draw_squares_test(void *mlx_ptr, void *win_ptr)
 {
 	int i;
@@ -55,5 +57,29 @@ void draw_squares_test(void *mlx_ptr, void *win_ptr)
 			y += size;
 		}
 		c_i++;
+	}
+}
+
+void	draw_circulo(t_vars vars)
+{
+	double	centro_x = 50;
+	double	centro_y = 50;
+	double	raio = 30;
+	double	x;
+	double	y;
+
+	y = 0.0;
+	while (y < vars.altura)
+	{
+		x = 0.0;
+		while (x < vars.largura)
+		{
+			if (sqrt(((centro_x - x) * (centro_x - x)) + ((centro_y - y) * (centro_y - y))) > raio)
+				mlx_pixel_put(vars.mlx, vars.win, x, y, 0x000000);
+			else
+				mlx_pixel_put(vars.mlx, vars.win, x, y, 0xFF0000);
+			x += 1.0;
+		}
+		y += 1.0;
 	}
 }
