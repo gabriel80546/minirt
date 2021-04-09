@@ -26,6 +26,7 @@ t_vec	setup_tela(t_vars vars, int x, int y)
 	saida.y = -((((2 * ttan) / vars.largura) * (y + tcam)) - ttan);
 	saida.z =  1.0;
 
+	saida = rotacao_x(saida, vars.cam.rot.x);
 	saida = rotacao_y(saida, vars.cam.rot.y);
 
 	saida.x += vars.cam.pos.x;
