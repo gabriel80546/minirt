@@ -7,11 +7,30 @@ t_vec	setup_tela(t_vars vars, int x, int y)
 	double	ttan;
 	double	tcam;
 
+	// if (vars.cam.p == 0)
+	// {
+	// 	printf("10: cam.p = %d\n", vars.cam.p);
+	// 	printf("vars.cam.pos.x = (%lf)\n", vars.cam.pos.x);
+	// 	printf("vars.cam.pos.y = (%lf)\n", vars.cam.pos.y);
+	// 	printf("vars.cam.pos.z = (%lf)\n", vars.cam.pos.z);
+
+
+	// 	// printf("vars.cam.rot.x = (%lf)\n", vars.cam.rot.x);
+	// 	printf("vars.cam.rot.y = (%lf)\n", vars.cam.rot.y);
+	// 	// printf("vars.cam.rot.z = (%lf)\n", vars.cam.rot.z);
+	// }
+
 	ttan = (tan((((vars.cam.fov) / 2.0) * PI) / 180.0));
 	tcam = (((vars.largura - vars.altura) / 2));
-	saida.x = vars.cam.pos.x + ((((2 * ttan) / vars.largura) * x) - ttan);
-	saida.y = vars.cam.pos.y - ((((2 * ttan) / vars.largura) * (y + tcam)) - ttan);
-	saida.z = vars.cam.pos.z + 1.0;
+	saida.x =  ((((2 * ttan) / vars.largura) * x) - ttan);
+	saida.y = -((((2 * ttan) / vars.largura) * (y + tcam)) - ttan);
+	saida.z =  1.0;
+
+	saida = rotacao_y(saida, vars.cam.rot.y);
+
+	saida.x += vars.cam.pos.x;
+	saida.y += vars.cam.pos.y;
+	saida.z += vars.cam.pos.z;
 	return (saida);
 }
 
@@ -32,6 +51,7 @@ void	draw_main(t_vars vars, int x, int y)
 	// t_cor_had	final;
 
 	tela = setup_tela(vars, x, y);
+	vars.cam.p = 1;
 	hits = get_all_hits(vars, tela);
 	if (hits != NULL)
 	{
@@ -95,6 +115,7 @@ void	draw(t_vars vars)
 		while (x < vars.largura)
 		{
 			draw_main(vars, x, y);
+			vars.cam.p = 1;
 			x++;
 		}
 		y++;

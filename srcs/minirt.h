@@ -65,8 +65,10 @@ typedef struct	s_hit
 typedef struct	s_cam
 {
 	t_vec		pos;
-	t_vec		normal;
+	// t_vec		normal;
+	t_vec		rot;
 	double		fov;
+	int			p;
 }				t_cam;
 
 typedef struct	s_light
@@ -96,15 +98,6 @@ typedef struct	s_cor_had
 	double		g;
 	double		b;
 }				t_cor_had;
-
-typedef struct	s_mat3by3
-{
-	double		a[3];
-	double		b[3];
-	double		c[3];
-}				t_mat3by3;
-
-
 
 
 t_reta		empty_reta(void);
