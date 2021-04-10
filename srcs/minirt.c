@@ -1,17 +1,35 @@
 
 #include "minirt.h"
 
+
+// double	direction_to_inc(t_vec direc)
+// {
+
+// }
+
+
+t_vec	spherical_to_vec(double radius, double inclination, double azimuth)
+{
+	t_vec saida;
+
+	saida.x = radius * cos(azimuth) * sin(inclination);
+	saida.y = radius * cos(inclination);
+	saida.z = radius * sin(azimuth) * sin(inclination);
+	return (saida);
+}
+
+
 t_vars	config_cams(t_vars input)
 {
 	t_vars	saida;
 	t_cam	*cam;
 	int		i;
-	int		k;
-	double	speed;
+	// int		k;
+	// double	speed;
 
 	i = -5;
-	k = i;
-	speed = 1.0;
+	// k = i;
+	// speed = 1.0;
 	saida = input;
 	// cam = (t_cam *)malloc(sizeof(t_cam));
 	// cam->pos.x = 0.0;
@@ -178,6 +196,7 @@ t_vars	config_scene_easy(t_vars input)
 	t_objeto	*obj;
 	t_light		*light;
 	// t_vec		normal;
+	int			i;
 
 	vars = input;
 	vars.largura = 600;
@@ -197,56 +216,90 @@ t_vars	config_scene_easy(t_vars input)
 	obj->sp.cor = 0x606060;
 	vars.objs = list_init(obj);
 
-	obj = (t_objeto *)malloc(sizeof(t_objeto));
-	obj->tipo = SPHERE;
-	obj->sp.pos.x = 0.0;
-	obj->sp.pos.y = 0.0;
-	obj->sp.pos.z = 1.0;
-	obj->sp.raio = 0.375;
-	obj->sp.cor = 0xFFFFFF;
-	list_add(vars.objs, obj);
+	// obj = (t_objeto *)malloc(sizeof(t_objeto));
+	// obj->tipo = SPHERE;
+	// obj->sp.pos.x = 0.0;
+	// obj->sp.pos.y = 0.0;
+	// obj->sp.pos.z = 1.0;
+	// obj->sp.raio = 0.375;
+	// obj->sp.cor = 0xFFFFFF;
+	// list_add(vars.objs, obj);
 
-	// normal.x = 1.0;
-	// normal.y = 1.0;
-	// normal.z = 0.0;
-	obj = (t_objeto *)malloc(sizeof(t_objeto));
-	obj->tipo = SPHERE;
-	obj->sp.pos.x = 0.0;
-	obj->sp.pos.y = 0.0;
-	obj->sp.pos.z = 1.0;
-	// obj->sp.pos = rotacao_x(obj->sp.pos, (2 * PI) - (PI / 4));
-	obj->sp.pos = rotacao_y(obj->sp.pos, (PI / 4));
-	obj->sp.raio = 0.375;
-	obj->sp.cor = 0xFF8080;
-	list_add(vars.objs, obj);
+	// // normal.x = 1.0;
+	// // normal.y = 1.0;
+	// // normal.z = 0.0;
+	// obj = (t_objeto *)malloc(sizeof(t_objeto));
+	// obj->tipo = SPHERE;
+	// obj->sp.pos.x = 0.0;
+	// obj->sp.pos.y = 0.0;
+	// obj->sp.pos.z = 1.0;
+	// // obj->sp.pos = rotacao_x(obj->sp.pos, (2 * PI) - (PI / 4));
+	// obj->sp.pos = rotacao_y(obj->sp.pos, (PI / 4));
+	// obj->sp.raio = 0.375;
+	// obj->sp.cor = 0xFF8080;
+	// list_add(vars.objs, obj);
 
-	// normal.x = 1.0;
-	// normal.y = 1.0;
-	// normal.z = 0.0;
-	obj = (t_objeto *)malloc(sizeof(t_objeto));
-	obj->tipo = SPHERE;
-	obj->sp.pos.x = 0.0;
-	obj->sp.pos.y = 0.0;
-	obj->sp.pos.z = 1.0;
-	// obj->sp.pos = rotacao_x(obj->sp.pos, (2 * PI) - (PI / 2));
-	obj->sp.pos = rotacao_y(obj->sp.pos, (PI / 2));
-	obj->sp.raio = 0.375;
-	obj->sp.cor = 0x80FF80;
-	list_add(vars.objs, obj);
+	// // normal.x = 1.0;
+	// // normal.y = 1.0;
+	// // normal.z = 0.0;
+	// obj = (t_objeto *)malloc(sizeof(t_objeto));
+	// obj->tipo = SPHERE;
+	// obj->sp.pos.x = 0.0;
+	// obj->sp.pos.y = 0.0;
+	// obj->sp.pos.z = 1.0;
+	// // obj->sp.pos = rotacao_x(obj->sp.pos, (2 * PI) - (PI / 2));
+	// obj->sp.pos = rotacao_y(obj->sp.pos, (PI / 2));
+	// obj->sp.raio = 0.375;
+	// obj->sp.cor = 0x80FF80;
+	// list_add(vars.objs, obj);
 
-	// normal.x = 1.0;
-	// normal.y = 1.0;
-	// normal.z = 0.0;
-	obj = (t_objeto *)malloc(sizeof(t_objeto));
-	obj->tipo = SPHERE;
-	obj->sp.pos.x = 0.0;
-	obj->sp.pos.y = 0.0;
-	obj->sp.pos.z = 1.0;
-	// obj->sp.pos = rotacao_x(obj->sp.pos, (2 * PI) - ((3 * PI) / 4));
-	obj->sp.pos = rotacao_y(obj->sp.pos, ((3 * PI) / 4));
-	obj->sp.raio = 0.375;
-	obj->sp.cor = 0x8080FF;
-	list_add(vars.objs, obj);
+	// // normal.x = 1.0;
+	// // normal.y = 1.0;
+	// // normal.z = 0.0;
+	// obj = (t_objeto *)malloc(sizeof(t_objeto));
+	// obj->tipo = SPHERE;
+	// obj->sp.pos.x = 0.0;
+	// obj->sp.pos.y = 0.0;
+	// obj->sp.pos.z = 1.0;
+	// // obj->sp.pos = rotacao_x(obj->sp.pos, (2 * PI) - ((3 * PI) / 4));
+	// obj->sp.pos = rotacao_y(obj->sp.pos, ((3 * PI) / 4));
+	// obj->sp.raio = 0.375;
+	// obj->sp.cor = 0x8080FF;
+	// list_add(vars.objs, obj);
+
+	// testing spherical_to_vec
+
+	i = 0;
+	while (i < 8)
+	{
+		obj = (t_objeto *)malloc(sizeof(t_objeto));
+		obj->tipo = SPHERE;
+		obj->sp.pos = spherical_to_vec(1.0, i * (PI / 4), (PI / 2));
+		obj->sp.raio = 0.375;
+		obj->sp.cor = 0xFFFF80;
+		list_add(vars.objs, obj);
+		i++;
+	}
+
+
+	// obj = (t_objeto *)malloc(sizeof(t_objeto));
+	// obj->tipo = SPHERE;
+	// obj->sp.pos = spherical_to_vec(1.0, (PI / 2), (PI / 2));
+	// obj->sp.raio = 0.375;
+	// obj->sp.cor = 0xFFFF80;
+	// list_add(vars.objs, obj);
+
+	i = 0;
+	while (i < 8)
+	{
+		obj = (t_objeto *)malloc(sizeof(t_objeto));
+		obj->tipo = SPHERE;
+		obj->sp.pos = spherical_to_vec(1.0, (PI / 2), i * (PI / 4));
+		obj->sp.raio = 0.375;
+		obj->sp.cor = 0xFF80FF;
+		list_add(vars.objs, obj);
+		i++;
+	}
 
 	// LUZES
 
@@ -332,6 +385,7 @@ t_cam	empty_cam(void)
 	saida.fov = 90.0;
 	return (saida);
 }
+
 
 int		main(void)
 {

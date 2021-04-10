@@ -66,6 +66,7 @@ typedef struct	s_cam
 {
 	t_vec		pos;
 	// t_vec		normal;
+	t_vec		direc;
 	t_vec		rot;
 	double		fov;
 	int			p;
