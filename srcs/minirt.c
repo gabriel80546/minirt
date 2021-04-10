@@ -18,6 +18,11 @@ t_vec	spherical_to_vec(double radius, double inclination, double azimuth)
 	return (saida);
 }
 
+t_vec	spherical_to_vec_rt(double radius, double inclination, double azimuth)
+{
+	return spherical_to_vec(radius, inclination - (PI / 2), -azimuth - (PI / 2));
+}
+
 
 t_vars	config_cams(t_vars input)
 {
@@ -274,27 +279,26 @@ t_vars	config_scene_easy(t_vars input)
 	{
 		obj = (t_objeto *)malloc(sizeof(t_objeto));
 		obj->tipo = SPHERE;
-		obj->sp.pos = spherical_to_vec(1.0, i * (PI / 4), (PI / 2));
+		obj->sp.pos = spherical_to_vec_rt(1.0, i * (PI / 8), 0.0);
 		obj->sp.raio = 0.375;
 		obj->sp.cor = 0xFFFF80;
 		list_add(vars.objs, obj);
 		i++;
 	}
 
-
-	// obj = (t_objeto *)malloc(sizeof(t_objeto));
-	// obj->tipo = SPHERE;
-	// obj->sp.pos = spherical_to_vec(1.0, (PI / 2), (PI / 2));
-	// obj->sp.raio = 0.375;
-	// obj->sp.cor = 0xFFFF80;
-	// list_add(vars.objs, obj);
+	obj = (t_objeto *)malloc(sizeof(t_objeto));
+	obj->tipo = SPHERE;
+	obj->sp.pos = spherical_to_vec_rt(1.5, (PI / 4), (PI / 2));
+	obj->sp.raio = 0.375;
+	obj->sp.cor = 0x80FFFF;
+	list_add(vars.objs, obj);
 
 	i = 0;
 	while (i < 8)
 	{
 		obj = (t_objeto *)malloc(sizeof(t_objeto));
 		obj->tipo = SPHERE;
-		obj->sp.pos = spherical_to_vec(1.0, (PI / 2), i * (PI / 4));
+		obj->sp.pos = spherical_to_vec_rt(1.0, 0.0, i * (PI / 8));
 		obj->sp.raio = 0.375;
 		obj->sp.cor = 0xFF80FF;
 		list_add(vars.objs, obj);
