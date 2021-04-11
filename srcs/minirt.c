@@ -1,12 +1,9 @@
 
 #include "minirt.h"
 
-
 // double	direction_to_inc(t_vec direc)
 // {
-
 // }
-
 
 t_vec	spherical_to_vec(double radius, double inclination, double azimuth)
 {
@@ -23,6 +20,61 @@ t_vec	spherical_to_vec_rt(double radius, double inclination, double azimuth)
 	return spherical_to_vec(radius, inclination - (PI / 2), -azimuth - (PI / 2));
 }
 
+// double	vec_to_spherical_inc(t_vec direc)
+// {
+// 	double a;
+// 	double b;
+// 	double c;
+// 	double d;
+// 	double e;
+// 	double f;
+
+// 	a = direc.y;
+// 	if (a > 0)
+// 	{
+// 		f = a;
+// 		b = distance(empty_vec(), direc);
+// 		c = a / b;
+// 		e = acos(c);
+// 		d = acos(c);
+// 	}
+// 	else
+// 	{
+// 		f = a;
+// 		a = -a;
+// 		b = distance(empty_vec(), direc);
+// 		c = a / b;
+// 		e = acos(c);
+// 		d = acos(c) + PI;
+// 	}
+// 	printf("a = % lf; b = % lf; c = % lf; d = % lf; e = % lf; f = % lf\n", a, b, c, d, e, f);
+// 	// return (acos(direc.y / distance(empty_vec(), direc)));
+// 	return (d);
+// }
+
+double	vec_to_spherical_inc(t_vec direc)
+{
+	double a;
+	double b;
+	double c;
+	// double d;
+	double e;
+	// double f;
+
+	a = direc.z;
+	b = direc.x;
+	c = sqrt((a * a) + (b * b));
+	// d = atan2(c, direc.y);
+	e = atan2(direc.y, c);
+	// printf("a = % lf; b = % lf; c = % lf; d = % lf; e = % lf; f = % lf; (2 * PI) - e = % lf\n", a, b, c, d, e, f, (2 * PI) + e);
+	// return (acos(direc.y / distance(empty_vec(), direc)));
+	return (e);
+}
+
+double	vec_to_spherical_azi(t_vec direc)
+{
+	return (atan2(direc.x, direc.z));
+}
 
 t_vars	config_cams(t_vars input)
 {
@@ -200,7 +252,9 @@ t_vars	config_scene_easy(t_vars input)
 	t_vars		vars;
 	t_objeto	*obj;
 	t_light		*light;
-	// t_vec		normal;
+	// t_vec		direc;
+	// double		inc;
+	// double		azi;
 	int			i;
 
 	vars = input;
@@ -220,6 +274,7 @@ t_vars	config_scene_easy(t_vars input)
 	obj->sp.raio = 0.25;
 	obj->sp.cor = 0x606060;
 	vars.objs = list_init(obj);
+
 
 	// obj = (t_objeto *)malloc(sizeof(t_objeto));
 	// obj->tipo = SPHERE;
@@ -286,12 +341,6 @@ t_vars	config_scene_easy(t_vars input)
 		i++;
 	}
 
-	obj = (t_objeto *)malloc(sizeof(t_objeto));
-	obj->tipo = SPHERE;
-	obj->sp.pos = spherical_to_vec_rt(1.5, (PI / 4), (PI / 2));
-	obj->sp.raio = 0.375;
-	obj->sp.cor = 0x80FFFF;
-	list_add(vars.objs, obj);
 
 	i = 0;
 	while (i < 8)
