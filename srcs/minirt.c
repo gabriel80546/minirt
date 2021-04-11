@@ -5,76 +5,45 @@
 // {
 // }
 
-t_vec	spherical_to_vec(double radius, double inclination, double azimuth)
-{
-	t_vec saida;
+// t_vec	spherical_to_vec(double radius, double inclination, double azimuth)
+// {
+// 	t_vec saida;
 
-	saida.x = radius * cos(azimuth) * sin(inclination);
-	saida.y = radius * cos(inclination);
-	saida.z = radius * sin(azimuth) * sin(inclination);
-	return (saida);
-}
+// 	saida.x = radius * cos(azimuth) * sin(inclination);
+// 	saida.y = radius * cos(inclination);
+// 	saida.z = radius * sin(azimuth) * sin(inclination);
+// 	return (saida);
+// }
 
-t_vec	spherical_to_vec_rt(double radius, double inclination, double azimuth)
-{
-	return spherical_to_vec(radius, inclination - (PI / 2), -azimuth - (PI / 2));
-}
+// t_vec	spherical_to_vec_rt(double radius, double inclination, double azimuth)
+// {
+// 	return spherical_to_vec(radius, inclination - (PI / 2), -azimuth - (PI / 2));
+// }
+
 
 // double	vec_to_spherical_inc(t_vec direc)
 // {
 // 	double a;
 // 	double b;
 // 	double c;
-// 	double d;
+// 	// double d;
 // 	double e;
-// 	double f;
+// 	// double f;
 
-// 	a = direc.y;
-// 	if (a > 0)
-// 	{
-// 		f = a;
-// 		b = distance(empty_vec(), direc);
-// 		c = a / b;
-// 		e = acos(c);
-// 		d = acos(c);
-// 	}
-// 	else
-// 	{
-// 		f = a;
-// 		a = -a;
-// 		b = distance(empty_vec(), direc);
-// 		c = a / b;
-// 		e = acos(c);
-// 		d = acos(c) + PI;
-// 	}
-// 	printf("a = % lf; b = % lf; c = % lf; d = % lf; e = % lf; f = % lf\n", a, b, c, d, e, f);
+// 	a = direc.z;
+// 	b = direc.x;
+// 	c = sqrt((a * a) + (b * b));
+// 	// d = atan2(c, direc.y);
+// 	e = atan2(direc.y, c);
+// 	// printf("a = % lf; b = % lf; c = % lf; d = % lf; e = % lf; f = % lf; (2 * PI) - e = % lf\n", a, b, c, d, e, f, (2 * PI) + e);
 // 	// return (acos(direc.y / distance(empty_vec(), direc)));
-// 	return (d);
+// 	return (e);
 // }
 
-double	vec_to_spherical_inc(t_vec direc)
-{
-	double a;
-	double b;
-	double c;
-	// double d;
-	double e;
-	// double f;
-
-	a = direc.z;
-	b = direc.x;
-	c = sqrt((a * a) + (b * b));
-	// d = atan2(c, direc.y);
-	e = atan2(direc.y, c);
-	// printf("a = % lf; b = % lf; c = % lf; d = % lf; e = % lf; f = % lf; (2 * PI) - e = % lf\n", a, b, c, d, e, f, (2 * PI) + e);
-	// return (acos(direc.y / distance(empty_vec(), direc)));
-	return (e);
-}
-
-double	vec_to_spherical_azi(t_vec direc)
-{
-	return (atan2(direc.x, direc.z));
-}
+// double	vec_to_spherical_azi(t_vec direc)
+// {
+// 	return (atan2(direc.x, direc.z));
+// }
 
 t_vars	config_cams(t_vars input)
 {
@@ -141,12 +110,15 @@ t_vars	config_cams(t_vars input)
 	// }
 
 	cam = (t_cam *)malloc(sizeof(t_cam));
-	cam->pos.x = 0.0;
-	cam->pos.y = 0.0;
+	cam->pos.x =  0.0;
+	cam->pos.y =  0.0;
 	cam->pos.z = -3.0;
 	cam->rot.x = 0.0;
 	cam->rot.y = 0.0;
 	cam->rot.z = 0.0;
+	cam->direc.x = 0.0;
+	cam->direc.y = 0.0;
+	cam->direc.z = 3.0;
 	cam->p = 0;
 	cam->fov = 90.0;
 	// list_add(saida.cams, cam);
@@ -161,9 +133,12 @@ t_vars	config_cams(t_vars input)
 		cam->pos.y = 0.0;
 		cam->pos.z = -3.0;
 		cam->pos = rotacao_y(cam->pos, i * (PI / 16));
-		cam->rot.x = 0.0;
-		cam->rot.y = i * (PI / 16);
-		cam->rot.z = 0.0;
+		// cam->rot.x = 0.0;
+		// cam->rot.y = i * (PI / 16);
+		// cam->rot.z = 0.0;
+		cam->direc.x = -cam->pos.x;
+		cam->direc.y = -cam->pos.y;
+		cam->direc.z = -cam->pos.z;
 		cam->p = 0;
 		cam->fov = 90.0;
 		list_add(saida.cams, cam);
@@ -182,6 +157,9 @@ t_vars	config_cams(t_vars input)
 		cam->rot.x = i * (PI / 16);
 		cam->rot.y = 0.0;
 		cam->rot.z = 0.0;
+		cam->direc.x = -cam->pos.x;
+		cam->direc.y = -cam->pos.y;
+		cam->direc.z = -cam->pos.z;
 		cam->p = 0;
 		cam->fov = 90.0;
 		list_add(saida.cams, cam);
@@ -198,9 +176,12 @@ t_vars	config_cams(t_vars input)
 		cam->pos.z = -3.0;
 		cam->pos = rotacao_x(cam->pos, i * (PI / 16));
 		cam->pos = rotacao_y(cam->pos, i * (PI / 16));
-		cam->rot.x = i * (PI / 16);
-		cam->rot.y = i * (PI / 16);
-		cam->rot.z = 0.0;
+		// cam->rot.x = i * (PI / 16);
+		// cam->rot.y = i * (PI / 16);
+		// cam->rot.z = 0.0;
+		cam->direc.x = -cam->pos.x;
+		cam->direc.y = -cam->pos.y;
+		cam->direc.z = -cam->pos.z;
 		cam->p = 0;
 		cam->fov = 90.0;
 		list_add(saida.cams, cam);
@@ -216,9 +197,12 @@ t_vars	config_cams(t_vars input)
 		cam->pos.z = -3.0;
 		cam->pos = rotacao_x(cam->pos, 5 * (PI / 16));
 		cam->pos = rotacao_y(cam->pos, i * (PI / 16));
-		cam->rot.x = 5 * (PI / 16);
-		cam->rot.y = i * (PI / 16);
-		cam->rot.z = 0.0;
+		// cam->rot.x = 5 * (PI / 16);
+		// cam->rot.y = i * (PI / 16);
+		// cam->rot.z = 0.0;
+		cam->direc.x = -cam->pos.x;
+		cam->direc.y = -cam->pos.y;
+		cam->direc.z = -cam->pos.z;
 		cam->p = 0;
 		cam->fov = 90.0;
 		list_add(saida.cams, cam);
@@ -234,9 +218,12 @@ t_vars	config_cams(t_vars input)
 		cam->pos.z = -3.0;
 		cam->pos = rotacao_x(cam->pos, (32 - i) * (PI / 16));
 		cam->pos = rotacao_y(cam->pos, i * (PI / 16));
-		cam->rot.x = (32 - i) * (PI / 16);
-		cam->rot.y = i * (PI / 16);
-		cam->rot.z = 0.0;
+		// cam->rot.x = (32 - i) * (PI / 16);
+		// cam->rot.y = i * (PI / 16);
+		// cam->rot.z = 0.0;
+		cam->direc.x = -cam->pos.x;
+		cam->direc.y = -cam->pos.y;
+		cam->direc.z = -cam->pos.z;
 		cam->p = 0;
 		cam->fov = 90.0;
 		list_add(saida.cams, cam);

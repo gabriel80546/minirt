@@ -5,6 +5,8 @@
 
 # include <math.h>
 
+# define PI 3.1415926535897932384626433832795028841971
+
 typedef struct	s_solution
 {
 	double		s1;
@@ -40,5 +42,12 @@ t_vec			matrix_mult_vec(t_mat3by3 mat, t_vec vec);
 t_vec			rotacao_x(t_vec ponto, double angulo);
 t_vec			rotacao_y(t_vec ponto, double angulo);
 t_vec			rotacao_z(t_vec ponto, double angulo);
+
+
+t_vec			spherical_to_vec(double radius, double inclination, double azimuth);
+t_vec			spherical_to_vec_rt(double radius, double inclination, double azimuth);
+double			vec_to_spherical_inc(t_vec direc);
+double			vec_to_spherical_azi(t_vec direc);
+
 
 #endif
