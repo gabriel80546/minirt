@@ -2,37 +2,11 @@
 #include "minirt.h"
 
 
-t_vec	setup_tela_old(t_vars vars, int x, int y)
-{
-	t_vec	saida;
-	double	ttan;
-	double	tcam;
-
-	ttan = (tan((((vars.cam.fov) / 2.0) * PI) / 180.0));
-	tcam = (((vars.largura - vars.altura) / 2));
-	saida.x =  ((((2 * ttan) / vars.largura) * x) - ttan);
-	saida.y = -((((2 * ttan) / vars.largura) * (y + tcam)) - ttan);
-	saida.z =  1.0;
-
-	saida = rotacao_x(saida, vars.cam.rot.x);
-	saida = rotacao_y(saida, vars.cam.rot.y);
-
-	saida.x += vars.cam.pos.x;
-	saida.y += vars.cam.pos.y;
-	saida.z += vars.cam.pos.z;
-	return (saida);
-}
-
 t_vec	setup_tela(t_vars vars, int x, int y)
 {
 	t_vec	saida;
 	double	ttan;
 	double	tcam;
-	double	inc;
-	double	azi;
-	double	temp_inc;
-	double	temp_azi;
-	static int	rep = 0;
 
 	ttan = (tan((((vars.cam.fov) / 2.0) * PI) / 180.0));
 	tcam = (((vars.largura - vars.altura) / 2));
@@ -40,56 +14,12 @@ t_vec	setup_tela(t_vars vars, int x, int y)
 	saida.y = -((((2 * ttan) / vars.largura) * (y + tcam)) - ttan);
 	saida.z =  1.0;
 
-	// saida = rotacao_x(saida, vars.cam.rot.x);
-	// saida = rotacao_y(saida, vars.cam.rot.y);
-
-	if (rep % 100 == 0)
-		printf("x = % d; y = % d\n", x, y);
-	if (rep % 100 == 0)
-		printf("49: saida.x = % lf\n", saida.x);
-	if (rep % 100 == 0)
-		printf("51: saida.y = % lf\n", saida.y);
-	if (rep % 100 == 0)
-		printf("53: saida.z = % lf\n", saida.z);
-	if (rep % 100 == 0)
-		printf("55: vars.cam.pos.x = % lf\n", vars.cam.pos.x);
-	if (rep % 100 == 0)
-		printf("57: vars.cam.pos.y = % lf\n", vars.cam.pos.y);
-	if (rep % 100 == 0)
-		printf("59: vars.cam.pos.z = % lf\n", vars.cam.pos.z);
-
-
-	inc = vec_to_spherical_inc(saida);
-	azi = vec_to_spherical_azi(saida);
-	if (rep % 100 == 0)
-		printf("65: inc = % lf\n", inc);
-	if (rep % 100 == 0)
-		printf("67: azi = % lf\n", azi);
-
-	temp_inc = vec_to_spherical_inc(vars.cam.direc);
-	temp_azi = vec_to_spherical_azi(vars.cam.direc);
-	if (rep % 100 == 0)
-		printf("72: temp_inc = % lf\n", temp_inc);
-	if (rep % 100 == 0)
-		printf("74: temp_azi = % lf\n", temp_azi);
-	inc = inc + temp_inc;
-	azi = azi + temp_azi;
-	if (rep % 100 == 0)
-		printf("78: inc = % lf\n", inc);
-	if (rep % 100 == 0)
-		printf("80: azi = % lf\n", azi);
-	rep++;
-	saida = spherical_to_vec_rt(distance(empty_vec(), saida), inc, azi);
+	saida = rotacao_x(saida, -vec_to_spherical_inc(vars.cam.direc));
+	saida = rotacao_y(saida, vec_to_spherical_azi(vars.cam.direc));
 
 	saida.x += vars.cam.pos.x;
 	saida.y += vars.cam.pos.y;
 	saida.z += vars.cam.pos.z;
-	if (rep % 100 == 0)
-		printf("88: saida.x = % lf\n", saida.x);
-	if (rep % 100 == 0)
-		printf("90: saida.y = % lf\n", saida.y);
-	if (rep % 100 == 0)
-		printf("92: saida.z = % lf\n", saida.z);
 	return (saida);
 }
 
@@ -198,3 +128,8 @@ void	clear_screen(t_vars vars)
 		y++;
 	}
 }
+
+// d = normalize(d);
+// double yaw = Math.Atan2(d.X, d.Y);
+// double pitch = Math.Atan2(d.Z, Math.Sqrt((d.X * d.X) + (d.Y * d.Y)));
+// p.rotateXYZ(pitch, yaw, 0); //Roll == 0

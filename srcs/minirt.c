@@ -133,9 +133,9 @@ t_vars	config_cams(t_vars input)
 		cam->pos.y = 0.0;
 		cam->pos.z = -3.0;
 		cam->pos = rotacao_y(cam->pos, i * (PI / 16));
-		// cam->rot.x = 0.0;
-		// cam->rot.y = i * (PI / 16);
-		// cam->rot.z = 0.0;
+		cam->rot.x = 0.0;
+		cam->rot.y = i * (PI / 16);
+		cam->rot.z = 0.0;
 		cam->direc.x = -cam->pos.x;
 		cam->direc.y = -cam->pos.y;
 		cam->direc.z = -cam->pos.z;
@@ -176,9 +176,9 @@ t_vars	config_cams(t_vars input)
 		cam->pos.z = -3.0;
 		cam->pos = rotacao_x(cam->pos, i * (PI / 16));
 		cam->pos = rotacao_y(cam->pos, i * (PI / 16));
-		// cam->rot.x = i * (PI / 16);
-		// cam->rot.y = i * (PI / 16);
-		// cam->rot.z = 0.0;
+		cam->rot.x = i * (PI / 16);
+		cam->rot.y = i * (PI / 16);
+		cam->rot.z = 0.0;
 		cam->direc.x = -cam->pos.x;
 		cam->direc.y = -cam->pos.y;
 		cam->direc.z = -cam->pos.z;
@@ -197,9 +197,9 @@ t_vars	config_cams(t_vars input)
 		cam->pos.z = -3.0;
 		cam->pos = rotacao_x(cam->pos, 5 * (PI / 16));
 		cam->pos = rotacao_y(cam->pos, i * (PI / 16));
-		// cam->rot.x = 5 * (PI / 16);
-		// cam->rot.y = i * (PI / 16);
-		// cam->rot.z = 0.0;
+		cam->rot.x = 5 * (PI / 16);
+		cam->rot.y = i * (PI / 16);
+		cam->rot.z = 0.0;
 		cam->direc.x = -cam->pos.x;
 		cam->direc.y = -cam->pos.y;
 		cam->direc.z = -cam->pos.z;
@@ -218,9 +218,9 @@ t_vars	config_cams(t_vars input)
 		cam->pos.z = -3.0;
 		cam->pos = rotacao_x(cam->pos, (32 - i) * (PI / 16));
 		cam->pos = rotacao_y(cam->pos, i * (PI / 16));
-		// cam->rot.x = (32 - i) * (PI / 16);
-		// cam->rot.y = i * (PI / 16);
-		// cam->rot.z = 0.0;
+		cam->rot.x = (32 - i) * (PI / 16);
+		cam->rot.y = i * (PI / 16);
+		cam->rot.z = 0.0;
 		cam->direc.x = -cam->pos.x;
 		cam->direc.y = -cam->pos.y;
 		cam->direc.z = -cam->pos.z;
@@ -239,10 +239,10 @@ t_vars	config_scene_easy(t_vars input)
 	t_vars		vars;
 	t_objeto	*obj;
 	t_light		*light;
-	// t_vec		direc;
+	t_vec		direc;
 	// double		inc;
 	// double		azi;
-	int			i;
+	// int			i;
 
 	vars = input;
 	vars.largura = 600;
@@ -316,30 +316,73 @@ t_vars	config_scene_easy(t_vars input)
 
 	// testing spherical_to_vec
 
-	i = 0;
-	while (i < 8)
-	{
-		obj = (t_objeto *)malloc(sizeof(t_objeto));
-		obj->tipo = SPHERE;
-		obj->sp.pos = spherical_to_vec_rt(1.0, i * (PI / 8), 0.0);
-		obj->sp.raio = 0.375;
-		obj->sp.cor = 0xFFFF80;
-		list_add(vars.objs, obj);
-		i++;
-	}
+	// i = 0;
+	// while (i < 8)
+	// {
+	// 	obj = (t_objeto *)malloc(sizeof(t_objeto));
+	// 	obj->tipo = SPHERE;
+	// 	obj->sp.pos = spherical_to_vec_rt(1.0, i * (PI / 8), 0.0);
+	// 	obj->sp.raio = 0.375;
+	// 	obj->sp.cor = 0xFFFF80;
+	// 	list_add(vars.objs, obj);
+	// 	i++;
+	// }
 
 
-	i = 0;
-	while (i < 8)
-	{
-		obj = (t_objeto *)malloc(sizeof(t_objeto));
-		obj->tipo = SPHERE;
-		obj->sp.pos = spherical_to_vec_rt(1.0, 0.0, i * (PI / 8));
-		obj->sp.raio = 0.375;
-		obj->sp.cor = 0xFF80FF;
-		list_add(vars.objs, obj);
-		i++;
-	}
+	// i = 0;
+	// while (i < 8)
+	// {
+	// 	obj = (t_objeto *)malloc(sizeof(t_objeto));
+	// 	obj->tipo = SPHERE;
+	// 	obj->sp.pos = spherical_to_vec_rt(1.0, 0.0, i * (PI / 8));
+	// 	obj->sp.raio = 0.375;
+	// 	obj->sp.cor = 0xFF80FF;
+	// 	list_add(vars.objs, obj);
+	// 	i++;
+	// }
+
+
+
+	obj = (t_objeto *)malloc(sizeof(t_objeto));
+	obj->tipo = SPHERE;
+	obj->sp.pos.x =  1.0;
+	obj->sp.pos.y =  1.0;
+	obj->sp.pos.z =  1.0;
+	obj->sp.raio = 0.5;
+	obj->sp.cor = 0xFF8080;
+	list_add(vars.objs, obj);
+
+	obj = (t_objeto *)malloc(sizeof(t_objeto));
+	obj->tipo = SPHERE;
+	obj->sp.pos.x = -1.0;
+	obj->sp.pos.y =  1.0;
+	obj->sp.pos.z =  1.0;
+	obj->sp.raio = 0.5;
+	obj->sp.cor = 0x80FF80;
+	list_add(vars.objs, obj);
+
+	obj = (t_objeto *)malloc(sizeof(t_objeto));
+	obj->tipo = SPHERE;
+	obj->sp.pos.x =  1.0;
+	obj->sp.pos.y =  1.0;
+	obj->sp.pos.z = -1.0;
+	obj->sp.raio = 0.5;
+	obj->sp.cor = 0x8080FF;
+	list_add(vars.objs, obj);
+
+
+	direc.x =  1.0;
+	direc.y =  1.2;
+	direc.z =  1.0;
+
+	obj = (t_objeto *)malloc(sizeof(t_objeto));
+	obj->tipo = SPHERE;
+	obj->sp.pos = direc;
+	obj->sp.raio = 0.5;
+	obj->sp.cor = 0xFF80FF;
+	list_add(vars.objs, obj);
+
+	// printf("distance(empty_vec(), direc) = % lf\n", distance(empty_vec(), direc));
 
 	// LUZES
 
@@ -439,7 +482,7 @@ int		main(void)
 		vars.cam = empty_cam();
 	vars = config_scene_easy(vars);
 	vars.mlx = mlx_init();
-	vars.win = mlx_new_window(vars.mlx, vars.largura, vars.altura, "minirt");
+	vars.win = mlx_new_window(vars.mlx, vars.largura, vars.altura, "TITULO");
 	draw(vars);
 	clean_all(vars);
 	mlx_key_hook(vars.win, key_hook, &vars);
