@@ -130,8 +130,8 @@ t_list		*sanitize_cruz_two(t_vec cam, t_vec tela, t_list *result)
 		while (saida != NULL)
 		{
 			if (save_to_delete == NULL &&
-				(distance(*(t_vec *)saida->data, tela) > distance(*(t_vec *)saida->data, cam) ||
-				distance(*(t_vec *)saida->data, cam) < distance(cam, tela)))
+				(distance(*(t_vec *)saida->data, tela) > distance(*(t_vec *)saida->data, cam) &&
+				distance(*(t_vec *)saida->data, cam) > distance(cam, tela)))
 				save_to_delete = saida;
 			temp_list = saida;
 			saida = saida->next;
