@@ -134,7 +134,7 @@ t_vars	config_scene_easy(t_vars input)
 	obj->sp.pos.x = 0.0;
 	obj->sp.pos.y = 0.0;
 	obj->sp.pos.z = 0.0;
-	obj->sp.raio = 0.25;
+	obj->sp.diametro = 0.5;
 	obj->sp.cor = 0x606060;
 	vars.objs = list_init(obj);
 
@@ -143,7 +143,7 @@ t_vars	config_scene_easy(t_vars input)
 	obj->sp.pos.x =  1.0;
 	obj->sp.pos.y =  1.0;
 	obj->sp.pos.z =  1.0;
-	obj->sp.raio = 0.5;
+	obj->sp.diametro = 1.0;
 	obj->sp.cor = 0xFF8080;
 	list_add(vars.objs, obj);
 
@@ -152,7 +152,7 @@ t_vars	config_scene_easy(t_vars input)
 	obj->sp.pos.x = -1.0;
 	obj->sp.pos.y =  1.0;
 	obj->sp.pos.z =  1.0;
-	obj->sp.raio = 0.5;
+	obj->sp.diametro = 1.0;
 	obj->sp.cor = 0x80FF80;
 	list_add(vars.objs, obj);
 
@@ -161,7 +161,7 @@ t_vars	config_scene_easy(t_vars input)
 	obj->sp.pos.x =  1.0;
 	obj->sp.pos.y =  1.0;
 	obj->sp.pos.z = -1.0;
-	obj->sp.raio = 0.5;
+	obj->sp.diametro = 1.0;
 	obj->sp.cor = 0x8080FF;
 	list_add(vars.objs, obj);
 
@@ -172,7 +172,7 @@ t_vars	config_scene_easy(t_vars input)
 	obj = (t_objeto *)malloc(sizeof(t_objeto));
 	obj->tipo = SPHERE;
 	obj->sp.pos = direc;
-	obj->sp.raio = 0.5;
+	obj->sp.diametro = 1.0;
 	obj->sp.cor = 0xFF80FF;
 	list_add(vars.objs, obj);
 

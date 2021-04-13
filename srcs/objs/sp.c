@@ -24,27 +24,6 @@ int		cruza_sp(t_vec A, t_vec B, t_esfera sp)
 		return (0);
 }
 
-/*
-	obj = (t_objeto *)malloc(sizeof(t_objeto));
-	obj->tipo = SPHERE;
-	obj->sp.pos.x =  -1.0;
-	obj->sp.pos.y =   0.5;
-	obj->sp.pos.z =   5.5;
-	obj->sp.raio  =   1.75;
-	obj->sp.cor   = 0x800000;
-	vars.objs = list_init(obj);
-
-	obj = (t_objeto *)malloc(sizeof(t_objeto));
-	obj->tipo = SPHERE;
-	obj->sp.pos.x =   1.0;
-	obj->sp.pos.y =   0.0;
-	obj->sp.pos.z =   5.0;
-	obj->sp.raio  =   2.0;
-	obj->sp.cor   = 0x000080;
-	list_add(vars.objs, obj);
-*/
-
-
 t_list	*cruzamento_sp_reta(t_vec A, t_vec B, t_esfera sp)
 {
 	t_coeff coeff;
@@ -112,7 +91,7 @@ t_coeff	get_sp_coeff(t_vec A, t_vec B, t_esfera sp)
 	saida.b += (2 * x * y);
 	saida.c += (x * x);
 
-	saida.c -= (sp.raio * sp.raio);
+	saida.c -= ((sp.diametro / 2) * (sp.diametro / 2));
 	return (saida);
 }
 
