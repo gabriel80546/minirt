@@ -1,7 +1,6 @@
 
 #include "minirt.h"
 
-
 t_vec	setup_tela(t_vars vars, int x, int y)
 {
 	t_vec	saida;
@@ -14,7 +13,7 @@ t_vec	setup_tela(t_vars vars, int x, int y)
 	saida.y = -((((2 * ttan) / vars.largura) * (y + tcam)) - ttan);
 	saida.z =  1.0;
 
-	saida = rotacao_x(saida, -vec_to_spherical_inc(vars.cam.direc));
+	saida = rotacao_x(saida, vec_to_spherical_inc(vars.cam.direc));
 	saida = rotacao_y(saida, vec_to_spherical_azi(vars.cam.direc));
 
 	saida.x += vars.cam.pos.x;
@@ -23,7 +22,7 @@ t_vec	setup_tela(t_vars vars, int x, int y)
 	return (saida);
 }
 
-void	draw_main(t_vars vars, int x, int y)
+void	draw_main(t_vars vars, int x, int y, t_img img)
 {
 	t_vec		tela;
 	t_list		*hits;
@@ -37,7 +36,6 @@ void	draw_main(t_vars vars, int x, int y)
 	int			cor;
 	t_cor_had	had;
 	t_cor_had	result;
-	// t_cor_had	final;
 
 	tela = setup_tela(vars, x, y);
 	vars.cam.p = 1;
@@ -74,7 +72,6 @@ void	draw_main(t_vars vars, int x, int y)
 			iluminados = iluminados->next;
 		}
 		result = norm_had(mult_had(to_had(cor), had));
-		// 0.299R + 0.587G + 0.114B;
 		if (vars.gray == 1)
 		{
 			result.r = (result.r * 0.299) + (result.g * 0.587) + (result.b * 0.114);
@@ -82,10 +79,9 @@ void	draw_main(t_vars vars, int x, int y)
 			result.b = result.r;
 		}
 		cor = to_rgb(result);
-		// printf("cor\n")
 		iluminados = first_item(temp_luz);
 		if (counter >= 0)
-			mlx_pixel_put(vars.mlx, vars.win, x, y, cor);
+			*((unsigned int *)img.data + (x + (y * img.size_line / (img.bits_per_pixel / img.bits_per_byte)))) = cor;
 		clear_list(iluminados);
 		clear_list_all(hits);
 		hits = NULL;
@@ -96,6 +92,11 @@ void	draw(t_vars vars)
 {
 	int	x;
 	int	y;
+	t_img	img;
+
+	img.ptr = mlx_new_image(vars.mlx, vars.largura, vars.altura);
+	img.data = mlx_get_data_addr(img.ptr, &img.bits_per_pixel, &img.size_line, &img.endian);
+	img.bits_per_byte = 8;
 
 	y = 0;
 	while (y < vars.altura)
@@ -103,12 +104,14 @@ void	draw(t_vars vars)
 		x = 0;
 		while (x < vars.largura)
 		{
-			draw_main(vars, x, y);
+			draw_main(vars, x, y, img);
 			vars.cam.p = 1;
 			x++;
 		}
 		y++;
 	}
+	mlx_put_image_to_window(vars.mlx, vars.win, img.ptr, 0, 0);
+	mlx_destroy_image(vars.mlx, img.ptr);
 }
 
 void	clear_screen(t_vars vars)
@@ -128,8 +131,3 @@ void	clear_screen(t_vars vars)
 		y++;
 	}
 }
-
-// d = normalize(d);
-// double yaw = Math.Atan2(d.X, d.Y);
-// double pitch = Math.Atan2(d.Z, Math.Sqrt((d.X * d.X) + (d.Y * d.Y)));
-// p.rotateXYZ(pitch, yaw, 0); //Roll == 0

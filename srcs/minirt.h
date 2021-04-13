@@ -100,6 +100,15 @@ typedef struct	s_cor_had
 	double		b;
 }				t_cor_had;
 
+typedef struct s_img
+{
+	void		*ptr;
+	int			bits_per_pixel;
+	int			size_line;
+	int			endian;
+	int			bits_per_byte;
+	char		*data;
+}				t_img;
 
 t_reta		empty_reta(void);
 t_vec		empty_vec(void);
@@ -129,5 +138,6 @@ t_cor_had	norm_had(t_cor_had input);
 t_cor_had	mult_had(t_cor_had a, t_cor_had b);
 t_cor_had	sum_had(t_cor_had a, t_cor_had b);
 
+void		test_image(t_vars vars);
 
 #endif

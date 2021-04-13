@@ -9,4 +9,4 @@ gcc -Wall -Wextra -g *.c
  -I ../assets/minilibx-linux
  -I ../headers/list
  -I ../headers/math
- -L ../assets/minilibx-linux -lm -lmlx -lXext -lX11 -o minirt
+ -L ../assets/minilibx-linux -lm -lmlx -lXext -lX11 -o miniRT

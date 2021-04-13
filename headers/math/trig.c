@@ -47,7 +47,7 @@ double	vec_to_spherical_inc(t_vec direc)
 	e = atan2(direc.y, c);
 	// printf("a = % lf; b = % lf; c = % lf; d = % lf; e = % lf; f = % lf; (2 * PI) - e = % lf\n", a, b, c, d, e, f, (2 * PI) + e);
 	// return (acos(direc.y / distance(empty_vec(), direc)));
-	return (e);
+	return (-e);
 }
 
 double	vec_to_spherical_azi(t_vec direc)
