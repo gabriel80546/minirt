@@ -34,7 +34,10 @@ int	can_light_see_this_hit(t_hit hit, t_vars vars, t_light light)
 	first = 0;
 	while (vars.objs != NULL)
 	{
-		result = cruzamento_sp_reta(hit.ponto, light.pos, *((t_esfera *)vars.objs->data));
+		if (((t_objeto *)vars.objs->data)->tipo == SPHERE)
+			result = cruzamento_sp_reta(hit.ponto, light.pos, ((t_objeto *)vars.objs->data)->sp);
+		else if (((t_objeto *)vars.objs->data)->tipo == PLANE)
+			result = cruzamento_pl_reta(hit.ponto, light.pos, ((t_objeto *)vars.objs->data)->pl);
 		if (result != NULL)
 			result = first_item(result);
 		temp_result = NULL;

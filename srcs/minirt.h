@@ -44,16 +44,25 @@ typedef struct	s_reta_or_n
 }				t_reta_or_n;
 
 
-typedef struct	s_esfera{
+typedef struct	s_esfera
+{
 	t_vec		pos;
 	double		diametro;
 	int			cor;
 }				t_esfera;
 
+typedef struct	s_plano
+{
+	t_vec		pos;
+	t_vec		direc;
+	int			cor;
+}				t_plano;
+
 typedef struct	s_objeto
 {
-	t_esfera	sp;
 	int			tipo;
+	t_esfera	sp;
+	t_plano		pl;
 }				t_objeto;
 
 typedef struct	s_hit
@@ -65,7 +74,6 @@ typedef struct	s_hit
 typedef struct	s_cam
 {
 	t_vec		pos;
-	// t_vec		normal;
 	t_vec		direc;
 	t_vec		rot;
 	double		fov;
@@ -139,5 +147,8 @@ t_cor_had	mult_had(t_cor_had a, t_cor_had b);
 t_cor_had	sum_had(t_cor_had a, t_cor_had b);
 
 void		test_image(t_vars vars);
+
+
+t_list		*cruzamento_pl_reta(t_vec A, t_vec B, t_plano pl);
 
 #endif

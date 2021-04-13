@@ -12,7 +12,10 @@ t_list	*get_all_hits(t_vars vars, t_vec tela)
 	hits = NULL;
 	while (vars.objs != NULL)
 	{
-		result = cruzamento_sp_reta(vars.cam.pos, tela, *((t_esfera *)vars.objs->data));
+		if (((t_objeto *)vars.objs->data)->tipo == SPHERE)
+			result = cruzamento_sp_reta(vars.cam.pos, tela, ((t_objeto *)vars.objs->data)->sp);
+		else if (((t_objeto *)vars.objs->data)->tipo == PLANE)
+			result = cruzamento_pl_reta(vars.cam.pos, tela, ((t_objeto *)vars.objs->data)->pl);
 		result = sanitize_cruz_two(vars.cam.pos, tela, result);
 		if (result != NULL)
 			result = first_item(result);

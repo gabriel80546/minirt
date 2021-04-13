@@ -126,6 +126,20 @@ t_vars	config_scene_easy(t_vars input)
 	vars.gray = 0;
 	vars.ambient = 0x333333;
 	vars.objs = NULL;
+	obj = NULL;
+
+	// PLANOS
+
+	obj = (t_objeto *)malloc(sizeof(t_objeto));
+	obj->tipo = PLANE;
+	obj->pl.pos.x =  0.0;
+	obj->pl.pos.y = -1.0;
+	obj->pl.pos.z =  0.0;
+	obj->pl.direc.x = 0.0;
+	obj->pl.direc.y = 1.0;
+	obj->pl.direc.z = 0.0;
+	obj->pl.cor = 0xFF0000;
+	vars.objs = list_init(obj);
 
 	// ESFERAS
 
@@ -136,7 +150,8 @@ t_vars	config_scene_easy(t_vars input)
 	obj->sp.pos.z = 0.0;
 	obj->sp.diametro = 0.5;
 	obj->sp.cor = 0x606060;
-	vars.objs = list_init(obj);
+	// vars.objs = list_init(obj);
+	list_add(vars.objs, obj);
 
 	obj = (t_objeto *)malloc(sizeof(t_objeto));
 	obj->tipo = SPHERE;
@@ -175,6 +190,10 @@ t_vars	config_scene_easy(t_vars input)
 	obj->sp.diametro = 1.0;
 	obj->sp.cor = 0xFF80FF;
 	list_add(vars.objs, obj);
+
+
+
+
 
 	// LUZES
 
