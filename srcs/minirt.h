@@ -77,7 +77,6 @@ typedef struct	s_cam
 	t_vec		direc;
 	t_vec		rot;
 	double		fov;
-	int			p;
 }				t_cam;
 
 typedef struct	s_light
@@ -118,6 +117,21 @@ typedef struct s_img
 	char		*data;
 }				t_img;
 
+typedef struct	s_debug
+{
+	int			x;
+	int			y;
+	int			x_bugado;
+	int			y_bugado;
+	int			x_iluminado;
+	int			y_iluminado;
+	int			x_sombreado;
+	int			y_sombreado;
+	int			plane_pixels;
+	int			plane_iluminated;
+}				t_debug;
+
+
 t_reta		empty_reta(void);
 t_vec		empty_vec(void);
 t_coeff		get_sp_coeff(t_vec A, t_vec B, t_esfera sp/* , int print_flag */);
@@ -131,8 +145,7 @@ int			cruza_sp(t_vec A, t_vec B, t_esfera sp);
 t_hit		closest_hit(t_list *hits, t_vec pos);
 t_list		*get_all_hits(t_vars vars, t_vec tela);
 
-int			can_light_see_this_hit_one_obj(t_hit temp_temp_hit, /* t_vars vars, */ t_list *result, t_light light);
-int			can_light_see_this_hit(t_hit hit, t_vars vars, t_light light);
+int			can_light_see_this_hit(t_hit hit, t_vars vars, t_light light, t_debug deb);
 int			compute_color(double intensity, int input);
 
 void		draw(t_vars vars);

@@ -27,14 +27,17 @@ t_list	*cruzamento_pl_reta(t_vec A, t_vec B, t_plano pl)
 	q = (pl.direc.x * (B.x - A.x)) +
 		(pl.direc.y * (B.y - A.y)) +
 		(pl.direc.z * (B.z - A.z));
-	t = p / q;
-	if (!isnan(t) && t < INFINITY && t > -INFINITY)
+	if (q != 0.0)
 	{
-		vec_saida = (t_vec *)malloc(sizeof(t_vec));
-		vec_saida->x = A.x + ((B.x - A.x) * t);
-		vec_saida->y = A.y + ((B.y - A.y) * t);
-		vec_saida->z = A.z + ((B.z - A.z) * t);
-		saida = list_init(vec_saida);
+		t = p / q;
+		if (!isnan(t) && t < INFINITY && t > -INFINITY)
+		{
+			vec_saida = (t_vec *)malloc(sizeof(t_vec));
+			vec_saida->x = A.x + ((B.x - A.x) * t);
+			vec_saida->y = A.y + ((B.y - A.y) * t);
+			vec_saida->z = A.z + ((B.z - A.z) * t);
+			saida = list_init(vec_saida);
+		}
 	}
 	return (saida);
 }
