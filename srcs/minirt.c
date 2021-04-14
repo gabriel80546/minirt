@@ -39,22 +39,22 @@ t_vars	config_cams(t_vars input)
 		i++;
 	}
 
-	i = 0;
-	while (i < 32)
-	{
-		cam = (t_cam *)malloc(sizeof(t_cam));
-		cam->pos.x = 0.0;
-		cam->pos.y = 0.0;
-		cam->pos.z = -3.0;
-		cam->pos = rotacao_x(cam->pos, i * (PI / 16));
-		cam->direc.x = -cam->pos.x;
-		cam->direc.y = -cam->pos.y;
-		cam->direc.z = -cam->pos.z;
-		cam->p = 0;
-		cam->fov = 90.0;
-		list_add(saida.cams, cam);
-		i++;
-	}
+	// i = 0;
+	// while (i < 32)
+	// {
+	// 	cam = (t_cam *)malloc(sizeof(t_cam));
+	// 	cam->pos.x = 0.0;
+	// 	cam->pos.y = 0.0;
+	// 	cam->pos.z = -3.0;
+	// 	cam->pos = rotacao_x(cam->pos, i * (PI / 16));
+	// 	cam->direc.x = -cam->pos.x;
+	// 	cam->direc.y = -cam->pos.y;
+	// 	cam->direc.z = -cam->pos.z;
+	// 	cam->p = 0;
+	// 	cam->fov = 90.0;
+	// 	list_add(saida.cams, cam);
+	// 	i++;
+	// }
 
 	i = 0;
 	while (i < 6)
@@ -198,31 +198,31 @@ t_vars	config_scene_easy(t_vars input)
 	// LUZES
 
 	vars.lights = NULL;
-	light = (t_light *)malloc(sizeof(t_light));
-	light->bright = 0.3;
-	light->pos.x = 1.0;
-	light->pos.y = 2.0;
-	light->pos.z = -2.0;
-	light->cor = 0xFFFFFF;
-	vars.lights = list_init(light);
+	// light = (t_light *)malloc(sizeof(t_light));
+	// light->bright = 0.9;
+	// light->pos.x = 1.0;
+	// light->pos.y = 2.0;
+	// light->pos.z = -2.0;
+	// light->cor = 0xFFFFFF;
+	// vars.lights = list_init(light);
 
 	light = (t_light *)malloc(sizeof(t_light));
-	light->bright = 0.3;
+	light->bright = 0.9;
 	light->pos.x = -1.0;
 	light->pos.y = 2.0;
 	light->pos.z = -2.0;
 	light->cor = 0xFFFFFF;
-	// vars.lights = list_init(light);
-	list_add(vars.lights, light);
+	vars.lights = list_init(light);
+	// list_add(vars.lights, light);
 
-	light = (t_light *)malloc(sizeof(t_light));
-	light->bright = 0.3;
-	light->pos.x = -3.0;
-	light->pos.y = 5.0;
-	light->pos.z = -2.0;
-	light->cor = 0xFFFFFF;
-	// vars.lights = list_init(light);
-	list_add(vars.lights, light);
+	// light = (t_light *)malloc(sizeof(t_light));
+	// light->bright = 0.3;
+	// light->pos.x = -3.0;
+	// light->pos.y = 5.0;
+	// light->pos.z = -2.0;
+	// light->cor = 0xFFFFFF;
+	// // vars.lights = list_init(light);
+	// list_add(vars.lights, light);
 
 	return (vars);
 }
