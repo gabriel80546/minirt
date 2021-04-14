@@ -28,7 +28,7 @@ t_list	*cruzamento_pl_reta(t_vec A, t_vec B, t_plano pl)
 		(pl.direc.y * (B.y - A.y)) +
 		(pl.direc.z * (B.z - A.z));
 	t = p / q;
-	if (!isnan(t))
+	if (!isnan(t) && t < INFINITY && t > -INFINITY)
 	{
 		vec_saida = (t_vec *)malloc(sizeof(t_vec));
 		vec_saida->x = A.x + ((B.x - A.x) * t);

@@ -36,6 +36,7 @@ void	draw_main(t_vars vars, int x, int y, t_img img)
 	int			cor;
 	t_cor_had	had;
 	t_cor_had	result;
+	// static int	umavez = 0;
 
 	tela = setup_tela(vars, x, y);
 	vars.cam.p = 1;
@@ -58,12 +59,18 @@ void	draw_main(t_vars vars, int x, int y, t_img img)
 			vars.lights = vars.lights->next;
 		}
 		counter = 0;
-		cor = hit.obj.sp.cor;
+		if (hit.obj.tipo == SPHERE)
+			cor = hit.obj.sp.cor;
+		else if (hit.obj.tipo == PLANE)
+			cor = hit.obj.pl.cor;
 		had = to_had(vars.ambient);
 		temp_luz = NULL;
 		while (iluminados != NULL)
 		{
-			intensity = ((acos(cosine_law(((t_light *)iluminados->data)->pos, hit.ponto, hit.obj.sp.pos)) * (180.0 / PI) - 90.0) / 90.0);
+			if (hit.obj.tipo == SPHERE)
+				intensity = ((acos(cosine_law(((t_light *)iluminados->data)->pos, hit.ponto, hit.obj.sp.pos)) * (180.0 / PI) - 90.0) / 90.0);
+			else if (hit.obj.tipo == PLANE)
+				intensity = 1.0;
 			had.r += (intensity * ((t_light *)iluminados->data)->bright);
 			had.g += (intensity * ((t_light *)iluminados->data)->bright);
 			had.b += (intensity * ((t_light *)iluminados->data)->bright);
