@@ -242,7 +242,7 @@ t_vars	config_scene_easy(t_vars input)
 
 	vars.lights = NULL;
 	light = (t_light *)malloc(sizeof(t_light));
-	light->bright = 0.5;
+	light->bright = 0.7;
 	light->pos.x = temp_direc.x;
 	light->pos.y = temp_direc.y;
 	light->pos.z = temp_direc.z;
