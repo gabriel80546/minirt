@@ -1,7 +1,38 @@
 
 #include "minirt.h"
 
-int	can_light_see_this_hit(t_hit hit, t_vars vars, t_light light, t_debug deb)
+
+t_list	*sanitize_cruz_three(t_hit hit, t_vec luz, t_list *result)
+{
+	t_list	*saida;
+	t_list	*save_to_delete;
+	t_list	*temp_list;
+
+	saida = result;
+	while (1)
+	{
+		save_to_delete = NULL;
+		temp_list = NULL;
+		while (saida != NULL)
+		{
+			if (save_to_delete == NULL &&
+				(distance(*(t_vec *)saida->data, hit.ponto) > distance(hit.ponto, luz)))
+			{
+				save_to_delete = saida;
+			}
+			temp_list = saida;
+			saida = saida->next;
+		}
+		if (save_to_delete != NULL)
+			temp_list = list_delone_free(save_to_delete);
+		saida = first_item(temp_list);
+		if (save_to_delete == NULL)
+			break;
+	}
+	return (saida);
+}
+
+int	can_light_see_this_hit(t_hit hit, t_vars vars, t_light light)
 {
 	t_list		*result;
 	t_list		*temp_result;
@@ -12,11 +43,6 @@ int	can_light_see_this_hit(t_hit hit, t_vars vars, t_light light, t_debug deb)
 	int			first;
 	int			saida;
 
-	if ((deb.x == deb.x_bugado && deb.y == deb.y_bugado) ||
-		(deb.x == deb.x_iluminado && deb.y == deb.y_iluminado) ||
-		(deb.x == deb.x_sombreado && deb.y == deb.x_sombreado))
-		printf("%s(%s:%d): achei meu ponto\n", __FILE__, __func__, __LINE__);
-
 	saida = 0;
 	smaller = 0.0;
 	ponto_teste = empty_vec();
@@ -26,10 +52,8 @@ int	can_light_see_this_hit(t_hit hit, t_vars vars, t_light light, t_debug deb)
 		if (((t_objeto *)vars.objs->data)->tipo == SPHERE)
 			result = cruzamento_sp_reta(hit.ponto, light.pos, ((t_objeto *)vars.objs->data)->sp);
 		else if (((t_objeto *)vars.objs->data)->tipo == PLANE)
-		{
 			result = cruzamento_pl_reta(hit.ponto, light.pos, ((t_objeto *)vars.objs->data)->pl);
-			// result = sanitize_cruz_two(vars.cam.pos, tela, result);
-		}
+		result = sanitize_cruz_three(hit, light.pos, result);
 		if (result != NULL)
 			result = first_item(result);
 		temp_result = NULL;
@@ -52,18 +76,6 @@ int	can_light_see_this_hit(t_hit hit, t_vars vars, t_light light, t_debug deb)
 		vars.objs = vars.objs->next;
 	}
 	vars.objs = first_item(temp_list);
-	// if (meu_ponto == 1)
-	// {
-	// 	printf("%s(%s:%d): result = %p\n", __FILE__, __func__, __LINE__, result);
-	// 	printf("%s(%s:%d): ponto_teste.x = % 6.6lf\n", __FILE__, __func__, __LINE__, ponto_teste.x);
-	// 	printf("%s(%s:%d): ponto_teste.y = % 6.6lf\n", __FILE__, __func__, __LINE__, ponto_teste.y);
-	// 	printf("%s(%s:%d): ponto_teste.z = % 6.6lf\n", __FILE__, __func__, __LINE__, ponto_teste.z);
-	// 	printf("%s(%s:%d): hit.ponto.x = % 6.6lf\n", __FILE__, __func__, __LINE__, hit.ponto.x);
-	// 	printf("%s(%s:%d): hit.ponto.y = % 6.6lf\n", __FILE__, __func__, __LINE__, hit.ponto.y);
-	// 	printf("%s(%s:%d): hit.ponto.z = % 6.6lf\n", __FILE__, __func__, __LINE__, hit.ponto.z);
-	// 	printf("%s(%s:%d): distance(light.pos, hit.ponto) = % 6.6lf\n", __FILE__, __func__, __LINE__, distance(light.pos, hit.ponto));
-	// 	printf("%s(%s:%d): distance(light.pos, ponto_teste) + EPSILON = % 6.6lf\n", __FILE__, __func__, __LINE__, distance(light.pos, ponto_teste) + EPSILON);
-	// }
 	if (distance(light.pos, ponto_teste) + EPSILON <
 		distance(light.pos, hit.ponto))
 		saida = 0;
