@@ -121,7 +121,7 @@ t_vars	config_scene_easy(t_vars input)
 	vars.largura = 400;
 	vars.altura = 300;
 	vars.gray = 0;
-	vars.ambient = 0x505050;
+	vars.ambient = 0x404040;
 	vars.objs = NULL;
 	obj = NULL;
 
@@ -242,7 +242,7 @@ t_vars	config_scene_easy(t_vars input)
 
 	vars.lights = NULL;
 	light = (t_light *)malloc(sizeof(t_light));
-	light->bright = 0.7;
+	light->bright = 0.8;
 	light->pos.x = temp_direc.x;
 	light->pos.y = temp_direc.y;
 	light->pos.z = temp_direc.z;
