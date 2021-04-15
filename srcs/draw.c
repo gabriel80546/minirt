@@ -68,7 +68,7 @@ void	draw_main(t_vars vars, int x, int y, t_img img)
 			if (hit.obj.tipo == SPHERE)
 				intensity = ((acos(cosine_law(((t_light *)iluminados->data)->pos, hit.ponto, hit.obj.sp.pos)) * (180.0 / PI) - 90.0) / 90.0);
 			else if (hit.obj.tipo == PLANE)
-				intensity = 1.0;
+				intensity = ((acos(cosine_law(((t_light *)iluminados->data)->pos, hit.ponto, empty_vec())) * (001.0 / 1.0) - 00.0) / 1.0);
 			had.r += (intensity * ((t_light *)iluminados->data)->bright);
 			had.g += (intensity * ((t_light *)iluminados->data)->bright);
 			had.b += (intensity * ((t_light *)iluminados->data)->bright);
