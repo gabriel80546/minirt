@@ -20,7 +20,6 @@ t_vars	config_cams(t_vars input)
 	cam->fov = 90.0;
 	saida.cams = list_init(cam);
 	// list_add(saida.cams, cam);
-
 	i = 0;
 	while (i < 32)
 	{
@@ -37,6 +36,60 @@ t_vars	config_cams(t_vars input)
 		i++;
 	}
 
+
+
+	i = 0;
+	while (i < 6)
+	{
+		cam = (t_cam *)malloc(sizeof(t_cam));
+		cam->pos.x = 0.0;
+		cam->pos.y = 0.0;
+		cam->pos.z = -3.0;
+		cam->pos = rotacao_x(cam->pos, i * (PI / 16));
+		cam->pos = rotacao_y(cam->pos, i * (PI / 16));
+		cam->direc.x = -cam->pos.x;
+		cam->direc.y = -cam->pos.y;
+		cam->direc.z = -cam->pos.z;
+		cam->fov = 90.0;
+		list_add(saida.cams, cam);
+		i++;
+	}
+
+	i = 5;
+	while (i < (32 - 5))
+	{
+		cam = (t_cam *)malloc(sizeof(t_cam));
+		cam->pos.x = 0.0;
+		cam->pos.y = 0.0;
+		cam->pos.z = -3.0;
+		cam->pos = rotacao_x(cam->pos, 5 * (PI / 16));
+		cam->pos = rotacao_y(cam->pos, i * (PI / 16));
+		cam->direc.x = -cam->pos.x;
+		cam->direc.y = -cam->pos.y;
+		cam->direc.z = -cam->pos.z;
+		cam->fov = 90.0;
+		list_add(saida.cams, cam);
+		i++;
+	}
+
+	i = 27;
+	while (i < 32)
+	{
+		cam = (t_cam *)malloc(sizeof(t_cam));
+		cam->pos.x = 0.0;
+		cam->pos.y = 0.0;
+		cam->pos.z = -3.0;
+		cam->pos = rotacao_x(cam->pos, (32 - i) * (PI / 16));
+		cam->pos = rotacao_y(cam->pos, i * (PI / 16));
+		cam->direc.x = -cam->pos.x;
+		cam->direc.y = -cam->pos.y;
+		cam->direc.z = -cam->pos.z;
+		cam->fov = 90.0;
+		list_add(saida.cams, cam);
+		i++;
+	}
+
+
 	// i = 0;
 	// while (i < 32)
 	// {
@@ -48,7 +101,6 @@ t_vars	config_cams(t_vars input)
 	// 	cam->direc.x = -cam->pos.x;
 	// 	cam->direc.y = -cam->pos.y;
 	// 	cam->direc.z = -cam->pos.z;
-	// 	cam->p = 0;
 	// 	cam->fov = 90.0;
 	// 	list_add(saida.cams, cam);
 	// 	i++;
