@@ -5,6 +5,7 @@
 		"type_traits": "c",
 		"cstdlib": "cpp",
 		"new": "cpp",
-		"concepts": "c"
+		"concepts": "c",
+		"cmath": "cpp"
 	}
 }

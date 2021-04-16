@@ -12,6 +12,7 @@
 
 # define SPHERE 1
 # define PLANE 2
+# define CYLINDER 3
 
 # define EPSILON 0.0000305176
 # define EPSILON_ZERO 0.00000000305176
@@ -58,11 +59,21 @@ typedef struct	s_plano
 	int			cor;
 }				t_plano;
 
+typedef struct	s_cylinder
+{
+	t_vec		pos;
+	t_vec		direc;
+	double		diameter;
+	double		height;
+	int			cor;
+}				t_cylinder;
+
 typedef struct	s_objeto
 {
 	int			tipo;
 	t_esfera	sp;
 	t_plano		pl;
+	t_cylinder	cy;
 }				t_objeto;
 
 typedef struct	s_hit
