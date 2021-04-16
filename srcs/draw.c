@@ -61,6 +61,8 @@ void	draw_main(t_vars vars, int x, int y, t_img img)
 			cor = hit.obj.sp.cor;
 		else if (hit.obj.tipo == PLANE)
 			cor = hit.obj.pl.cor;
+		else if (hit.obj.tipo == CYLINDER)
+			cor = hit.obj.cy.cor;
 		had = to_had(vars.ambient);
 		temp_luz = NULL;
 		while (iluminados != NULL)
@@ -74,7 +76,10 @@ void	draw_main(t_vars vars, int x, int y, t_img img)
 				temp.y = -1.0;
 				intensity = (acos(cosine_law(((t_light *)iluminados->data)->pos, hit.ponto, temp)));
 				// printf("%s(%s:%d): intensity = % lf\n", __FILE__, __func__, __LINE__, intensity);
+				// intensity = 0.8;
 			}
+			else if (hit.obj.tipo == CYLINDER)
+				intensity = 0.8;
 			had.r += (intensity * ((t_light *)iluminados->data)->bright);
 			had.g += (intensity * ((t_light *)iluminados->data)->bright);
 			had.b += (intensity * ((t_light *)iluminados->data)->bright);

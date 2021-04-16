@@ -174,5 +174,6 @@ void		test_image(t_vars vars);
 
 
 t_list		*cruzamento_pl_reta(t_vec A, t_vec B, t_plano pl);
+t_list		*cruzamento_cy_reta(t_vec A, t_vec B, t_cylinder cy);
 
 #endif

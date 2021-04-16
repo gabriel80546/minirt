@@ -53,6 +53,8 @@ int	can_light_see_this_hit(t_hit hit, t_vars vars, t_light light)
 			result = cruzamento_sp_reta(hit.ponto, light.pos, ((t_objeto *)vars.objs->data)->sp);
 		else if (((t_objeto *)vars.objs->data)->tipo == PLANE)
 			result = cruzamento_pl_reta(hit.ponto, light.pos, ((t_objeto *)vars.objs->data)->pl);
+		else if (((t_objeto *)vars.objs->data)->tipo == CYLINDER)
+			result = cruzamento_cy_reta(hit.ponto, light.pos, ((t_objeto *)vars.objs->data)->cy);
 		result = sanitize_cruz_three(hit, light.pos, result);
 		if (result != NULL)
 			result = first_item(result);

@@ -125,6 +125,19 @@ t_vars	config_scene_easy(t_vars input)
 	vars.objs = NULL;
 	obj = NULL;
 
+	// obj = (t_objeto *)malloc(sizeof(t_objeto));
+	// obj->tipo = CYLINDER;
+	// obj->cy.pos.x =  0.0;
+	// obj->cy.pos.y =  0.0;
+	// obj->cy.pos.z =  0.0;
+	// obj->cy.direc.x = 0.0;
+	// obj->cy.direc.y = 0.0;
+	// obj->cy.direc.z = 1.0;
+	// obj->cy.diameter = 1.0;
+	// obj->cy.cor = 0xD04040;
+	// vars.objs = list_init(obj);
+	// // list_add(vars.objs, obj);
+
 	// PLANOS
 
 	obj = (t_objeto *)malloc(sizeof(t_objeto));
@@ -137,6 +150,7 @@ t_vars	config_scene_easy(t_vars input)
 	obj->pl.direc.z = 0.0;
 	obj->pl.cor = 0x40D0D0;
 	vars.objs = list_init(obj);
+	// list_add(vars.objs, obj);
 
 	obj = (t_objeto *)malloc(sizeof(t_objeto));
 	obj->tipo = PLANE;
@@ -149,6 +163,7 @@ t_vars	config_scene_easy(t_vars input)
 	obj->pl.cor = 0xD0D040;
 	// vars.objs = list_init(obj);
 	list_add(vars.objs, obj);
+
 
 	// list_add(vars.objs, obj);
 	obj = (t_objeto *)malloc(sizeof(t_objeto));
