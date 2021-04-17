@@ -20,6 +20,17 @@ t_vars	config_cams(t_vars input)
 	cam->fov = 90.0;
 	saida.cams = list_init(cam);
 	// list_add(saida.cams, cam);
+
+	cam = (t_cam *)malloc(sizeof(t_cam));
+	cam->pos.x =  0.0;
+	cam->pos.y =  0.0;
+	cam->pos.z = -3.0;
+	cam->direc.x = 0.0;
+	cam->direc.y = 0.0;
+	cam->direc.z = 3.0;
+	cam->fov = 90.0;
+	// saida.cams = list_init(cam);
+	list_add(saida.cams, cam);
 	i = 0;
 	while (i < 32)
 	{
@@ -125,18 +136,18 @@ t_vars	config_scene_easy(t_vars input)
 	vars.objs = NULL;
 	obj = NULL;
 
-	// obj = (t_objeto *)malloc(sizeof(t_objeto));
-	// obj->tipo = CYLINDER;
-	// obj->cy.pos.x =  0.0;
-	// obj->cy.pos.y =  0.0;
-	// obj->cy.pos.z =  0.0;
-	// obj->cy.direc.x = 0.0;
-	// obj->cy.direc.y = 0.0;
-	// obj->cy.direc.z = 1.0;
-	// obj->cy.diameter = 1.0;
-	// obj->cy.cor = 0xD04040;
-	// vars.objs = list_init(obj);
-	// // list_add(vars.objs, obj);
+	obj = (t_objeto *)malloc(sizeof(t_objeto));
+	obj->tipo = CYLINDER;
+	obj->cy.pos.x =  0.0;
+	obj->cy.pos.y =  0.0;
+	obj->cy.pos.z =  0.0;
+	obj->cy.direc.x = 0.0;
+	obj->cy.direc.y = 0.0;
+	obj->cy.direc.z = 1.0;
+	obj->cy.diameter = 1.0;
+	obj->cy.cor = 0xD04040;
+	vars.objs = list_init(obj);
+	// list_add(vars.objs, obj);
 
 	// PLANOS
 
@@ -149,8 +160,8 @@ t_vars	config_scene_easy(t_vars input)
 	obj->pl.direc.y = 1.0;
 	obj->pl.direc.z = 0.0;
 	obj->pl.cor = 0x40D0D0;
-	vars.objs = list_init(obj);
-	// list_add(vars.objs, obj);
+	// vars.objs = list_init(obj);
+	list_add(vars.objs, obj);
 
 	obj = (t_objeto *)malloc(sizeof(t_objeto));
 	obj->tipo = PLANE;
