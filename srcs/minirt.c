@@ -47,8 +47,6 @@ t_vars	config_cams(t_vars input)
 		i++;
 	}
 
-
-
 	i = 0;
 	while (i < 6)
 	{
@@ -325,7 +323,6 @@ int		key_hook(int keycode, t_vars *vars)
 			vars->cam = *((t_cam *)vars->cams->data);
 		}
 		*vars = config_scene_easy(*vars);
-		// clear_screen(*vars);
 		draw(*vars);
 		clean_all(*vars);
 	}
