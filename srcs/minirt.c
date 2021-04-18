@@ -127,8 +127,8 @@ t_vars	config_scene_easy(t_vars input)
 	// int			i;
 
 	vars = input;
-	vars.largura = 400;
-	vars.altura = 300;
+	vars.largura = 900;
+	vars.altura = 550;
 	vars.gray = 0;
 	vars.ambient = 0x404040;
 	vars.objs = NULL;

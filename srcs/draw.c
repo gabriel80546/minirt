@@ -243,8 +243,10 @@ void	draw_main(t_vars vars, int x, int y, t_img img)
 	t_projectile p;
 	t_tuple	gravity;
 	t_tuple	wind;
+	int	xis;
+	int yis;
 
-	p = projectile(point(0, 1, 0), normalize(vector(1, 1, 0)));
+	p = projectile(point(0, 1, 0), mul_scalar(normalize(vector(1, 1.8, 0)), 11.25));
 	gravity = vector(0, -0.1, 0);
 	wind = vector(-0.01, 0, 0);
 
@@ -253,19 +255,26 @@ void	draw_main(t_vars vars, int x, int y, t_img img)
 		int count = 0;
 		while (p.position.y > 0)
 		{
+			printf("count = %d\n", count);
 			printf("p.position => \n");
 			print_tuple(p.position);
 			p = tick(gravity, wind, p);
 			printf("p.position => \n");
 			print_tuple(p.position);
+			xis = ((int)p.position.x);
+			yis = ((int)p.position.y);
+			printf("x = %d\n", xis);
+			printf("y = %d\n", yis);
+			if (yis >= 0)
+				*((unsigned int *)img.data + (xis + ((vars.altura - yis) * img.size_line / (img.bits_per_pixel / img.bits_per_byte)))) = cor_to_rgb(color(1.0, 0.0, 0.0));
 			count++;
 		}
 		printf("precisou de %i ticks para bater no chao\n", count);
 	}
-	if (x + y > (vars.largura / 2))
-		*((unsigned int *)img.data + (x + (y * img.size_line / (img.bits_per_pixel / img.bits_per_byte)))) = 0xFF0000;
-	else
-		*((unsigned int *)img.data + (x + (y * img.size_line / (img.bits_per_pixel / img.bits_per_byte)))) = 0x00FF00;
+	// if (x + y > (vars.largura / 2))
+	// 	*((unsigned int *)img.data + (x + (y * img.size_line / (img.bits_per_pixel / img.bits_per_byte)))) = 0xFF0000;
+	// else
+	// 	*((unsigned int *)img.data + (x + (y * img.size_line / (img.bits_per_pixel / img.bits_per_byte)))) = cor_to_rgb(color(0.0, 1.0, 0.0));
 }
 
 void	draw(t_vars vars)
