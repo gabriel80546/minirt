@@ -357,12 +357,6 @@ t_mat44		mat44_mul(t_mat44 a, t_mat44 b)
 	return (saida);
 }
 
-// A matrix multiplied by a tuple​  ​Given​ the following matrix A:​
-// | 1 | 2 | 3 | 4 |
-// | 2 | 4 | 4 | 2 |
-// | 8 | 6 | 4 | 1 |
-// | 0 | 0 | 0 | 1 |
-// ​And​ b ← tuple(1, 2, 3, 1)​  ​Then​ A * b = tuple(18, 24, 33, 1)
 t_tuple		mat44_tuple_mul(t_mat44 mat, t_tuple tupla)
 {
 	t_tuple	saida;
@@ -466,14 +460,6 @@ t_mat33		mat44_sub_matrix(t_mat44 mat, int row, int col)
 	return (saida);
 }
 
-
-// : Calculating a minor of a 3x3 matrix​  ​Given​ the following 3x3 matrix A:
-// |  3 |  5 |  0 |
-// |  2 | -1 | -7 |
-// |  6 | -1 |  5 |
-// ​And​ B ← submatrix(A, 1, 0)​
-// ​Then​ determinant(B) = 25
-// ​And​ minor(A, 1, 0) = 25
 double	mat33_minor(t_mat33 mat, int row, int col)
 {
 	double saida;
@@ -484,14 +470,6 @@ double	mat33_minor(t_mat33 mat, int row, int col)
 	return (saida);
 }
 
-// : Calculating a cofactor of a 3x3 matrix​  ​Given​ the following 3x3 matrix A:
-// |  3 |  5 |  0 |
-// |  2 | -1 | -7 |
-// |  6 | -1 |  5 |
-// ​Then​ minor(A, 0, 0) = -12
-// ​And​ cofactor(A, 0, 0) = -12
-// ​And​ minor(A, 1, 0) = 25​
-// ​And​ cofactor(A, 1, 0) = -25
 double	mat33_cofactor(t_mat33 mat, int row, int col)
 {
 	
@@ -501,24 +479,6 @@ double	mat33_cofactor(t_mat33 mat, int row, int col)
 		return -(mat33_minor(mat, row, col));
 }
 
-// : Calculating the determinant of a 3x3 matrix​  ​Given​ the following 3x3 matrix A:
-// |  1 |  2 |  6 |
-// | -5 |  8 | -4 |
-// |  2 |  6 |  4 |
-// ​Then​ cofactor(A, 0, 0) = 56
-// ​And​ cofactor(A, 0, 1) = 12​
-// ​And​ cofactor(A, 0, 2) = -46
-// ​And​ determinant(A) = -196
-// determinant(M)
-// det ← 0​​
-// ​if​ M.size = 2
-// 	det ← M​[​0, 0​]​ * M​[​1, 1​]​ - M​[​0, 1​]​ * M​[​1, 0​]
-// ​else
-// 	​for​ column ← 0 to M.size - 1
-// 	det ← det + M​[​0, column​]​ * cofactor(M, 0, column)
-// 	​end​ ​for
-// ​end​ ​if
-// ​return​ det​​
 double mat33_det(t_mat33 mat)
 {
 	double	saida;
@@ -554,7 +514,6 @@ double mat44_det(t_mat44 mat)
 	double	saida;
 	saida = 0;
 
-	// mat44_mi
 	saida += (mat.m[mat44_coor(0, 0)] * mat44_cofactor(mat, 0, 0));
 	saida += (mat.m[mat44_coor(0, 1)] * mat44_cofactor(mat, 0, 1));
 	saida += (mat.m[mat44_coor(0, 2)] * mat44_cofactor(mat, 0, 2));
@@ -562,19 +521,7 @@ double mat44_det(t_mat44 mat)
 	return (saida);
 }
 
-// inverse(M)
-// 	fail ​if​ M is not invertible​​
-// 	M2 ← new matrix of same size as M
-// 	​for​ row ← 0 to M.size - 1
-// 		​for​ col ← 0 to M.size - 1
-// 			c ← cofactor(M, row, col)
-// 			// note that "col, row" here, instead of "row, col",
-// 			// accomplishes the transpose operation!
-// 			M2​[​col, row​]​ ← c / determinant(M)
-// 		​end​ ​for
-// 	​end​ ​for
-// ​return​ M2
-t_mat44	inverse(t_mat44 mat)
+t_mat44	mat44_inverse(t_mat44 mat)
 {
 	t_mat44 saida;
 	int		row;
@@ -604,6 +551,30 @@ t_mat44	inverse(t_mat44 mat)
 	return (saida);
 }
 
+t_mat44	mat44_translate(double x, double y, double z)
+{
+	t_mat44	saida;
+
+	saida = mat44_identity();
+
+	saida.m[3]  = x;
+	saida.m[7]  = y;
+	saida.m[11] = z;
+	return (saida);
+}
+
+t_mat44	mat44_scaling(double x, double y, double z)
+{
+	t_mat44	saida;
+
+	saida = mat44_identity();
+
+	saida.m[0]  = x;
+	saida.m[5]  = y;
+	saida.m[10] = z;
+	return (saida);
+}
+
 
 void	draw_main(t_vars vars, int x, int y, t_img img)
 {
@@ -612,126 +583,9 @@ void	draw_main(t_vars vars, int x, int y, t_img img)
 	t_tuple	wind;
 	int	xis;
 	int yis;
-	// int k;
-	// int j;
 
-	// t_mat44	mat;
-	// mat.m[0]  =  1.0; mat.m[1]  =  2.0; mat.m[2]  =  3.0; mat.m[3]  =  4.0;
-	// mat.m[4]  =  5.5; mat.m[5]  =  6.5; mat.m[6]  =  7.5; mat.m[7]  =  8.5;
-	// mat.m[8]  =  9.0; mat.m[9]  = 10.0; mat.m[10] = 11.0; mat.m[11] = 12.0;
-	// mat.m[12] = 13.5; mat.m[13] = 14.5; mat.m[14] = 15.5; mat.m[15] = 16.5;
-	// t_mat22	mat2;
-	// mat2.m[0]  = -3.0; mat2.m[1]  =  5.0;
-	// mat2.m[2]  =  1.0; mat2.m[3]  = -2.0;
-	// t_mat33	mat3;
-	// mat3.m[0]  = -3.0; mat3.m[1]  =  5.0; mat3.m[2]  =  0.0;
-	// mat3.m[3]  =  1.0; mat3.m[4]  = -2.0; mat3.m[5]  = -7.0;
-	// mat3.m[6]  =  0.0; mat3.m[7]  =  1.0; mat3.m[8]  =  1.0;
-	// t_mat44 mat_a;
-	// mat_a.m[0]  =  1.0; mat_a.m[1]  =  2.0; mat_a.m[2]  =  3.0; mat_a.m[3]  =  4.0;
-	// mat_a.m[4]  =  5.0; mat_a.m[5]  =  6.0; mat_a.m[6]  =  7.0; mat_a.m[7]  =  8.0;
-	// mat_a.m[8]  =  9.0; mat_a.m[9]  =  8.0; mat_a.m[10] =  7.0; mat_a.m[11] =  6.0;
-	// mat_a.m[12] =  5.0; mat_a.m[13] =  4.0; mat_a.m[14] =  3.0; mat_a.m[15] =  2.0;
-	// t_mat44 mat_b;
-	// mat_b.m[0]  =  1.0; mat_b.m[1]  =  2.0; mat_b.m[2]  =  3.0; mat_b.m[3]  =  4.0;
-	// mat_b.m[4]  =  5.0; mat_b.m[5]  =  6.0; mat_b.m[6]  =  7.0; mat_b.m[7]  =  8.0;
-	// mat_b.m[8]  =  9.0; mat_b.m[9]  =  8.0; mat_b.m[10] =  7.0; mat_b.m[11] =  6.0;
-	// mat_b.m[12] =  5.0; mat_b.m[13] =  4.0; mat_b.m[14] =  3.0; mat_b.m[15] =  2.0;
-
-	// t_mat44 mat_c;
-	// mat_c.m[0]  = -2.0; mat_c.m[1]  =  1.0; mat_c.m[2]  =  2.0; mat_c.m[3]  =  3.0;
-	// mat_c.m[4]  =  3.0; mat_c.m[5]  =  2.0; mat_c.m[6]  =  1.0; mat_c.m[7]  = -1.0;
-	// mat_c.m[8]  =  4.0; mat_c.m[9]  =  3.0; mat_c.m[10] =  6.0; mat_c.m[11] =  5.0;
-	// mat_c.m[12] =  1.0; mat_c.m[13] =  2.0; mat_c.m[14] =  7.0; mat_c.m[15] =  8.0;
-
-
-	t_mat44	mat_d;
-	mat_d.m[0]  =  1.0; mat_d.m[1]  =  2.0; mat_d.m[2]  =  3.0; mat_d.m[3]  =  4.0;
-	mat_d.m[4]  =  2.0; mat_d.m[5]  =  4.0; mat_d.m[6]  =  4.0; mat_d.m[7]  =  2.0;
-	mat_d.m[8]  =  8.0; mat_d.m[9]  =  6.0; mat_d.m[10] =  4.0; mat_d.m[11] =  1.0;
-	mat_d.m[12] =  0.0; mat_d.m[13] =  0.0; mat_d.m[14] =  0.0; mat_d.m[15] =  1.0;
-
-	t_tuple	tupla_teste;
-	tupla_teste = tupla(1, 2, 3, 1);
-
-
-	// |  1 | 5 |
-	// | -3 | 2 |
-	t_mat22	mat_a;
-	mat_a.m[0] =  1.0; mat_a.m[1] =  5.0;
-	mat_a.m[2] = -3.0; mat_a.m[3] =  2.0;
-
-
-	// |  1 | 5 |  0 |
-	// | -3 | 2 |  7 |
-	// |  0 | 6 | -3 |
-	t_mat33	mat_b;
-	mat_b.m[0] =  1.0; mat_b.m[1] =  5.0; mat_b.m[2] =  0.0;
-	mat_b.m[3] = -3.0; mat_b.m[4] =  2.0; mat_b.m[5] =  7.0;
-	mat_b.m[6] =  0.0; mat_b.m[7] =  6.0; mat_b.m[8] = -3.0;
-
-	// |  3 |  5 |  0 |
-	// |  2 | -1 | -7 |
-	// |  6 | -1 |  5 |
-	t_mat33	mat_e;
-	mat_e.m[0] =  3.0; mat_e.m[1] =  5.0; mat_e.m[2] =  0.0;
-	mat_e.m[3] =  2.0; mat_e.m[4] = -1.0; mat_e.m[5] = -7.0;
-	mat_e.m[6] =  6.0; mat_e.m[7] = -1.0; mat_e.m[8] =  5.0;
-
-	// |  1 |  2 |  6 |
-	// | -5 |  8 | -4 |
-	// |  2 |  6 |  4 |
-	t_mat33	mat_f;
-	mat_f.m[0] =  1.0; mat_f.m[1] =  2.0; mat_f.m[2] =  6.0;
-	mat_f.m[3] = -5.0; mat_f.m[4] =  8.0; mat_f.m[5] = -4.0;
-	mat_f.m[6] =  2.0; mat_f.m[7] =  6.0; mat_f.m[8] =  4.0;
-
-
-	// | -6 |  1 |  1 |  6 |
-	// | -8 |  5 |  8 |  6 |
-	// | -1 |  0 |  8 |  2 |
-	// | -7 |  1 | -1 |  1 |
-	t_mat44	mat_c;
-	mat_c.m[0]  = -6.0; mat_c.m[1]  =  1.0; mat_c.m[2]  =  1.0; mat_c.m[3]  =  6.0;
-	mat_c.m[4]  = -8.0; mat_c.m[5]  =  5.0; mat_c.m[6]  =  8.0; mat_c.m[7]  =  6.0;
-	mat_c.m[8]  = -1.0; mat_c.m[9]  =  0.0; mat_c.m[10] =  8.0; mat_c.m[11] =  2.0;
-	mat_c.m[12] = -7.0; mat_c.m[13] =  1.0; mat_c.m[14] = -1.0; mat_c.m[15] =  1.0;
-
-
-
-    // | -2 | -8 |  3 |  5 |
-	// | -3 |  1 |  7 |  3 |​
-	// |  1 |  2 | -9 |  6 |
-	// | -6 |  7 |  7 | -9 |
-	t_mat44	mat_g;
-	mat_g.m[0]  = -2.0; mat_g.m[1]  = -8.0; mat_g.m[2]  =  3.0; mat_g.m[3]  =  5.0;
-	mat_g.m[4]  = -3.0; mat_g.m[5]  =  1.0; mat_g.m[6]  =  7.0; mat_g.m[7]  =  3.0;
-	mat_g.m[8]  =  1.0; mat_g.m[9]  =  2.0; mat_g.m[10] = -9.0; mat_g.m[11] =  6.0;
-	mat_g.m[12] = -6.0; mat_g.m[13] =  7.0; mat_g.m[14] =  7.0; mat_g.m[15] = -9.0;
-
-
-	// |  8 | -5 |  9 |  2 |
-	// |  7 |  5 |  6 |  1 |
-	// | -6 |  0 |  9 |  6 |
-	// | -3 |  0 | -9 | -4 |
-	t_mat44	mat_h;
-	mat_h.m[0]  =  8.0; mat_h.m[1]  = -5.0; mat_h.m[2]  =  9.0; mat_h.m[3]  =  2.0;
-	mat_h.m[4]  =  7.0; mat_h.m[5]  =  5.0; mat_h.m[6]  =  6.0; mat_h.m[7]  =  1.0;
-	mat_h.m[8]  = -6.0; mat_h.m[9]  =  0.0; mat_h.m[10] =  9.0; mat_h.m[11] =  6.0;
-	mat_h.m[12] = -3.0; mat_h.m[13] =  0.0; mat_h.m[14] = -9.0; mat_h.m[15] = -4.0;
-
-
-	// |  9 |  3 |  0 |  9 |
-	// | -5 | -2 | -6 | -3 |
-	// | -4 |  9 |  6 |  4 |
-	// | -7 |  6 |  6 |  2 |​
-	t_mat44	mat_i;
-	mat_i.m[0]  =  9.0; mat_i.m[1]  =  3.0; mat_i.m[2]  =  0.0; mat_i.m[3]  =  9.0;
-	mat_i.m[4]  = -5.0; mat_i.m[5]  = -2.0; mat_i.m[6]  = -6.0; mat_i.m[7]  = -3.0;
-	mat_i.m[8]  = -4.0; mat_i.m[9]  =  9.0; mat_i.m[10] =  6.0; mat_i.m[11] =  4.0;
-	mat_i.m[12] = -7.0; mat_i.m[13] =  6.0; mat_i.m[14] =  6.0; mat_i.m[15] =  2.0;
-
-
+	t_tuple	v;
+	v = vector(-4, 6, 8);
 
 	p = projectile(point(0, 1, 0), mul_scalar(normalize(vector(1, 1.8, 0)), 11.25));
 	gravity = vector(0, -0.1, 0);
@@ -739,63 +593,12 @@ void	draw_main(t_vars vars, int x, int y, t_img img)
 
 	if (x == 3 && y == 5)
 	{
-		printf("mat_d => \n");
-		print_mat44(mat_d);
-		printf("tupla_teste => \n");
-		print_tuple(tupla_teste);
-		printf("mat_d * tupla_teste => \n");
-		print_tuple(mat44_tuple_mul(mat_d, tupla_teste));
-
-
-		if(mat44_equal(mat_d, mat44_mul(mat_d, mat44_identity())))
-			printf("mat44_equal(mat_d, mat44_mul(mat_d, mat44_identity())) == true OK\n");
-		else
-			printf("mat44_equal(mat_d, mat44_mul(mat_d, mat44_identity())) == false KO\n");
-		
-		printf("transpose(mat_d) => \n");
-		print_mat44(mat44_transpose(mat_d));
-
-		printf("mat_a => \n");
-		print_mat22(mat_a);
-
-		printf("mat22_det(mat_a) = % 6.6lf\n", mat22_det(mat_a));
-
-		printf("mat_b => \n");
-		print_mat33(mat_b);
-		printf("mat33_sub_matrix(mat_b) => \n");
-		print_mat22(mat33_sub_matrix(mat_b, 0, 2));
-
-		printf("mat_c => \n");
-		print_mat44(mat_c);
-		printf("mat33_sub_matrix(mat_c) => \n");
-		print_mat33(mat44_sub_matrix(mat_c, 2, 1));
-
-		printf("mat_e => \n");
-		print_mat33(mat_e);
-		printf("mat33_minor(mat_e) = % 6.6lf\n", mat33_minor(mat_e, 1, 0));
-		printf("mat33_cofactor(mat_e) = % 6.6lf\n", mat33_cofactor(mat_e, 0, 0));
-		printf("mat33_cofactor(mat_e) = % 6.6lf\n", mat33_cofactor(mat_e, 1, 0));
-
-
-		
-		printf("mat_f => \n");
-		print_mat33(mat_f);
-		printf("mat33_det(mat_f) = % 6.6lf\n", mat33_det(mat_f));
-
-		printf("mat_g => \n");
-		print_mat44(mat_g);
-		printf("mat44_det(mat_g) = % 6.6lf\n", mat44_det(mat_g));
-
-		printf("mat_h => \n");
-		print_mat44(mat_h);
-		printf("inverse(mat_h) => \n");
-		print_mat44(inverse(mat_h));
-
-		printf("mat_i => \n");
-		print_mat44(mat_i);
-		printf("inverse(mat_i) => \n");
-		print_mat44(inverse(mat_i));
-		
+		printf("v => \n");
+		print_tuple(v);
+		printf("mat44_tuple_mul(mat44_translate(5, -3, 2), v) => \n");
+		print_tuple(mat44_tuple_mul(mat44_translate(5, -3, 2), v));
+		printf("mat44_tuple_mul(mat44_scaling(-1, 1, 1), v) => \n");
+		print_tuple(mat44_tuple_mul(mat44_scaling(-1, 1, 1), v));
 
 		int count = 0;
 		while (p.position.y > 0 && 0)
