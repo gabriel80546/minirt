@@ -27,6 +27,12 @@ typedef struct	s_tuple
 	double	w;
 }				t_tuple;
 
+typedef struct	s_cor
+{
+	double	r;
+	double	g;
+	double	b;
+}				t_cor;
 
 
 typedef struct	s_esfera
