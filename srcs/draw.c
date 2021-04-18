@@ -562,6 +562,48 @@ double mat44_det(t_mat44 mat)
 	return (saida);
 }
 
+// inverse(M)
+// 	fail ​if​ M is not invertible​​
+// 	M2 ← new matrix of same size as M
+// 	​for​ row ← 0 to M.size - 1
+// 		​for​ col ← 0 to M.size - 1
+// 			c ← cofactor(M, row, col)
+// 			// note that "col, row" here, instead of "row, col",
+// 			// accomplishes the transpose operation!
+// 			M2​[​col, row​]​ ← c / determinant(M)
+// 		​end​ ​for
+// 	​end​ ​for
+// ​return​ M2
+t_mat44	inverse(t_mat44 mat)
+{
+	t_mat44 saida;
+	int		row;
+	int		col;
+	double	c;
+	double	d_orig;
+
+	if (mat44_det(mat) != 0)
+	{
+		saida = mat;
+		d_orig = mat44_det(saida);
+		row = 0;
+		while (row < 4)
+		{
+			col = 0;
+			while (col < 4)
+			{
+				c = mat44_cofactor(mat, row, col);
+				saida.m[mat44_coor(col, row)] = c / d_orig;
+				col++;
+			}
+			row++;
+		}
+	}
+	else
+		saida = mat44_identity();
+	return (saida);
+}
+
 
 void	draw_main(t_vars vars, int x, int y, t_img img)
 {
@@ -668,6 +710,29 @@ void	draw_main(t_vars vars, int x, int y, t_img img)
 	mat_g.m[12] = -6.0; mat_g.m[13] =  7.0; mat_g.m[14] =  7.0; mat_g.m[15] = -9.0;
 
 
+	// |  8 | -5 |  9 |  2 |
+	// |  7 |  5 |  6 |  1 |
+	// | -6 |  0 |  9 |  6 |
+	// | -3 |  0 | -9 | -4 |
+	t_mat44	mat_h;
+	mat_h.m[0]  =  8.0; mat_h.m[1]  = -5.0; mat_h.m[2]  =  9.0; mat_h.m[3]  =  2.0;
+	mat_h.m[4]  =  7.0; mat_h.m[5]  =  5.0; mat_h.m[6]  =  6.0; mat_h.m[7]  =  1.0;
+	mat_h.m[8]  = -6.0; mat_h.m[9]  =  0.0; mat_h.m[10] =  9.0; mat_h.m[11] =  6.0;
+	mat_h.m[12] = -3.0; mat_h.m[13] =  0.0; mat_h.m[14] = -9.0; mat_h.m[15] = -4.0;
+
+
+	// |  9 |  3 |  0 |  9 |
+	// | -5 | -2 | -6 | -3 |
+	// | -4 |  9 |  6 |  4 |
+	// | -7 |  6 |  6 |  2 |​
+	t_mat44	mat_i;
+	mat_i.m[0]  =  9.0; mat_i.m[1]  =  3.0; mat_i.m[2]  =  0.0; mat_i.m[3]  =  9.0;
+	mat_i.m[4]  = -5.0; mat_i.m[5]  = -2.0; mat_i.m[6]  = -6.0; mat_i.m[7]  = -3.0;
+	mat_i.m[8]  = -4.0; mat_i.m[9]  =  9.0; mat_i.m[10] =  6.0; mat_i.m[11] =  4.0;
+	mat_i.m[12] = -7.0; mat_i.m[13] =  6.0; mat_i.m[14] =  6.0; mat_i.m[15] =  2.0;
+
+
+
 	p = projectile(point(0, 1, 0), mul_scalar(normalize(vector(1, 1.8, 0)), 11.25));
 	gravity = vector(0, -0.1, 0);
 	wind = vector(-0.01, 0, 0);
@@ -721,6 +786,16 @@ void	draw_main(t_vars vars, int x, int y, t_img img)
 		print_mat44(mat_g);
 		printf("mat44_det(mat_g) = % 6.6lf\n", mat44_det(mat_g));
 
+		printf("mat_h => \n");
+		print_mat44(mat_h);
+		printf("inverse(mat_h) => \n");
+		print_mat44(inverse(mat_h));
+
+		printf("mat_i => \n");
+		print_mat44(mat_i);
+		printf("inverse(mat_i) => \n");
+		print_mat44(inverse(mat_i));
+		
 
 		int count = 0;
 		while (p.position.y > 0 && 0)
