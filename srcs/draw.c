@@ -575,49 +575,100 @@ t_mat44	mat44_scaling(double x, double y, double z)
 	return (saida);
 }
 
+t_mat44	mat44_rotate_x(double r)
+{
+
+	t_mat44	saida;
+
+	saida = mat44_identity();
+	saida.m[5]  =  cos(r);
+	saida.m[6]  = -sin(r);
+	saida.m[9]  =  sin(r);
+	saida.m[10] =  cos(r);
+	return (saida);
+}
+
+t_mat44	mat44_rotate_y(double r)
+{
+
+	t_mat44	saida;
+
+	saida = mat44_identity();
+	saida.m[0]  =  cos(r);
+	saida.m[2]  =  sin(r);
+	saida.m[8]  = -sin(r);
+	saida.m[10] =  cos(r);
+	return (saida);
+}
+
+t_mat44	mat44_rotate_z(double r)
+{
+	t_mat44	saida;
+
+	saida = mat44_identity();
+	saida.m[0]  =  cos(r);
+	saida.m[1]  = -sin(r);
+	saida.m[4]  =  sin(r);
+	saida.m[5]  =  cos(r);
+	return (saida);
+}
+
+t_mat44	mat44_shearing(double xy, double xz, double yx, double yz, double zx, double zy)
+{
+	t_mat44	saida;
+
+	saida = mat44_identity();
+	saida.m[1]  = xy;
+	saida.m[2]  = xz;
+	saida.m[4]  = yx;
+	saida.m[6]  = yz;
+	saida.m[8]  = zx;
+	saida.m[9]  = zy;
+	return (saida);
+}
+
+
+typedef struct	s_ray
+{
+	t_tuple		origin;
+	t_tuple		direction;
+}				t_ray;
+
+t_ray	ray_create(t_tuple origin, t_tuple direction)
+{
+	t_ray	saida;
+
+	saida.origin = origin;
+	saida.direction = direction;
+	return (saida);
+}
+
+t_tuple	ray_position(t_ray ray, double dist)
+{
+	t_tuple	saida;
+
+	saida = tup_add(ray.origin, mul_scalar(ray.direction, dist));
+	return (saida);
+}
 
 void	draw_main(t_vars vars, int x, int y, t_img img)
 {
-	t_projectile p;
-	t_tuple	gravity;
-	t_tuple	wind;
-	int	xis;
-	int yis;
+	t_ray	ray;
 
-	t_tuple	v;
-	v = vector(-4, 6, 8);
-
-	p = projectile(point(0, 1, 0), mul_scalar(normalize(vector(1, 1.8, 0)), 11.25));
-	gravity = vector(0, -0.1, 0);
-	wind = vector(-0.01, 0, 0);
+	ray = ray_create(point(2, 3, 4), vector(1, 0, 0));
 
 	if (x == 3 && y == 5)
 	{
-		printf("v => \n");
-		print_tuple(v);
-		printf("mat44_tuple_mul(mat44_translate(5, -3, 2), v) => \n");
-		print_tuple(mat44_tuple_mul(mat44_translate(5, -3, 2), v));
-		printf("mat44_tuple_mul(mat44_scaling(-1, 1, 1), v) => \n");
-		print_tuple(mat44_tuple_mul(mat44_scaling(-1, 1, 1), v));
+		printf("ray_position(ray, 0) => \n");
+		print_tuple(ray_position(ray, 0));
+		printf("ray_position(ray, 1) => \n");
+		print_tuple(ray_position(ray, 1));
+		printf("ray_position(ray, -1) => \n");
+		print_tuple(ray_position(ray, -1));
+		printf("ray_position(ray, 2.5) => \n");
+		print_tuple(ray_position(ray, 2.5));
 
-		int count = 0;
-		while (p.position.y > 0 && 0)
-		{
-			printf("count = %d\n", count);
-			printf("p.position => \n");
-			print_tuple(p.position);
-			p = tick(gravity, wind, p);
-			printf("p.position => \n");
-			print_tuple(p.position);
-			xis = ((int)p.position.x);
-			yis = ((int)p.position.y);
-			printf("x = %d\n", xis);
-			printf("y = %d\n", yis);
-			if (yis >= 0 && xis >= 0)
-				*((unsigned int *)img.data + (xis + ((vars.altura - yis) * img.size_line / (img.bits_per_pixel / img.bits_per_byte)))) = cor_to_rgb(color(1.0, 0.0, 0.0));
-			count++;
-		}
-		printf("precisou de %i ticks para bater no chao\n", count);
+		*((unsigned int *)img.data + (1 + ((vars.altura - 1) * img.size_line / (img.bits_per_pixel / img.bits_per_byte)))) = cor_to_rgb(color(1.0, 0.0, 0.0));
 	}
 	// if (x + y > (vars.largura / 2))
 	// 	*((unsigned int *)img.data + (x + (y * img.size_line / (img.bits_per_pixel / img.bits_per_byte)))) = 0xFF0000;

@@ -134,83 +134,6 @@ t_vars	config_scene_easy(t_vars input)
 	vars.objs = NULL;
 	obj = NULL;
 
-	obj = (t_objeto *)malloc(sizeof(t_objeto));
-	obj->tipo = CYLINDER;
-	obj->cy.pos.x =  0.0;
-	obj->cy.pos.y =  0.0;
-	obj->cy.pos.z =  0.0;
-	obj->cy.direc.x = 0.0;
-	obj->cy.direc.y = 0.0;
-	obj->cy.direc.z = 1.0;
-	obj->cy.diameter = 1.0;
-	obj->cy.cor = 0xD04040;
-	vars.objs = list_init(obj);
-	// list_add(vars.objs, obj);
-
-	// PLANOS
-
-	obj = (t_objeto *)malloc(sizeof(t_objeto));
-	obj->tipo = PLANE;
-	obj->pl.pos.x =  0.0;
-	obj->pl.pos.y = -1.0;
-	obj->pl.pos.z =  0.0;
-	obj->pl.direc.x = 0.0;
-	obj->pl.direc.y = 1.0;
-	obj->pl.direc.z = 0.0;
-	obj->pl.cor = 0x40D0D0;
-	// vars.objs = list_init(obj);
-	list_add(vars.objs, obj);
-
-	obj = (t_objeto *)malloc(sizeof(t_objeto));
-	obj->tipo = PLANE;
-	obj->pl.pos.x =  5.0;
-	obj->pl.pos.y =  0.0;
-	obj->pl.pos.z =  0.0;
-	obj->pl.direc.x = 1.0;
-	obj->pl.direc.y = 0.0;
-	obj->pl.direc.z = 0.0;
-	obj->pl.cor = 0xD0D040;
-	// vars.objs = list_init(obj);
-	list_add(vars.objs, obj);
-
-
-	// list_add(vars.objs, obj);
-	obj = (t_objeto *)malloc(sizeof(t_objeto));
-	obj->tipo = PLANE;
-	obj->pl.pos.x =  0.0;
-	obj->pl.pos.y =  0.0;
-	obj->pl.pos.z =  5.0;
-	obj->pl.direc.x = 0.0;
-	obj->pl.direc.y = 0.0;
-	obj->pl.direc.z = -1.0;
-	obj->pl.cor = 0xD040D0;
-	// vars.objs = list_init(obj);
-	list_add(vars.objs, obj);
-
-	obj = (t_objeto *)malloc(sizeof(t_objeto));
-	obj->tipo = PLANE;
-	obj->pl.pos.x =  -5.0;
-	obj->pl.pos.y =   0.0;
-	obj->pl.pos.z =   0.0;
-	obj->pl.direc.x = 1.0;
-	obj->pl.direc.y = 0.0;
-	obj->pl.direc.z = 0.0;
-	obj->pl.cor = 0x20FF40;
-	// vars.objs = list_init(obj);
-	list_add(vars.objs, obj);
-
-	obj = (t_objeto *)malloc(sizeof(t_objeto));
-	obj->tipo = PLANE;
-	obj->pl.pos.x =   0.0;
-	obj->pl.pos.y =   0.0;
-	obj->pl.pos.z =  -5.0;
-	obj->pl.direc.x = 0.0;
-	obj->pl.direc.y = 0.0;
-	obj->pl.direc.z = 1.0;
-	obj->pl.cor = 0x8040FF;
-	// vars.objs = list_init(obj);
-	list_add(vars.objs, obj);
-
 	// ESFERAS
 
 	obj = (t_objeto *)malloc(sizeof(t_objeto));
@@ -220,49 +143,14 @@ t_vars	config_scene_easy(t_vars input)
 	obj->sp.pos.z = 0.0;
 	obj->sp.diametro = 0.5;
 	obj->sp.cor = 0x606060;
-	// vars.objs = list_init(obj);
-	list_add(vars.objs, obj);
+	vars.objs = list_init(obj);
+	// list_add(vars.objs, obj);
 
-	obj = (t_objeto *)malloc(sizeof(t_objeto));
-	obj->tipo = SPHERE;
-	obj->sp.pos.x =  1.0;
-	obj->sp.pos.y = -0.25;
-	obj->sp.pos.z =  1.0;
-	obj->sp.diametro = 1.0;
-	obj->sp.cor = 0xFF8080;
-	list_add(vars.objs, obj);
-
-	obj = (t_objeto *)malloc(sizeof(t_objeto));
-	obj->tipo = SPHERE;
-	obj->sp.pos.x = -1.0;
-	obj->sp.pos.y = -0.25;
-	obj->sp.pos.z =  1.0;
-	obj->sp.diametro = 1.0;
-	obj->sp.cor = 0x80FF80;
-	list_add(vars.objs, obj);
-
-	obj = (t_objeto *)malloc(sizeof(t_objeto));
-	obj->tipo = SPHERE;
-	obj->sp.pos.x =  1.0;
-	obj->sp.pos.y = -0.25;
-	obj->sp.pos.z = -1.0;
-	obj->sp.diametro = 1.0;
-	obj->sp.cor = 0x8080FF;
-	list_add(vars.objs, obj);
+	// LUZES
 
 	temp_direc.x = -1.0;
 	temp_direc.y =  1.25;
 	temp_direc.z = -3.0;
-	// obj = (t_objeto *)malloc(sizeof(t_objeto));
-	// obj->tipo = SPHERE;
-	// obj->sp.pos.x = temp_direc.x - 1.2;
-	// obj->sp.pos.y = temp_direc.y;
-	// obj->sp.pos.z = temp_direc.z;
-	// obj->sp.diametro = 1.0;
-	// obj->sp.cor = 0x8080FF;
-	// list_add(vars.objs, obj);
-
-	// LUZES
 
 	vars.lights = NULL;
 	light = (t_light *)malloc(sizeof(t_light));
