@@ -141,7 +141,7 @@ t_vars	config_scene_easy(t_vars input)
 	obj->sp.pos.x = 0.0;
 	obj->sp.pos.y = 0.0;
 	obj->sp.pos.z = 0.0;
-	obj->sp.diametro = 0.5;
+	obj->sp.diametro = 157.0;
 	obj->sp.cor = 0x606060;
 	vars.objs = list_init(obj);
 	// list_add(vars.objs, obj);

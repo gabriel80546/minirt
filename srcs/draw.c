@@ -651,11 +651,53 @@ t_tuple	ray_position(t_ray ray, double dist)
 	return (saida);
 }
 
+
+
+// teste
+// // A ray misses a sphere
+// // Given r ← ray(point(0, 2, -5), vector(0, 0, 1))
+// // And s ← sphere()
+// // When xs ← intersect(s, r)
+// // Then xs.count = 0
+
+// pseudocodigo
+// // the vector from the sphere's center, to the ray origin
+// // remember: the sphere is centered at the world origin
+// 	sphere_to_ray ← ray.origin - point(0, 0, 0)
+// 	a ← dot(ray.direction, ray.direction)
+// 	b ← 2 * dot(ray.direction, sphere_to_ray)
+// 	c ← dot(sphere_to_ray, sphere_to_ray) - 1
+// 	discriminant ← b² - 4 * a * c
+
+// 	if discriminant < 0 then
+// 		return ()
+// 	end if
+
+// 	t1 ← (-b - √(discriminant)) / (2 * a)
+// 	t2 ← (-b + √(discriminant)) / (2 * a)
+// 	return (t1, t2)
+
+t_solution	ray_sp_intercection(t_ray ray)
+{
+	t_tuple sphere_to_ray;
+	double	a;
+	double	b;
+	double	c;
+
+	sphere_to_ray = tup_sub(ray.origin, point(0, 0, 0));
+	a = dot(ray.direction, ray.direction);
+	b = 2 * dot(ray.direction, sphere_to_ray);
+	c = dot(sphere_to_ray, sphere_to_ray) - 1;
+	return (solve_equation(a, b, c));
+}
+
+
 void	draw_main(t_vars vars, int x, int y, t_img img)
 {
 	t_ray	ray;
+	t_solution	temp;
 
-	ray = ray_create(point(2, 3, 4), vector(1, 0, 0));
+	ray = ray_create(point(0, 2, -5), vector(0, 0, 1));
 
 	if (x == 3 && y == 5)
 	{
@@ -667,6 +709,25 @@ void	draw_main(t_vars vars, int x, int y, t_img img)
 		print_tuple(ray_position(ray, -1));
 		printf("ray_position(ray, 2.5) => \n");
 		print_tuple(ray_position(ray, 2.5));
+
+		printf("obj.tipo= %d\n", ((t_objeto *)vars.objs->data)->tipo);
+
+		printf("obj.sp.diametro = % 6.6lf\n", ((t_objeto *)vars.objs->data)->sp.diametro);
+
+		printf("pronto\n");
+
+		// A ray originates inside a sphere​
+		// ​Given​ r ← ray(point(0, 0, 0), vector(0, 0, 1))
+		// ​And​ s ← sphere()
+		// ​When​ xs ← intersect(s, r)
+		// ​Then​ xs.count = 2
+		// ​And​ xs[0] = -1.0​
+		// ​And​ xs[1] = 1.0
+		temp = ray_sp_intercection(ray);
+		printf("temp.n = %d\n", temp.n);
+		printf("temp.s1 = % 6.6lf\n", temp.s1);
+		printf("temp.s2 = % 6.6lf\n", temp.s2);
+
 
 		*((unsigned int *)img.data + (1 + ((vars.altura - 1) * img.size_line / (img.bits_per_pixel / img.bits_per_byte)))) = cor_to_rgb(color(1.0, 0.0, 0.0));
 	}
