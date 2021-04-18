@@ -273,7 +273,7 @@ void	print_mat22(t_mat22 mat)
 	printf("\\***********************/\n");
 }
 
-void	print_mat33(t_mat44 mat)
+void	print_mat33(t_mat33 mat)
 {
 	printf("/***********************************************\\\n");
 	printf("| % 6.6lf | % 6.6lf | % 6.6lf |\n", mat.m[0],  mat.m[1],  mat.m[2]);
@@ -285,6 +285,14 @@ void	print_mat33(t_mat44 mat)
 int		mat44_coor(int row, int col)
 {
 	return ((4 * row) + col);
+}
+int		mat33_coor(int row, int col)
+{
+	return ((3 * row) + col);
+}
+int		mat22_coor(int row, int col)
+{
+	return ((2 * row) + col);
 }
 
 void	print_mat4_cel(t_mat44 mat, int row, int col)
@@ -397,6 +405,164 @@ double		mat22_det(t_mat22 mat)
 	return (saida);
 }
 
+
+t_mat22		mat33_sub_matrix(t_mat33 mat, int row, int col)
+{
+	t_mat22	saida;
+	int		i;
+	int		j;
+	int		m;
+
+	saida.m[mat22_coor(0, 0)] = 0.0; saida.m[mat22_coor(0, 1)] = 0.0;
+	saida.m[mat22_coor(1, 0)] = 0.0; saida.m[mat22_coor(1, 1)] = 0.0;
+	i = 0;
+	j = 0;
+	m = 0;
+	while (i < 3)
+	{
+		j = 0;
+		while (j < 3)
+		{
+			if (i != row && j != col)
+			{
+				saida.m[m] = mat.m[mat33_coor(i, j)];
+				m++;
+			}
+			j++;
+		}
+		i++;
+	}
+	return (saida);
+}
+
+t_mat33		mat44_sub_matrix(t_mat44 mat, int row, int col)
+{
+	t_mat33	saida;
+	int		i;
+	int		j;
+	int		m;
+
+	saida.m[mat33_coor(0, 0)] = 0.0; saida.m[mat33_coor(0, 1)] = 0.0; saida.m[mat33_coor(0, 2)] = 0.0;
+	saida.m[mat33_coor(1, 0)] = 0.0; saida.m[mat33_coor(1, 1)] = 0.0; saida.m[mat33_coor(1, 2)] = 0.0;
+	saida.m[mat33_coor(2, 0)] = 0.0; saida.m[mat33_coor(2, 1)] = 0.0; saida.m[mat33_coor(2, 2)] = 0.0;
+	i = 0;
+	j = 0;
+	m = 0;
+	while (i < 4)
+	{
+		j = 0;
+		while (j < 4)
+		{
+			if (i != row && j != col)
+			{
+				saida.m[m] = mat.m[mat44_coor(i, j)];
+				m++;
+			}
+			j++;
+		}
+		i++;
+	}
+	
+	return (saida);
+}
+
+
+// : Calculating a minor of a 3x3 matrix​  ​Given​ the following 3x3 matrix A:
+// |  3 |  5 |  0 |
+// |  2 | -1 | -7 |
+// |  6 | -1 |  5 |
+// ​And​ B ← submatrix(A, 1, 0)​
+// ​Then​ determinant(B) = 25
+// ​And​ minor(A, 1, 0) = 25
+double	mat33_minor(t_mat33 mat, int row, int col)
+{
+	double saida;
+	t_mat22 b;
+
+	b = mat33_sub_matrix(mat, row, col);
+	saida = mat22_det(b);
+	return (saida);
+}
+
+// : Calculating a cofactor of a 3x3 matrix​  ​Given​ the following 3x3 matrix A:
+// |  3 |  5 |  0 |
+// |  2 | -1 | -7 |
+// |  6 | -1 |  5 |
+// ​Then​ minor(A, 0, 0) = -12
+// ​And​ cofactor(A, 0, 0) = -12
+// ​And​ minor(A, 1, 0) = 25​
+// ​And​ cofactor(A, 1, 0) = -25
+double	mat33_cofactor(t_mat33 mat, int row, int col)
+{
+	
+	if ((row + col) % 2 == 0)
+		return (mat33_minor(mat, row, col));
+	else
+		return -(mat33_minor(mat, row, col));
+}
+
+// : Calculating the determinant of a 3x3 matrix​  ​Given​ the following 3x3 matrix A:
+// |  1 |  2 |  6 |
+// | -5 |  8 | -4 |
+// |  2 |  6 |  4 |
+// ​Then​ cofactor(A, 0, 0) = 56
+// ​And​ cofactor(A, 0, 1) = 12​
+// ​And​ cofactor(A, 0, 2) = -46
+// ​And​ determinant(A) = -196
+// determinant(M)
+// det ← 0​​
+// ​if​ M.size = 2
+// 	det ← M​[​0, 0​]​ * M​[​1, 1​]​ - M​[​0, 1​]​ * M​[​1, 0​]
+// ​else
+// 	​for​ column ← 0 to M.size - 1
+// 	det ← det + M​[​0, column​]​ * cofactor(M, 0, column)
+// 	​end​ ​for
+// ​end​ ​if
+// ​return​ det​​
+double mat33_det(t_mat33 mat)
+{
+	double	saida;
+	saida = 0;
+
+	saida += (mat.m[mat33_coor(0, 0)] * mat33_cofactor(mat, 0, 0));
+	saida += (mat.m[mat33_coor(0, 1)] * mat33_cofactor(mat, 0, 1));
+	saida += (mat.m[mat33_coor(0, 2)] * mat33_cofactor(mat, 0, 2));
+	return (saida);
+}
+
+double	mat44_minor(t_mat44 mat, int row, int col)
+{
+	double saida;
+	t_mat33 b;
+
+	b = mat44_sub_matrix(mat, row, col);
+	saida = mat33_det(b);
+	return (saida);
+}
+
+double	mat44_cofactor(t_mat44 mat, int row, int col)
+{
+	
+	if ((row + col) % 2 == 0)
+		return (mat44_minor(mat, row, col));
+	else
+		return -(mat44_minor(mat, row, col));
+}
+
+double mat44_det(t_mat44 mat)
+{
+	double	saida;
+	saida = 0;
+
+	// mat44_mi
+	saida += (mat.m[mat44_coor(0, 0)] * mat44_cofactor(mat, 0, 0));
+	saida += (mat.m[mat44_coor(0, 1)] * mat44_cofactor(mat, 0, 1));
+	saida += (mat.m[mat44_coor(0, 2)] * mat44_cofactor(mat, 0, 2));
+	saida += (mat.m[mat44_coor(0, 3)] * mat44_cofactor(mat, 0, 3));
+	return (saida);
+}
+
+
 void	draw_main(t_vars vars, int x, int y, t_img img)
 {
 	t_projectile p;
@@ -454,6 +620,54 @@ void	draw_main(t_vars vars, int x, int y, t_img img)
 	mat_a.m[2] = -3.0; mat_a.m[3] =  2.0;
 
 
+	// |  1 | 5 |  0 |
+	// | -3 | 2 |  7 |
+	// |  0 | 6 | -3 |
+	t_mat33	mat_b;
+	mat_b.m[0] =  1.0; mat_b.m[1] =  5.0; mat_b.m[2] =  0.0;
+	mat_b.m[3] = -3.0; mat_b.m[4] =  2.0; mat_b.m[5] =  7.0;
+	mat_b.m[6] =  0.0; mat_b.m[7] =  6.0; mat_b.m[8] = -3.0;
+
+	// |  3 |  5 |  0 |
+	// |  2 | -1 | -7 |
+	// |  6 | -1 |  5 |
+	t_mat33	mat_e;
+	mat_e.m[0] =  3.0; mat_e.m[1] =  5.0; mat_e.m[2] =  0.0;
+	mat_e.m[3] =  2.0; mat_e.m[4] = -1.0; mat_e.m[5] = -7.0;
+	mat_e.m[6] =  6.0; mat_e.m[7] = -1.0; mat_e.m[8] =  5.0;
+
+	// |  1 |  2 |  6 |
+	// | -5 |  8 | -4 |
+	// |  2 |  6 |  4 |
+	t_mat33	mat_f;
+	mat_f.m[0] =  1.0; mat_f.m[1] =  2.0; mat_f.m[2] =  6.0;
+	mat_f.m[3] = -5.0; mat_f.m[4] =  8.0; mat_f.m[5] = -4.0;
+	mat_f.m[6] =  2.0; mat_f.m[7] =  6.0; mat_f.m[8] =  4.0;
+
+
+	// | -6 |  1 |  1 |  6 |
+	// | -8 |  5 |  8 |  6 |
+	// | -1 |  0 |  8 |  2 |
+	// | -7 |  1 | -1 |  1 |
+	t_mat44	mat_c;
+	mat_c.m[0]  = -6.0; mat_c.m[1]  =  1.0; mat_c.m[2]  =  1.0; mat_c.m[3]  =  6.0;
+	mat_c.m[4]  = -8.0; mat_c.m[5]  =  5.0; mat_c.m[6]  =  8.0; mat_c.m[7]  =  6.0;
+	mat_c.m[8]  = -1.0; mat_c.m[9]  =  0.0; mat_c.m[10] =  8.0; mat_c.m[11] =  2.0;
+	mat_c.m[12] = -7.0; mat_c.m[13] =  1.0; mat_c.m[14] = -1.0; mat_c.m[15] =  1.0;
+
+
+
+    // | -2 | -8 |  3 |  5 |
+	// | -3 |  1 |  7 |  3 |​
+	// |  1 |  2 | -9 |  6 |
+	// | -6 |  7 |  7 | -9 |
+	t_mat44	mat_g;
+	mat_g.m[0]  = -2.0; mat_g.m[1]  = -8.0; mat_g.m[2]  =  3.0; mat_g.m[3]  =  5.0;
+	mat_g.m[4]  = -3.0; mat_g.m[5]  =  1.0; mat_g.m[6]  =  7.0; mat_g.m[7]  =  3.0;
+	mat_g.m[8]  =  1.0; mat_g.m[9]  =  2.0; mat_g.m[10] = -9.0; mat_g.m[11] =  6.0;
+	mat_g.m[12] = -6.0; mat_g.m[13] =  7.0; mat_g.m[14] =  7.0; mat_g.m[15] = -9.0;
+
+
 	p = projectile(point(0, 1, 0), mul_scalar(normalize(vector(1, 1.8, 0)), 11.25));
 	gravity = vector(0, -0.1, 0);
 	wind = vector(-0.01, 0, 0);
@@ -480,6 +694,32 @@ void	draw_main(t_vars vars, int x, int y, t_img img)
 		print_mat22(mat_a);
 
 		printf("mat22_det(mat_a) = % 6.6lf\n", mat22_det(mat_a));
+
+		printf("mat_b => \n");
+		print_mat33(mat_b);
+		printf("mat33_sub_matrix(mat_b) => \n");
+		print_mat22(mat33_sub_matrix(mat_b, 0, 2));
+
+		printf("mat_c => \n");
+		print_mat44(mat_c);
+		printf("mat33_sub_matrix(mat_c) => \n");
+		print_mat33(mat44_sub_matrix(mat_c, 2, 1));
+
+		printf("mat_e => \n");
+		print_mat33(mat_e);
+		printf("mat33_minor(mat_e) = % 6.6lf\n", mat33_minor(mat_e, 1, 0));
+		printf("mat33_cofactor(mat_e) = % 6.6lf\n", mat33_cofactor(mat_e, 0, 0));
+		printf("mat33_cofactor(mat_e) = % 6.6lf\n", mat33_cofactor(mat_e, 1, 0));
+
+
+		
+		printf("mat_f => \n");
+		print_mat33(mat_f);
+		printf("mat33_det(mat_f) = % 6.6lf\n", mat33_det(mat_f));
+
+		printf("mat_g => \n");
+		print_mat44(mat_g);
+		printf("mat44_det(mat_g) = % 6.6lf\n", mat44_det(mat_g));
 
 
 		int count = 0;
