@@ -138,9 +138,7 @@ t_vars	config_scene_easy(t_vars input)
 
 	obj = (t_objeto *)malloc(sizeof(t_objeto));
 	obj->tipo = SPHERE;
-	obj->sp.pos.x = 0.0;
-	obj->sp.pos.y = 0.0;
-	obj->sp.pos.z = 0.0;
+	obj->sp.pos = point(0.0, 0.0, 0.0);
 	obj->sp.diametro = 157.0;
 	obj->sp.cor = 0x606060;
 	obj->sp.transform = mat44_identity();

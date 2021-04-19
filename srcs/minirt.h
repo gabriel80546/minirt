@@ -58,7 +58,7 @@ typedef struct	s_ray
 
 typedef struct	s_esfera
 {
-	t_vec		pos;
+	t_tuple		pos;
 	double		diametro;
 	int			cor;
 	t_mat44		transform;
@@ -157,5 +157,7 @@ typedef struct	s_debug
 void		draw(t_vars vars);
 
 t_mat44		mat44_identity(void);
+t_tuple		vector(double x, double y, double z);
+t_tuple		point(double x, double y, double z);
 
 #endif

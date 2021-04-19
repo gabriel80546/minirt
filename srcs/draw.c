@@ -652,29 +652,6 @@ t_list	*ray_sp_intercection(t_ray ray, t_esfera sp)
 	return (saida);
 }
 
-
-/* 
-canvas ← canvas(canvas_pixels, canvas_pixels)
-​color  ← color(1, 0, 0)
-// red​​shape  ← sphere()​
-// for each row of pixels in the canvas
-​​​for​ y ← 0 to canvas_pixels - 1
-// compute the world y coordinate (top = +half, bottom = -half)
-	world_y ← half - pixel_size * y​​
-// for each pixel in the row​
-​for​ x ← 0 to canvas_pixels - 1
-// compute the world x coordinate (left = -half, right = half)
-world_x ← -half + pixel_size * x
-// describe the point on the wall that the ray will target
-position ← point(world_x, world_y, wall_z)
-r ← ray(ray_origin, normalize(position - ray_origin))
-xs ← intersect(shape, r)
-​if​ hit(xs) is defined
-write_pixel(canvas, x, y, color)
-​end​ ​if
-​end​ ​for
- */
-
 t_vec	setup_tela(t_vars vars, int x, int y)
 {
 	t_vec	saida;
@@ -712,28 +689,61 @@ t_ray	gen_rays(t_vars vars, int x, int y)
 	return (saida);
 }
 
+/* 
+normal_at(sphere, world_point)​
+	object_point ← inverse(sphere.transform) * world_point
+	object_normal ← object_point - point(0, 0, 0)
+	world_normal ← transpose(inverse(sphere.transform)) *object_normal
+	world_normal.w ← 0
+	​return​ normalize(world_normal)​​
+ */
+t_tuple	sp_normal(t_esfera sphere, t_tuple world_point)
+{
+	t_tuple	object_point;
+	t_tuple	object_normal;
+	t_tuple	world_normal;
+
+	object_point = mat44_tuple_mul(mat44_inverse(sphere.transform), world_point);
+	object_normal = tup_sub(object_point, point(0.0, 0.0, 0.0));
+	world_normal = mat44_tuple_mul(mat44_transpose(mat44_inverse(sphere.transform)), object_normal);
+	world_normal.w = 0.0;
+	return normalize(world_normal);
+}
+
+
 void	draw_main(t_vars vars, int x, int y, t_img img)
 {
 	t_ray	ray;
 	t_list	*hits;
 	t_list	*temp_list;
 
+
 	ray = gen_rays(vars, x, y);
 	if (((t_objeto *)vars.objs->data)->tipo == SPHERE)
 	{
+		if (x == 3 && y == 5)
+		{
+			printf("sp_normal(((t_objeto *)vars.objs->data)->sp, point(sqrt(3)/3, sqrt(3)/3, sqrt(3)/3))) => \n");
+			print_tuple(sp_normal(((t_objeto *)vars.objs->data)->sp, point(sqrt(3)/3, sqrt(3)/3, sqrt(3)/3)));
+
+			printf("((t_objeto *)vars.objs->data)->sp.transform = mat44_translate(0.0, 1.0, 0.0);\n");
+			((t_objeto *)vars.objs->data)->sp.transform = mat44_translate(0.0, 1.0, 0.0);
+			printf("sp_normal(((t_objeto *)vars.objs->data)->sp, point(0.0, 1.70711, -0.70711) => \n");
+			print_tuple(sp_normal(((t_objeto *)vars.objs->data)->sp, point(0.0, 1.70711, -0.70711)));
+			print_tuple(vector(0, 0.70711, -0.70711));
+		}
+		((t_objeto *)vars.objs->data)->sp.transform = mat44_mul(mat44_rotate_z(PI / 4), mat44_scaling(0.5, 1.0, 1.0));
 		hits = ray_sp_intercection(ray, ((t_objeto *)vars.objs->data)->sp);
 		temp_list = NULL;
 		while (hits != NULL)
 		{
-			// printf("hits.t = % 6.6lf\n", ((t_hit *)hits->data)->t);
-			// printf("hits.obj.sp.diametro = % 6.6lf\n", ((t_hit *)hits->data)->obj.sp.diametro);
 			temp_list = hits;
 			hits = hits->next;
 		}
 		if (temp_list != NULL)
 			hits = temp_list;
 		if (hits != NULL)
-			*((unsigned int *)img.data + (x + ((vars.altura - y) * img.size_line / (img.bits_per_pixel / img.bits_per_byte)))) = cor_to_rgb(color(1.0, 0.0, 0.0));
+			*((unsigned int *)img.data + (x + (y * img.size_line / (img.bits_per_pixel / img.bits_per_byte)))) = cor_to_rgb(color(1.0, 0.0, 0.0));
 	}
 	else
 		printf("objs nao aponta para uma esfera\n");
