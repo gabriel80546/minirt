@@ -56,13 +56,29 @@ typedef struct	s_ray
 	t_tuple		direction;
 }				t_ray;
 
+typedef	struct	s_material
+{
+	t_cor		color;
+	double		ambient;
+	double		diffuse;
+	double		specular;
+	double		shininess;
+}				t_material;
+
+
 typedef struct	s_esfera
 {
 	t_tuple		pos;
 	double		diametro;
-	int			cor;
 	t_mat44		transform;
+	t_material	material;
+	// int			cor;
+	// double		ambient;
+	// double		diffuse;
+	// double		specular;
+	// double		shininess;
 }				t_esfera;
+
 
 typedef struct	s_plano
 {
@@ -111,9 +127,9 @@ typedef struct	s_cam
 
 typedef struct	s_light
 {
-	t_vec		pos;
+	t_tuple		position;
 	double		bright;
-	int			cor;
+	t_cor		cor;
 }				t_light;
 
 typedef struct  s_vars {
@@ -159,5 +175,6 @@ void		draw(t_vars vars);
 t_mat44		mat44_identity(void);
 t_tuple		vector(double x, double y, double z);
 t_tuple		point(double x, double y, double z);
+t_cor		color(double r, double g, double b);
 
 #endif

@@ -140,24 +140,26 @@ t_vars	config_scene_easy(t_vars input)
 	obj->tipo = SPHERE;
 	obj->sp.pos = point(0.0, 0.0, 0.0);
 	obj->sp.diametro = 157.0;
-	obj->sp.cor = 0x606060;
+	obj->sp.material.color = color(1.0, 0.2, 1.0);
+	obj->sp.material.ambient = 0.1;
+	obj->sp.material.diffuse = 0.9;
+	obj->sp.material.specular = 0.9;
+	obj->sp.material.shininess = 200.0;
 	obj->sp.transform = mat44_identity();
 	vars.objs = list_init(obj);
 	// list_add(vars.objs, obj);
 
 	// LUZES
 
-	temp_direc.x = -1.0;
-	temp_direc.y =  1.25;
-	temp_direc.z = -3.0;
+	temp_direc.x = -10.0;
+	temp_direc.y =  10.0;
+	temp_direc.z = -10.0;
 
 	vars.lights = NULL;
 	light = (t_light *)malloc(sizeof(t_light));
 	light->bright = 0.8;
-	light->pos.x = temp_direc.x;
-	light->pos.y = temp_direc.y;
-	light->pos.z = temp_direc.z;
-	light->cor = 0xFFFFFF;
+	light->position = point(temp_direc.x, temp_direc.y, temp_direc.z);
+	light->cor =  color(1.0, 1.0, 1.0);
 	vars.lights = list_init(light);
 
 	// light = (t_light *)malloc(sizeof(t_light));

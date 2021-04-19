@@ -139,8 +139,6 @@ t_tuple		tup_sub(t_tuple a, t_tuple b)
 	return (saida);
 }
 
-
-
 t_cor	color(double r, double g, double b)
 {
 	t_cor saida;
@@ -209,37 +207,37 @@ int	cor_to_rgb(t_cor cor)
 
 void	print_tuple(t_tuple tupla)
 {
-	printf("tupla.x = % 6.6lf\n", tupla.x);
-	printf("tupla.y = % 6.6lf\n", tupla.y);
-	printf("tupla.z = % 6.6lf\n", tupla.z);
-	printf("tupla.w = % 6.6lf\n", tupla.w);
+	printf("%s(%s:%d): tupla.x = % 6.6lf\n", __FILE__, __func__, __LINE__, tupla.x);
+	printf("%s(%s:%d): tupla.y = % 6.6lf\n", __FILE__, __func__, __LINE__, tupla.y);
+	printf("%s(%s:%d): tupla.z = % 6.6lf\n", __FILE__, __func__, __LINE__, tupla.z);
+	printf("%s(%s:%d): tupla.w = % 6.6lf\n", __FILE__, __func__, __LINE__, tupla.w);
 }
 
 void	print_mat44(t_mat44 mat)
 {
-	printf("/***********************************************\\\n");
-	printf("| % 6.6lf | % 6.6lf | % 6.6lf | % 6.6lf |\n", mat.m[0],  mat.m[1],  mat.m[2],  mat.m[3]);
-	printf("| % 6.6lf | % 6.6lf | % 6.6lf | % 6.6lf |\n", mat.m[4],  mat.m[5],  mat.m[6],  mat.m[7]);
-	printf("| % 6.6lf | % 6.6lf | % 6.6lf | % 6.6lf |\n", mat.m[8],  mat.m[9],  mat.m[10], mat.m[11]);
-	printf("| % 6.6lf | % 6.6lf | % 6.6lf | % 6.6lf |\n", mat.m[12], mat.m[13], mat.m[14], mat.m[15]);
-	printf("\\***********************************************/\n");
+	printf("%s(%s:%d): /***********************************************\\\n", __FILE__, __func__, __LINE__);
+	printf("%s(%s:%d): | % 6.6lf | % 6.6lf | % 6.6lf | % 6.6lf |\n", __FILE__, __func__, __LINE__, mat.m[0],  mat.m[1],  mat.m[2],  mat.m[3]);
+	printf("%s(%s:%d): | % 6.6lf | % 6.6lf | % 6.6lf | % 6.6lf |\n", __FILE__, __func__, __LINE__, mat.m[4],  mat.m[5],  mat.m[6],  mat.m[7]);
+	printf("%s(%s:%d): | % 6.6lf | % 6.6lf | % 6.6lf | % 6.6lf |\n", __FILE__, __func__, __LINE__, mat.m[8],  mat.m[9],  mat.m[10], mat.m[11]);
+	printf("%s(%s:%d): | % 6.6lf | % 6.6lf | % 6.6lf | % 6.6lf |\n", __FILE__, __func__, __LINE__, mat.m[12], mat.m[13], mat.m[14], mat.m[15]);
+	printf("%s(%s:%d): \\***********************************************/\n", __FILE__, __func__, __LINE__);
 }
 
 void	print_mat22(t_mat22 mat)
 {
-	printf("/***********************\\\n");
-	printf("| % 6.6lf | % 6.6lf |\n", mat.m[0],  mat.m[1]);
-	printf("| % 6.6lf | % 6.6lf |\n", mat.m[2],  mat.m[3]);
-	printf("\\***********************/\n");
+	printf("%s(%s:%d): /***********************\\\n", __FILE__, __func__, __LINE__);
+	printf("%s(%s:%d): | % 6.6lf | % 6.6lf |\n", __FILE__, __func__, __LINE__, mat.m[0],  mat.m[1]);
+	printf("%s(%s:%d): | % 6.6lf | % 6.6lf |\n", __FILE__, __func__, __LINE__, mat.m[2],  mat.m[3]);
+	printf("%s(%s:%d): \\***********************/\n", __FILE__, __func__, __LINE__);
 }
 
 void	print_mat33(t_mat33 mat)
 {
-	printf("/***********************************************\\\n");
-	printf("| % 6.6lf | % 6.6lf | % 6.6lf |\n", mat.m[0],  mat.m[1],  mat.m[2]);
-	printf("| % 6.6lf | % 6.6lf | % 6.6lf |\n", mat.m[3],  mat.m[4],  mat.m[5]);
-	printf("| % 6.6lf | % 6.6lf | % 6.6lf |\n", mat.m[6],  mat.m[7],  mat.m[8]);
-	printf("\\***********************************************/\n");
+	printf("%s(%s:%d): /***********************************************\\\n", __FILE__, __func__, __LINE__);
+	printf("%s(%s:%d): | % 6.6lf | % 6.6lf | % 6.6lf |\n", __FILE__, __func__, __LINE__, mat.m[0],  mat.m[1],  mat.m[2]);
+	printf("%s(%s:%d): | % 6.6lf | % 6.6lf | % 6.6lf |\n", __FILE__, __func__, __LINE__, mat.m[3],  mat.m[4],  mat.m[5]);
+	printf("%s(%s:%d): | % 6.6lf | % 6.6lf | % 6.6lf |\n", __FILE__, __func__, __LINE__, mat.m[6],  mat.m[7],  mat.m[8]);
+	printf("%s(%s:%d): \\***********************************************/\n", __FILE__, __func__, __LINE__);
 }
 
 int		mat44_coor(int row, int col)
@@ -716,42 +714,230 @@ t_tuple	reflect(t_tuple in, t_tuple normal)
 	return tup_sub(in, mul_scalar(normal, 2 * dot(in, normal)));
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+/* 
+
+lighting(material, light, point, eyev, normalv)
+	// combine the surface color with the light's color/intensity
+	effective_color ← material.color * light.intensity
+	// find the direction to the light source
+	lightv ← normalize(light.position - point)
+	// compute the ambient contribution
+	ambient ← effective_color * material.ambient
+	// light_dot_normal represents the cosine of the angle between the
+	// light vector and the normal vector. A negative number means the
+	// light is on the other side of the surface.
+	light_dot_normal ← dot(lightv, normalv)
+	if light_dot_normal < 0
+		diffuse ← black
+		specular ← black
+	else
+		// compute the diffuse contribution
+		diffuse ← effective_color * material.diffuse * light_dot_normal
+		// reflect_dot_eye represents the cosine of the angle betweenthe
+		// reflection vector and the eye vector. A negative numbermeans the
+		// light reflects away from the eye.
+		reflectv ← reflect(-lightv, normalv)
+		reflect_dot_eye ← dot(reflectv, eyev)
+		if reflect_dot_eye <= 0
+			specular ← black
+		else
+			// compute the specular contribution
+			factor ← pow(reflect_dot_eye, material.shininess)
+			specular ← light.intensity * material.specular * factor
+		end if
+	end if
+	// Add the three contributions together to get the final shading
+	return ambient + diffuse + specular
+end function
+
+
+ */
+
+t_cor	lighting(t_material material, t_light light, t_tuple point, t_tuple eyev, t_tuple normalv)
+{
+	t_cor	effective_color;
+	t_cor	ambient;
+	t_tuple lightv;
+	t_tuple	reflectv;
+	double	reflect_dot_eye;
+	double	light_dot_normal;
+	t_cor	diffuse;
+	t_cor	specular;
+	double	factor;
+
+	// combine the surface color with the light's color/intensity
+	effective_color = color_mul(material.color, light.cor);
+	// find the direction to the light source
+	lightv = normalize(tup_sub(light.position, point));
+	// compute the ambient contribution
+	ambient = color_mul_scalar(effective_color, material.ambient);
+	// light_dot_normal represents the cosine of the angle between the
+	// light vector and the normal vector. A negative number means the
+	// light is on the other side of the surface.
+	light_dot_normal = dot(lightv, normalv);
+	if (light_dot_normal < 0.0)
+	{
+		diffuse = color(0.0, 0.0, 0.0);
+		specular = color(0.0, 0.0, 0.0);
+	}
+	else
+	{
+		// compute the diffuse contribution
+		diffuse = color_mul_scalar(effective_color, material.diffuse * light_dot_normal);
+		// reflect_dot_eye represents the cosine of the angle betweenthe
+		// reflection vector and the eye vector. A negative numbermeans the
+		// light reflects away from the eye.
+		reflectv = reflect(mul_scalar(lightv, -1.0), normalv);
+		reflect_dot_eye = dot(reflectv, eyev);
+		if (reflect_dot_eye <= 0)
+			specular = color(0.0, 0.0, 0.0);
+		else
+		{
+			// compute the specular contribution
+			factor = pow(reflect_dot_eye, material.shininess);
+			specular = color_mul_scalar(light.cor, material.specular * factor);
+		}
+	}
+	// Add the three contributions together to get the final shading
+	return (color_add(color_add(ambient, diffuse), specular));
+}
+
 void	draw_main(t_vars vars, int x, int y, t_img img)
 {
 	t_ray	ray;
 	t_list	*hits;
 	t_list	*temp_list;
+	t_material	m;
+	t_light		light;
+	t_cor		temp_color;
+	t_tuple		eyev;
+	t_tuple		normalv;
+	t_tuple		position;
 
+	t_tuple		ponto;
+	t_tuple		normal;
+	t_tuple		eye;
+
+	t_cor		hit_cor;
 
 	ray = gen_rays(vars, x, y);
 	if (((t_objeto *)vars.objs->data)->tipo == SPHERE)
 	{
-		if (x == 3 && y == 5)
+		if (x == 3 && y == 5 && 0)
 		{
+			m.color = color(1.0, 1.0, 1.0);
+			m.ambient = 0.1;
+			m.diffuse = 0.9;
+			m.specular = 0.9;
+			m.shininess = 200.0;
+			light.position = point(0.0, 0.0, -10.0);
+			light.cor = color(1.0, 1.0, 1.0);
+			position = point(0.0, 0.0, 0.0);
+			eyev = vector(0, 0, -1);
+			normalv = vector(0, 0, -1);
+			temp_color = lighting(m, light, position, eyev, normalv);
+			printf("%s(%s:%d): cor.r = % 6.6lf\n", __FILE__, __func__, __LINE__, temp_color.r);
+			printf("%s(%s:%d): cor.r = % 6.6lf\n", __FILE__, __func__, __LINE__, temp_color.g);
+			printf("%s(%s:%d): cor.r = % 6.6lf\n", __FILE__, __func__, __LINE__, temp_color.b);
 
-			// ​Given​ v ← vector(1, -1, 0)
-			// ​And​ n ← vector(0, 1, 0)
-			// ​When​ r ← reflect(v, n)
-			// ​Then​ r = vector(1, 1, 0)
+			m.color = color(1.0, 1.0, 1.0);
+			m.ambient = 0.1;
+			m.diffuse = 0.9;
+			m.specular = 0.9;
+			m.shininess = 200.0;
+			light.position = point(0.0, 0.0, -10.0);
+			light.cor = color(1.0, 1.0, 1.0);
+			position = point(0.0, 0.0, 0.0);
+			eyev = vector(0, sqrt(2)/2, -sqrt(2)/2);
+			normalv = vector(0, 0, -1);
+			temp_color = lighting(m, light, position, eyev, normalv);
+			printf("%s(%s:%d): cor.r = % 6.6lf\n", __FILE__, __func__, __LINE__, temp_color.r);
+			printf("%s(%s:%d): cor.r = % 6.6lf\n", __FILE__, __func__, __LINE__, temp_color.g);
+			printf("%s(%s:%d): cor.r = % 6.6lf\n", __FILE__, __func__, __LINE__, temp_color.b);
 
-			printf("reflect(vector(1, -1, 0), vector(0, 1, 0)) => \n");
-			print_tuple(reflect(vector(0, -1, 0), vector(sqrt(2)/2, sqrt(2)/2, 0)));
+			m.color = color(1.0, 1.0, 1.0);
+			m.ambient = 0.1;
+			m.diffuse = 0.9;
+			m.specular = 0.9;
+			m.shininess = 200.0;
+			light.position = point(0.0, 10.0, -10.0);
+			light.cor = color(1.0, 1.0, 1.0);
+			position = point(0.0, 0.0, 0.0);
+			eyev = vector(0, 0, -1);
+			normalv = vector(0, 0, -1);
+			temp_color = lighting(m, light, position, eyev, normalv);
+			printf("%s(%s:%d): cor.r = % 6.6lf\n", __FILE__, __func__, __LINE__, temp_color.r);
+			printf("%s(%s:%d): cor.r = % 6.6lf\n", __FILE__, __func__, __LINE__, temp_color.g);
+			printf("%s(%s:%d): cor.r = % 6.6lf\n", __FILE__, __func__, __LINE__, temp_color.b);
+
+			m.color = color(1.0, 1.0, 1.0);
+			m.ambient = 0.1;
+			m.diffuse = 0.9;
+			m.specular = 0.9;
+			m.shininess = 200.0;
+			light.position = point(0.0, 10.0, -10.0);
+			light.cor = color(1.0, 1.0, 1.0);
+			position = point(0.0, 0.0, 0.0);
+			eyev = vector(0, -sqrt(2)/2, -sqrt(2)/2);
+			normalv = vector(0, 0, -1);
+			temp_color = lighting(m, light, position, eyev, normalv);
+			printf("%s(%s:%d): cor.r = % 6.6lf\n", __FILE__, __func__, __LINE__, temp_color.r);
+			printf("%s(%s:%d): cor.r = % 6.6lf\n", __FILE__, __func__, __LINE__, temp_color.g);
+			printf("%s(%s:%d): cor.r = % 6.6lf\n", __FILE__, __func__, __LINE__, temp_color.b);
+
+			m.color = color(1.0, 1.0, 1.0);
+			m.ambient = 0.1;
+			m.diffuse = 0.9;
+			m.specular = 0.9;
+			m.shininess = 200.0;
+			light.position = point(0.0, 0.0, 10.0);
+			light.cor = color(1.0, 1.0, 1.0);
+			position = point(0.0, 0.0, 0.0);
+			eyev = vector(0, 0, -1);
+			normalv = vector(0, 0, -1);
+			temp_color = lighting(m, light, position, eyev, normalv);
+			printf("%s(%s:%d): cor.r = % 6.6lf\n", __FILE__, __func__, __LINE__, temp_color.r);
+			printf("%s(%s:%d): cor.r = % 6.6lf\n", __FILE__, __func__, __LINE__, temp_color.g);
+			printf("%s(%s:%d): cor.r = % 6.6lf\n", __FILE__, __func__, __LINE__, temp_color.b);
+
 		}
-		((t_objeto *)vars.objs->data)->sp.transform = mat44_mul(mat44_rotate_z(PI / 4), mat44_scaling(0.5, 1.0, 1.0));
+		// ((t_objeto *)vars.objs->data)->sp.transform = mat44_mul(mat44_rotate_z(PI / 4), mat44_scaling(0.5, 1.0, 1.0));
 		hits = ray_sp_intercection(ray, ((t_objeto *)vars.objs->data)->sp);
 		temp_list = NULL;
 		while (hits != NULL)
 		{
+			ponto = ray_position(ray, ((t_hit *)hits->data)->t);
+			normal = sp_normal(((t_hit *)hits->data)->obj.sp, ponto);
+			eye = mul_scalar(ray.direction, -1);
+
+			light.bright = 0.8;
+			light.position = point(-10.0, 10.0, -10.0);
+			light.cor = color(1.0, 1.0, 1.0);
+
+			hit_cor = lighting(((t_hit *)hits->data)->obj.sp.material, light, ponto, eye, normal);
+			*((unsigned int *)img.data + (x + (y * img.size_line / (img.bits_per_pixel / img.bits_per_byte)))) = cor_to_rgb(hit_cor);
 			temp_list = hits;
 			hits = hits->next;
 		}
 		if (temp_list != NULL)
 			hits = temp_list;
-		if (hits != NULL)
-			*((unsigned int *)img.data + (x + (y * img.size_line / (img.bits_per_pixel / img.bits_per_byte)))) = cor_to_rgb(color(1.0, 0.0, 0.0));
+		// if (hits != NULL)
+		// 	*((unsigned int *)img.data + (x + (y * img.size_line / (img.bits_per_pixel / img.bits_per_byte)))) = cor_to_rgb(color(1.0, 0.0, 0.0));
 	}
 	else
-		printf("objs nao aponta para uma esfera\n");
+		printf("%s(%s:%d): objs nao aponta para uma esfera\n", __FILE__, __func__, __LINE__);
 	if (hits != NULL)
 		clear_list_all(hits);
 }
