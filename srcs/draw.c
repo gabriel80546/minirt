@@ -138,31 +138,7 @@ t_tuple		tup_sub(t_tuple a, t_tuple b)
 	return (saida);
 }
 
-typedef struct	s_projectile
-{
-	t_tuple	position;
-	t_tuple	velocity;
-}				t_projectile;
 
-
-t_projectile	projectile(t_tuple position, t_tuple velocity)
-{
-	t_projectile	saida;
-
-	saida.position = position;
-	saida.velocity = velocity;
-	return (saida);
-}
-
-t_projectile	tick(t_tuple gravity, t_tuple wind, t_projectile proj)
-{
-	t_tuple	position;
-	t_tuple	velocity;
-
-	position = tup_add(proj.position, proj.velocity);
-	velocity = tup_add(proj.velocity, tup_add(gravity, wind));
-	return projectile(position, velocity);
-}
 
 t_cor	color(double r, double g, double b)
 {
@@ -237,23 +213,6 @@ void	print_tuple(t_tuple tupla)
 	printf("tupla.z = % 6.6lf\n", tupla.z);
 	printf("tupla.w = % 6.6lf\n", tupla.w);
 }
-
-
-typedef struct	s_mat44
-{
-	double	m[16];
-}				t_mat44;
-
-typedef struct	s_mat33
-{
-	double	m[9];
-}				t_mat33;
-
-typedef struct	s_mat22
-{
-	double	m[4];
-}				t_mat22;
-
 
 void	print_mat44(t_mat44 mat)
 {
@@ -627,13 +586,6 @@ t_mat44	mat44_shearing(double xy, double xz, double yx, double yz, double zx, do
 	return (saida);
 }
 
-
-typedef struct	s_ray
-{
-	t_tuple		origin;
-	t_tuple		direction;
-}				t_ray;
-
 t_ray	ray_create(t_tuple origin, t_tuple direction)
 {
 	t_ray	saida;
@@ -652,89 +604,141 @@ t_tuple	ray_position(t_ray ray, double dist)
 }
 
 
+t_ray	ray_transform(t_ray ray, t_mat44 matrix)
+{
+	t_ray saida;
 
-// teste
-// // A ray misses a sphere
-// // Given r ← ray(point(0, 2, -5), vector(0, 0, 1))
-// // And s ← sphere()
-// // When xs ← intersect(s, r)
-// // Then xs.count = 0
+	saida = ray;
+	saida.origin = mat44_tuple_mul(matrix, saida.origin);
+	saida.direction = mat44_tuple_mul(matrix, saida.direction);
+	return (saida);
+}
 
-// pseudocodigo
-// // the vector from the sphere's center, to the ray origin
-// // remember: the sphere is centered at the world origin
-// 	sphere_to_ray ← ray.origin - point(0, 0, 0)
-// 	a ← dot(ray.direction, ray.direction)
-// 	b ← 2 * dot(ray.direction, sphere_to_ray)
-// 	c ← dot(sphere_to_ray, sphere_to_ray) - 1
-// 	discriminant ← b² - 4 * a * c
-
-// 	if discriminant < 0 then
-// 		return ()
-// 	end if
-
-// 	t1 ← (-b - √(discriminant)) / (2 * a)
-// 	t2 ← (-b + √(discriminant)) / (2 * a)
-// 	return (t1, t2)
-
-t_solution	ray_sp_intercection(t_ray ray)
+t_list	*ray_sp_intercection(t_ray ray, t_esfera sp)
 {
 	t_tuple sphere_to_ray;
 	double	a;
 	double	b;
 	double	c;
+	t_list	*saida;
+	t_hit	*hit;
+	t_solution	solution;
+
+	saida = NULL;
+
+	ray = ray_transform(ray, mat44_inverse(sp.transform));
 
 	sphere_to_ray = tup_sub(ray.origin, point(0, 0, 0));
 	a = dot(ray.direction, ray.direction);
 	b = 2 * dot(ray.direction, sphere_to_ray);
 	c = dot(sphere_to_ray, sphere_to_ray) - 1;
-	return (solve_equation(a, b, c));
+	solution = (solve_equation(a, b, c));
+	if (solution.n >= 1 && solution.n <= 2)
+	{
+		hit = (t_hit *)malloc(sizeof(t_hit));
+		hit->obj.tipo = SPHERE;
+		hit->obj.sp = sp;
+		hit->t = solution.s1;
+		saida = list_init(hit);
+	}
+	if (solution.n == 2)
+	{
+		hit = (t_hit *)malloc(sizeof(t_hit));
+		hit->obj.tipo = SPHERE;
+		hit->obj.sp = sp;
+		hit->t = solution.s2;
+		list_add(saida, hit);
+	}
+	return (saida);
 }
 
+
+/* 
+canvas ← canvas(canvas_pixels, canvas_pixels)
+​color  ← color(1, 0, 0)
+// red​​shape  ← sphere()​
+// for each row of pixels in the canvas
+​​​for​ y ← 0 to canvas_pixels - 1
+// compute the world y coordinate (top = +half, bottom = -half)
+	world_y ← half - pixel_size * y​​
+// for each pixel in the row​
+​for​ x ← 0 to canvas_pixels - 1
+// compute the world x coordinate (left = -half, right = half)
+world_x ← -half + pixel_size * x
+// describe the point on the wall that the ray will target
+position ← point(world_x, world_y, wall_z)
+r ← ray(ray_origin, normalize(position - ray_origin))
+xs ← intersect(shape, r)
+​if​ hit(xs) is defined
+write_pixel(canvas, x, y, color)
+​end​ ​if
+​end​ ​for
+ */
+
+t_vec	setup_tela(t_vars vars, int x, int y)
+{
+	t_vec	saida;
+	double	ttan;
+	double	tcam;
+
+	ttan = (tan((((vars.cam.fov) / 2.0) * PI) / 180.0));
+	tcam = (((vars.largura - vars.altura) / 2));
+	saida.x =  ((((2 * ttan) / vars.largura) * x) - ttan);
+	saida.y = -((((2 * ttan) / vars.largura) * (y + tcam)) - ttan);
+	saida.z =  1.0;
+
+	saida = rotacao_x(saida, vec_to_spherical_inc(vars.cam.direc));
+	saida = rotacao_y(saida, vec_to_spherical_azi(vars.cam.direc));
+
+	saida.x += vars.cam.pos.x;
+	saida.y += vars.cam.pos.y;
+	saida.z += vars.cam.pos.z;
+	return (saida);
+}
+
+t_ray	gen_rays(t_vars vars, int x, int y)
+{
+	t_ray	saida;
+	double	ttan;
+	double	tcam;
+
+	ttan = (tan((((vars.cam.fov) / 2.0) * PI) / 180.0));
+	tcam = (((vars.largura - vars.altura) / 2));
+	saida.origin = point(vars.cam.pos.x, vars.cam.pos.y, vars.cam.pos.z);
+	saida.direction = normalize(vector(
+					((((2 * ttan) / vars.largura) * x) - ttan),
+					-((((2 * ttan) / vars.largura) * (y + tcam)) - ttan),
+					1.0));
+	return (saida);
+}
 
 void	draw_main(t_vars vars, int x, int y, t_img img)
 {
 	t_ray	ray;
-	t_solution	temp;
+	t_list	*hits;
+	t_list	*temp_list;
 
-	ray = ray_create(point(0, 2, -5), vector(0, 0, 1));
-
-	if (x == 3 && y == 5)
+	ray = gen_rays(vars, x, y);
+	if (((t_objeto *)vars.objs->data)->tipo == SPHERE)
 	{
-		printf("ray_position(ray, 0) => \n");
-		print_tuple(ray_position(ray, 0));
-		printf("ray_position(ray, 1) => \n");
-		print_tuple(ray_position(ray, 1));
-		printf("ray_position(ray, -1) => \n");
-		print_tuple(ray_position(ray, -1));
-		printf("ray_position(ray, 2.5) => \n");
-		print_tuple(ray_position(ray, 2.5));
-
-		printf("obj.tipo= %d\n", ((t_objeto *)vars.objs->data)->tipo);
-
-		printf("obj.sp.diametro = % 6.6lf\n", ((t_objeto *)vars.objs->data)->sp.diametro);
-
-		printf("pronto\n");
-
-		// A ray originates inside a sphere​
-		// ​Given​ r ← ray(point(0, 0, 0), vector(0, 0, 1))
-		// ​And​ s ← sphere()
-		// ​When​ xs ← intersect(s, r)
-		// ​Then​ xs.count = 2
-		// ​And​ xs[0] = -1.0​
-		// ​And​ xs[1] = 1.0
-		temp = ray_sp_intercection(ray);
-		printf("temp.n = %d\n", temp.n);
-		printf("temp.s1 = % 6.6lf\n", temp.s1);
-		printf("temp.s2 = % 6.6lf\n", temp.s2);
-
-
-		*((unsigned int *)img.data + (1 + ((vars.altura - 1) * img.size_line / (img.bits_per_pixel / img.bits_per_byte)))) = cor_to_rgb(color(1.0, 0.0, 0.0));
+		hits = ray_sp_intercection(ray, ((t_objeto *)vars.objs->data)->sp);
+		temp_list = NULL;
+		while (hits != NULL)
+		{
+			// printf("hits.t = % 6.6lf\n", ((t_hit *)hits->data)->t);
+			// printf("hits.obj.sp.diametro = % 6.6lf\n", ((t_hit *)hits->data)->obj.sp.diametro);
+			temp_list = hits;
+			hits = hits->next;
+		}
+		if (temp_list != NULL)
+			hits = temp_list;
+		if (hits != NULL)
+			*((unsigned int *)img.data + (x + ((vars.altura - y) * img.size_line / (img.bits_per_pixel / img.bits_per_byte)))) = cor_to_rgb(color(1.0, 0.0, 0.0));
 	}
-	// if (x + y > (vars.largura / 2))
-	// 	*((unsigned int *)img.data + (x + (y * img.size_line / (img.bits_per_pixel / img.bits_per_byte)))) = 0xFF0000;
-	// else
-	// 	*((unsigned int *)img.data + (x + (y * img.size_line / (img.bits_per_pixel / img.bits_per_byte)))) = cor_to_rgb(color(0.0, 1.0, 0.0));
+	else
+		printf("objs nao aponta para uma esfera\n");
+	if (hits != NULL)
+		clear_list_all(hits);
 }
 
 void	draw(t_vars vars)

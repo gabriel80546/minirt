@@ -34,12 +34,34 @@ typedef struct	s_cor
 	double	b;
 }				t_cor;
 
+typedef struct	s_mat44
+{
+	double	m[16];
+}				t_mat44;
+
+typedef struct	s_mat33
+{
+	double	m[9];
+}				t_mat33;
+
+typedef struct	s_mat22
+{
+	double	m[4];
+}				t_mat22;
+
+
+typedef struct	s_ray
+{
+	t_tuple		origin;
+	t_tuple		direction;
+}				t_ray;
 
 typedef struct	s_esfera
 {
 	t_vec		pos;
 	double		diametro;
 	int			cor;
+	t_mat44		transform;
 }				t_esfera;
 
 typedef struct	s_plano
@@ -66,10 +88,17 @@ typedef struct	s_objeto
 	t_cylinder	cy;
 }				t_objeto;
 
-typedef struct	s_hit
+typedef struct	s_hit_old
 {
 	t_objeto	obj;
 	t_vec		ponto;
+}				t_hit_old;
+
+
+typedef struct	s_hit
+{
+	t_objeto	obj;
+	double		t;
 }				t_hit;
 
 typedef struct	s_cam
@@ -126,5 +155,7 @@ typedef struct	s_debug
 
 
 void		draw(t_vars vars);
+
+t_mat44		mat44_identity(void);
 
 #endif

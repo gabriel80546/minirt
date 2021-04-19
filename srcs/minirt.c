@@ -17,7 +17,7 @@ t_vars	config_cams(t_vars input)
 	cam->direc.x = 0.0;
 	cam->direc.y = 0.0;
 	cam->direc.z = 3.0;
-	cam->fov = 90.0;
+	cam->fov = 60.0;
 	saida.cams = list_init(cam);
 	// list_add(saida.cams, cam);
 
@@ -28,7 +28,7 @@ t_vars	config_cams(t_vars input)
 	cam->direc.x = 0.0;
 	cam->direc.y = 0.0;
 	cam->direc.z = 3.0;
-	cam->fov = 90.0;
+	cam->fov = 60.0;
 	// saida.cams = list_init(cam);
 	list_add(saida.cams, cam);
 	i = 0;
@@ -42,7 +42,7 @@ t_vars	config_cams(t_vars input)
 		cam->direc.x = -cam->pos.x;
 		cam->direc.y = -cam->pos.y;
 		cam->direc.z = -cam->pos.z;
-		cam->fov = 90.0;
+		cam->fov = 60.0;
 		list_add(saida.cams, cam);
 		i++;
 	}
@@ -59,7 +59,7 @@ t_vars	config_cams(t_vars input)
 		cam->direc.x = -cam->pos.x;
 		cam->direc.y = -cam->pos.y;
 		cam->direc.z = -cam->pos.z;
-		cam->fov = 90.0;
+		cam->fov = 60.0;
 		list_add(saida.cams, cam);
 		i++;
 	}
@@ -76,7 +76,7 @@ t_vars	config_cams(t_vars input)
 		cam->direc.x = -cam->pos.x;
 		cam->direc.y = -cam->pos.y;
 		cam->direc.z = -cam->pos.z;
-		cam->fov = 90.0;
+		cam->fov = 60.0;
 		list_add(saida.cams, cam);
 		i++;
 	}
@@ -93,7 +93,7 @@ t_vars	config_cams(t_vars input)
 		cam->direc.x = -cam->pos.x;
 		cam->direc.y = -cam->pos.y;
 		cam->direc.z = -cam->pos.z;
-		cam->fov = 90.0;
+		cam->fov = 60.0;
 		list_add(saida.cams, cam);
 		i++;
 	}
@@ -127,8 +127,8 @@ t_vars	config_scene_easy(t_vars input)
 	// int			i;
 
 	vars = input;
-	vars.largura = 900;
-	vars.altura = 550;
+	vars.largura = 400;
+	vars.altura = 300;
 	vars.gray = 0;
 	vars.ambient = 0x404040;
 	vars.objs = NULL;
@@ -143,6 +143,7 @@ t_vars	config_scene_easy(t_vars input)
 	obj->sp.pos.z = 0.0;
 	obj->sp.diametro = 157.0;
 	obj->sp.cor = 0x606060;
+	obj->sp.transform = mat44_identity();
 	vars.objs = list_init(obj);
 	// list_add(vars.objs, obj);
 
