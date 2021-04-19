@@ -49,6 +49,7 @@ t_tuple	tupla(double x, double y, double z, double w)
 	saida.w = w;
 	return (saida);
 }
+
 t_tuple	mul_scalar(t_tuple input, double scalar)
 {
 	t_tuple	saida;
@@ -710,6 +711,10 @@ t_tuple	sp_normal(t_esfera sphere, t_tuple world_point)
 	return normalize(world_normal);
 }
 
+t_tuple	reflect(t_tuple in, t_tuple normal)
+{
+	return tup_sub(in, mul_scalar(normal, 2 * dot(in, normal)));
+}
 
 void	draw_main(t_vars vars, int x, int y, t_img img)
 {
@@ -723,14 +728,14 @@ void	draw_main(t_vars vars, int x, int y, t_img img)
 	{
 		if (x == 3 && y == 5)
 		{
-			printf("sp_normal(((t_objeto *)vars.objs->data)->sp, point(sqrt(3)/3, sqrt(3)/3, sqrt(3)/3))) => \n");
-			print_tuple(sp_normal(((t_objeto *)vars.objs->data)->sp, point(sqrt(3)/3, sqrt(3)/3, sqrt(3)/3)));
 
-			printf("((t_objeto *)vars.objs->data)->sp.transform = mat44_translate(0.0, 1.0, 0.0);\n");
-			((t_objeto *)vars.objs->data)->sp.transform = mat44_translate(0.0, 1.0, 0.0);
-			printf("sp_normal(((t_objeto *)vars.objs->data)->sp, point(0.0, 1.70711, -0.70711) => \n");
-			print_tuple(sp_normal(((t_objeto *)vars.objs->data)->sp, point(0.0, 1.70711, -0.70711)));
-			print_tuple(vector(0, 0.70711, -0.70711));
+			// ​Given​ v ← vector(1, -1, 0)
+			// ​And​ n ← vector(0, 1, 0)
+			// ​When​ r ← reflect(v, n)
+			// ​Then​ r = vector(1, 1, 0)
+
+			printf("reflect(vector(1, -1, 0), vector(0, 1, 0)) => \n");
+			print_tuple(reflect(vector(0, -1, 0), vector(sqrt(2)/2, sqrt(2)/2, 0)));
 		}
 		((t_objeto *)vars.objs->data)->sp.transform = mat44_mul(mat44_rotate_z(PI / 4), mat44_scaling(0.5, 1.0, 1.0));
 		hits = ray_sp_intercection(ray, ((t_objeto *)vars.objs->data)->sp);
