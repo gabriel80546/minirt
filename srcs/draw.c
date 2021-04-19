@@ -602,7 +602,6 @@ t_tuple	ray_position(t_ray ray, double dist)
 	return (saida);
 }
 
-
 t_ray	ray_transform(t_ray ray, t_mat44 matrix)
 {
 	t_ray saida;
@@ -688,14 +687,6 @@ t_ray	gen_rays(t_vars vars, int x, int y)
 	return (saida);
 }
 
-/* 
-normal_at(sphere, world_point)​
-	object_point ← inverse(sphere.transform) * world_point
-	object_normal ← object_point - point(0, 0, 0)
-	world_normal ← transpose(inverse(sphere.transform)) *object_normal
-	world_normal.w ← 0
-	​return​ normalize(world_normal)​​
- */
 t_tuple	sp_normal(t_esfera sphere, t_tuple world_point)
 {
 	t_tuple	object_point;
@@ -713,57 +704,6 @@ t_tuple	reflect(t_tuple in, t_tuple normal)
 {
 	return tup_sub(in, mul_scalar(normal, 2 * dot(in, normal)));
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* 
-
-lighting(material, light, point, eyev, normalv)
-	// combine the surface color with the light's color/intensity
-	effective_color ← material.color * light.intensity
-	// find the direction to the light source
-	lightv ← normalize(light.position - point)
-	// compute the ambient contribution
-	ambient ← effective_color * material.ambient
-	// light_dot_normal represents the cosine of the angle between the
-	// light vector and the normal vector. A negative number means the
-	// light is on the other side of the surface.
-	light_dot_normal ← dot(lightv, normalv)
-	if light_dot_normal < 0
-		diffuse ← black
-		specular ← black
-	else
-		// compute the diffuse contribution
-		diffuse ← effective_color * material.diffuse * light_dot_normal
-		// reflect_dot_eye represents the cosine of the angle betweenthe
-		// reflection vector and the eye vector. A negative numbermeans the
-		// light reflects away from the eye.
-		reflectv ← reflect(-lightv, normalv)
-		reflect_dot_eye ← dot(reflectv, eyev)
-		if reflect_dot_eye <= 0
-			specular ← black
-		else
-			// compute the specular contribution
-			factor ← pow(reflect_dot_eye, material.shininess)
-			specular ← light.intensity * material.specular * factor
-		end if
-	end if
-	// Add the three contributions together to get the final shading
-	return ambient + diffuse + specular
-end function
-
-
- */
 
 t_cor	lighting(t_material material, t_light light, t_tuple point, t_tuple eyev, t_tuple normalv)
 {
@@ -814,127 +754,55 @@ t_cor	lighting(t_material material, t_light light, t_tuple point, t_tuple eyev, 
 	return (color_add(color_add(ambient, diffuse), specular));
 }
 
+void	put_pixel(t_img *img, int x, int y, t_cor cor)
+{
+	int ratio;
+	int	offset;
+
+	ratio = (img->bits_per_pixel / img->bits_per_byte);
+	offset = (x + (y * img->size_line / ratio));
+	*((unsigned int *)img->data + offset) = cor_to_rgb(cor);
+}
+
 void	draw_main(t_vars vars, int x, int y, t_img img)
 {
 	t_ray	ray;
 	t_list	*hits;
 	t_list	*temp_list;
-	t_material	m;
 	t_light		light;
-	t_cor		temp_color;
-	t_tuple		eyev;
-	t_tuple		normalv;
-	t_tuple		position;
-
 	t_tuple		ponto;
 	t_tuple		normal;
 	t_tuple		eye;
-
 	t_cor		hit_cor;
 
 	ray = gen_rays(vars, x, y);
 	if (((t_objeto *)vars.objs->data)->tipo == SPHERE)
 	{
-		if (x == 3 && y == 5 && 0)
-		{
-			m.color = color(1.0, 1.0, 1.0);
-			m.ambient = 0.1;
-			m.diffuse = 0.9;
-			m.specular = 0.9;
-			m.shininess = 200.0;
-			light.position = point(0.0, 0.0, -10.0);
-			light.cor = color(1.0, 1.0, 1.0);
-			position = point(0.0, 0.0, 0.0);
-			eyev = vector(0, 0, -1);
-			normalv = vector(0, 0, -1);
-			temp_color = lighting(m, light, position, eyev, normalv);
-			printf("%s(%s:%d): cor.r = % 6.6lf\n", __FILE__, __func__, __LINE__, temp_color.r);
-			printf("%s(%s:%d): cor.r = % 6.6lf\n", __FILE__, __func__, __LINE__, temp_color.g);
-			printf("%s(%s:%d): cor.r = % 6.6lf\n", __FILE__, __func__, __LINE__, temp_color.b);
-
-			m.color = color(1.0, 1.0, 1.0);
-			m.ambient = 0.1;
-			m.diffuse = 0.9;
-			m.specular = 0.9;
-			m.shininess = 200.0;
-			light.position = point(0.0, 0.0, -10.0);
-			light.cor = color(1.0, 1.0, 1.0);
-			position = point(0.0, 0.0, 0.0);
-			eyev = vector(0, sqrt(2)/2, -sqrt(2)/2);
-			normalv = vector(0, 0, -1);
-			temp_color = lighting(m, light, position, eyev, normalv);
-			printf("%s(%s:%d): cor.r = % 6.6lf\n", __FILE__, __func__, __LINE__, temp_color.r);
-			printf("%s(%s:%d): cor.r = % 6.6lf\n", __FILE__, __func__, __LINE__, temp_color.g);
-			printf("%s(%s:%d): cor.r = % 6.6lf\n", __FILE__, __func__, __LINE__, temp_color.b);
-
-			m.color = color(1.0, 1.0, 1.0);
-			m.ambient = 0.1;
-			m.diffuse = 0.9;
-			m.specular = 0.9;
-			m.shininess = 200.0;
-			light.position = point(0.0, 10.0, -10.0);
-			light.cor = color(1.0, 1.0, 1.0);
-			position = point(0.0, 0.0, 0.0);
-			eyev = vector(0, 0, -1);
-			normalv = vector(0, 0, -1);
-			temp_color = lighting(m, light, position, eyev, normalv);
-			printf("%s(%s:%d): cor.r = % 6.6lf\n", __FILE__, __func__, __LINE__, temp_color.r);
-			printf("%s(%s:%d): cor.r = % 6.6lf\n", __FILE__, __func__, __LINE__, temp_color.g);
-			printf("%s(%s:%d): cor.r = % 6.6lf\n", __FILE__, __func__, __LINE__, temp_color.b);
-
-			m.color = color(1.0, 1.0, 1.0);
-			m.ambient = 0.1;
-			m.diffuse = 0.9;
-			m.specular = 0.9;
-			m.shininess = 200.0;
-			light.position = point(0.0, 10.0, -10.0);
-			light.cor = color(1.0, 1.0, 1.0);
-			position = point(0.0, 0.0, 0.0);
-			eyev = vector(0, -sqrt(2)/2, -sqrt(2)/2);
-			normalv = vector(0, 0, -1);
-			temp_color = lighting(m, light, position, eyev, normalv);
-			printf("%s(%s:%d): cor.r = % 6.6lf\n", __FILE__, __func__, __LINE__, temp_color.r);
-			printf("%s(%s:%d): cor.r = % 6.6lf\n", __FILE__, __func__, __LINE__, temp_color.g);
-			printf("%s(%s:%d): cor.r = % 6.6lf\n", __FILE__, __func__, __LINE__, temp_color.b);
-
-			m.color = color(1.0, 1.0, 1.0);
-			m.ambient = 0.1;
-			m.diffuse = 0.9;
-			m.specular = 0.9;
-			m.shininess = 200.0;
-			light.position = point(0.0, 0.0, 10.0);
-			light.cor = color(1.0, 1.0, 1.0);
-			position = point(0.0, 0.0, 0.0);
-			eyev = vector(0, 0, -1);
-			normalv = vector(0, 0, -1);
-			temp_color = lighting(m, light, position, eyev, normalv);
-			printf("%s(%s:%d): cor.r = % 6.6lf\n", __FILE__, __func__, __LINE__, temp_color.r);
-			printf("%s(%s:%d): cor.r = % 6.6lf\n", __FILE__, __func__, __LINE__, temp_color.g);
-			printf("%s(%s:%d): cor.r = % 6.6lf\n", __FILE__, __func__, __LINE__, temp_color.b);
-
-		}
-		// ((t_objeto *)vars.objs->data)->sp.transform = mat44_mul(mat44_rotate_z(PI / 4), mat44_scaling(0.5, 1.0, 1.0));
+		ray.direction = normalize(ray.direction);
 		hits = ray_sp_intercection(ray, ((t_objeto *)vars.objs->data)->sp);
 		temp_list = NULL;
 		while (hits != NULL)
 		{
-			ponto = ray_position(ray, ((t_hit *)hits->data)->t);
-			normal = sp_normal(((t_hit *)hits->data)->obj.sp, ponto);
-			eye = mul_scalar(ray.direction, -1);
+			if (((t_hit *)hits->data)->t > 0.0)
+			{
+				ponto = ray_position(ray, ((t_hit *)hits->data)->t);
+				normal = sp_normal(((t_hit *)hits->data)->obj.sp, ponto);
+				eye = mul_scalar(ray.direction, 1.0);
+				// eye = vector(0, 0, 1);
 
-			light.bright = 0.8;
-			light.position = point(-10.0, 10.0, -10.0);
-			light.cor = color(1.0, 1.0, 1.0);
 
-			hit_cor = lighting(((t_hit *)hits->data)->obj.sp.material, light, ponto, eye, normal);
-			*((unsigned int *)img.data + (x + (y * img.size_line / (img.bits_per_pixel / img.bits_per_byte)))) = cor_to_rgb(hit_cor);
+				light.bright = 0.8;
+				light.position = point(-10.0, 10.0, -10.0);
+				light.cor = color(1.0, 1.0, 1.0);
+
+				hit_cor = lighting(((t_hit *)hits->data)->obj.sp.material, light, ponto, eye, normal);
+				put_pixel(&img, x, y, hit_cor);
+			}
 			temp_list = hits;
 			hits = hits->next;
 		}
 		if (temp_list != NULL)
 			hits = temp_list;
-		// if (hits != NULL)
-		// 	*((unsigned int *)img.data + (x + (y * img.size_line / (img.bits_per_pixel / img.bits_per_byte)))) = cor_to_rgb(color(1.0, 0.0, 0.0));
 	}
 	else
 		printf("%s(%s:%d): objs nao aponta para uma esfera\n", __FILE__, __func__, __LINE__);
