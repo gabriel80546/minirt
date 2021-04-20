@@ -17,7 +17,7 @@ t_vars	config_cams(t_vars input)
 	cam->direc.x = 0.0;
 	cam->direc.y = 0.0;
 	cam->direc.z = 3.0;
-	cam->fov = 60.0;
+	cam->fov = 90.0;
 	saida.cams = list_init(cam);
 	// list_add(saida.cams, cam);
 
@@ -28,7 +28,7 @@ t_vars	config_cams(t_vars input)
 	cam->direc.x = 0.0;
 	cam->direc.y = 0.0;
 	cam->direc.z = 3.0;
-	cam->fov = 60.0;
+	cam->fov = 90.0;
 	// saida.cams = list_init(cam);
 	list_add(saida.cams, cam);
 	i = 0;
@@ -42,10 +42,12 @@ t_vars	config_cams(t_vars input)
 		cam->direc.x = -cam->pos.x;
 		cam->direc.y = -cam->pos.y;
 		cam->direc.z = -cam->pos.z;
-		cam->fov = 60.0;
+		cam->fov = 90.0;
 		list_add(saida.cams, cam);
 		i++;
 	}
+
+
 
 	i = 0;
 	while (i < 6)
@@ -59,7 +61,7 @@ t_vars	config_cams(t_vars input)
 		cam->direc.x = -cam->pos.x;
 		cam->direc.y = -cam->pos.y;
 		cam->direc.z = -cam->pos.z;
-		cam->fov = 60.0;
+		cam->fov = 90.0;
 		list_add(saida.cams, cam);
 		i++;
 	}
@@ -76,7 +78,7 @@ t_vars	config_cams(t_vars input)
 		cam->direc.x = -cam->pos.x;
 		cam->direc.y = -cam->pos.y;
 		cam->direc.z = -cam->pos.z;
-		cam->fov = 60.0;
+		cam->fov = 90.0;
 		list_add(saida.cams, cam);
 		i++;
 	}
@@ -93,7 +95,7 @@ t_vars	config_cams(t_vars input)
 		cam->direc.x = -cam->pos.x;
 		cam->direc.y = -cam->pos.y;
 		cam->direc.z = -cam->pos.z;
-		cam->fov = 60.0;
+		cam->fov = 90.0;
 		list_add(saida.cams, cam);
 		i++;
 	}
@@ -134,32 +136,143 @@ t_vars	config_scene_easy(t_vars input)
 	vars.objs = NULL;
 	obj = NULL;
 
+	obj = (t_objeto *)malloc(sizeof(t_objeto));
+	obj->tipo = CYLINDER;
+	obj->cy.pos.x =  0.0;
+	obj->cy.pos.y =  0.0;
+	obj->cy.pos.z =  0.0;
+	obj->cy.direc.x = 0.0;
+	obj->cy.direc.y = 0.0;
+	obj->cy.direc.z = 1.0;
+	obj->cy.diameter = 1.0;
+	obj->cy.cor = 0xD04040;
+	vars.objs = list_init(obj);
+	// list_add(vars.objs, obj);
+
+	// PLANOS
+
+	obj = (t_objeto *)malloc(sizeof(t_objeto));
+	obj->tipo = PLANE;
+	obj->pl.pos.x =  0.0;
+	obj->pl.pos.y = -1.0;
+	obj->pl.pos.z =  0.0;
+	obj->pl.direc.x = 0.0;
+	obj->pl.direc.y = 1.0;
+	obj->pl.direc.z = 0.0;
+	obj->pl.cor = 0x40D0D0;
+	// vars.objs = list_init(obj);
+	list_add(vars.objs, obj);
+
+	obj = (t_objeto *)malloc(sizeof(t_objeto));
+	obj->tipo = PLANE;
+	obj->pl.pos.x =  5.0;
+	obj->pl.pos.y =  0.0;
+	obj->pl.pos.z =  0.0;
+	obj->pl.direc.x = 1.0;
+	obj->pl.direc.y = 0.0;
+	obj->pl.direc.z = 0.0;
+	obj->pl.cor = 0xD0D040;
+	// vars.objs = list_init(obj);
+	list_add(vars.objs, obj);
+
+
+	// list_add(vars.objs, obj);
+	obj = (t_objeto *)malloc(sizeof(t_objeto));
+	obj->tipo = PLANE;
+	obj->pl.pos.x =  0.0;
+	obj->pl.pos.y =  0.0;
+	obj->pl.pos.z =  5.0;
+	obj->pl.direc.x = 0.0;
+	obj->pl.direc.y = 0.0;
+	obj->pl.direc.z = -1.0;
+	obj->pl.cor = 0xD040D0;
+	// vars.objs = list_init(obj);
+	list_add(vars.objs, obj);
+
+	obj = (t_objeto *)malloc(sizeof(t_objeto));
+	obj->tipo = PLANE;
+	obj->pl.pos.x =  -5.0;
+	obj->pl.pos.y =   0.0;
+	obj->pl.pos.z =   0.0;
+	obj->pl.direc.x = 1.0;
+	obj->pl.direc.y = 0.0;
+	obj->pl.direc.z = 0.0;
+	obj->pl.cor = 0x20FF40;
+	// vars.objs = list_init(obj);
+	list_add(vars.objs, obj);
+
+	obj = (t_objeto *)malloc(sizeof(t_objeto));
+	obj->tipo = PLANE;
+	obj->pl.pos.x =   0.0;
+	obj->pl.pos.y =   0.0;
+	obj->pl.pos.z =  -5.0;
+	obj->pl.direc.x = 0.0;
+	obj->pl.direc.y = 0.0;
+	obj->pl.direc.z = 1.0;
+	obj->pl.cor = 0x8040FF;
+	// vars.objs = list_init(obj);
+	list_add(vars.objs, obj);
+
 	// ESFERAS
 
 	obj = (t_objeto *)malloc(sizeof(t_objeto));
 	obj->tipo = SPHERE;
-	obj->sp.pos = point(0.0, 0.0, 0.0);
-	obj->sp.diametro = 157.0;
-	obj->sp.material.color = color(1.0, 0.2, 1.0);
-	obj->sp.material.ambient = 0.1;
-	obj->sp.material.diffuse = 0.9;
-	obj->sp.material.specular = 0.9;
-	obj->sp.material.shininess = 200.0;
-	obj->sp.transform = mat44_identity();
-	vars.objs = list_init(obj);
+	obj->sp.pos.x = 0.0;
+	obj->sp.pos.y = 0.0;
+	obj->sp.pos.z = 0.0;
+	obj->sp.diametro = 0.5;
+	obj->sp.cor = 0x606060;
+	// vars.objs = list_init(obj);
+	list_add(vars.objs, obj);
+
+	obj = (t_objeto *)malloc(sizeof(t_objeto));
+	obj->tipo = SPHERE;
+	obj->sp.pos.x =  1.0;
+	obj->sp.pos.y = -0.25;
+	obj->sp.pos.z =  1.0;
+	obj->sp.diametro = 1.0;
+	obj->sp.cor = 0xFF8080;
+	list_add(vars.objs, obj);
+
+	obj = (t_objeto *)malloc(sizeof(t_objeto));
+	obj->tipo = SPHERE;
+	obj->sp.pos.x = -1.0;
+	obj->sp.pos.y = -0.25;
+	obj->sp.pos.z =  1.0;
+	obj->sp.diametro = 1.0;
+	obj->sp.cor = 0x80FF80;
+	list_add(vars.objs, obj);
+
+	obj = (t_objeto *)malloc(sizeof(t_objeto));
+	obj->tipo = SPHERE;
+	obj->sp.pos.x =  1.0;
+	obj->sp.pos.y = -0.25;
+	obj->sp.pos.z = -1.0;
+	obj->sp.diametro = 1.0;
+	obj->sp.cor = 0x8080FF;
+	list_add(vars.objs, obj);
+
+	temp_direc.x = -1.0;
+	temp_direc.y =  1.25;
+	temp_direc.z = -3.0;
+	// obj = (t_objeto *)malloc(sizeof(t_objeto));
+	// obj->tipo = SPHERE;
+	// obj->sp.pos.x = temp_direc.x - 1.2;
+	// obj->sp.pos.y = temp_direc.y;
+	// obj->sp.pos.z = temp_direc.z;
+	// obj->sp.diametro = 1.0;
+	// obj->sp.cor = 0x8080FF;
 	// list_add(vars.objs, obj);
 
 	// LUZES
 
-	temp_direc.x = -10.0;
-	temp_direc.y =  10.0;
-	temp_direc.z = -10.0;
-
 	vars.lights = NULL;
 	light = (t_light *)malloc(sizeof(t_light));
 	light->bright = 0.8;
-	light->position = point(temp_direc.x, temp_direc.y, temp_direc.z);
-	light->cor =  color(1.0, 1.0, 1.0);
+	light->pos.x = temp_direc.x;
+	light->pos.y = temp_direc.y;
+	light->pos.z = temp_direc.z;
+	light->cor = 0xFFFFFF;
 	vars.lights = list_init(light);
 
 	// light = (t_light *)malloc(sizeof(t_light));
@@ -212,6 +325,7 @@ int		key_hook(int keycode, t_vars *vars)
 			vars->cam = *((t_cam *)vars->cams->data);
 		}
 		*vars = config_scene_easy(*vars);
+		// clear_screen(*vars);
 		draw(*vars);
 		clean_all(*vars);
 	}
