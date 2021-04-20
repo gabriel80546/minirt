@@ -132,6 +132,16 @@ typedef struct	s_light
 	t_cor		cor;
 }				t_light;
 
+typedef struct	s_comps
+{
+	double		t;
+	t_objeto	object;
+	t_tuple		point;
+	t_tuple		eyev;
+	t_tuple		normalv;
+	int			inside;
+}				t_comps;
+
 typedef struct  s_vars {
     void        *mlx;
     void        *win;
@@ -168,6 +178,8 @@ typedef struct	s_debug
 	int			plane_pixels;
 	int			plane_iluminated;
 }				t_debug;
+
+
 
 
 void		draw(t_vars vars);

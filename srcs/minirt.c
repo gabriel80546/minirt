@@ -13,10 +13,10 @@ t_vars	config_cams(t_vars input)
 	cam = (t_cam *)malloc(sizeof(t_cam));
 	cam->pos.x =  0.0;
 	cam->pos.y =  0.0;
-	cam->pos.z = -3.0;
+	cam->pos.z =  0.0;
 	cam->direc.x = 0.0;
 	cam->direc.y = 0.0;
-	cam->direc.z = 3.0;
+	cam->direc.z = 0.0;
 	cam->fov = 60.0;
 	saida.cams = list_init(cam);
 	// list_add(saida.cams, cam);
@@ -31,6 +31,22 @@ t_vars	config_cams(t_vars input)
 	cam->fov = 60.0;
 	// saida.cams = list_init(cam);
 	list_add(saida.cams, cam);
+
+	i = 0;
+	while (i < 60)
+	{
+		cam = (t_cam *)malloc(sizeof(t_cam));
+		cam->pos.x = 0.0;
+		cam->pos.y = 0.0;
+		cam->pos.z = -3.0 + (double)(i * 0.25);
+		// cam->pos = rotacao_y(cam->pos, i * (PI / 16));
+		cam->direc.x = -cam->pos.x;
+		cam->direc.y = -cam->pos.y;
+		cam->direc.z = -cam->pos.z;
+		cam->fov = 60.0;
+		list_add(saida.cams, cam);
+		i++;
+	}
 	i = 0;
 	while (i < 32)
 	{
@@ -166,19 +182,19 @@ t_vars	config_scene_easy(t_vars input)
 	vars.objs = list_init(obj);
 	// list_add(vars.objs, obj);
 
-	obj = (t_objeto *)malloc(sizeof(t_objeto));
-	obj->tipo = SPHERE;
-	obj->sp.pos = point(0.0, 0.0, 0.0);
-	obj->sp.diametro = 157.0;
-	obj->sp.material.color = color(1.0, 0.0, 0.0);
-	obj->sp.material.ambient = 0.1;
-	obj->sp.material.diffuse = 0.9;
-	obj->sp.material.specular = 0.9;
-	obj->sp.material.shininess = 200.0;
-	// obj->sp.transform = mat44_mul(mat44_scaling(0.5, 0.5, 0.5), mat44_translate(2.5, 0, 0));
-	obj->sp.transform = mat44_scaling(0.5, 0.5, 0.5);
-	// vars.objs = list_init(obj);
-	list_add(vars.objs, obj);
+	// obj = (t_objeto *)malloc(sizeof(t_objeto));
+	// obj->tipo = SPHERE;
+	// obj->sp.pos = point(0.0, 0.0, 0.0);
+	// obj->sp.diametro = 157.0;
+	// obj->sp.material.color = color(1.0, 0.0, 0.0);
+	// obj->sp.material.ambient = 0.1;
+	// obj->sp.material.diffuse = 0.9;
+	// obj->sp.material.specular = 0.9;
+	// obj->sp.material.shininess = 200.0;
+	// // obj->sp.transform = mat44_mul(mat44_scaling(0.5, 0.5, 0.5), mat44_translate(2.5, 0, 0));
+	// obj->sp.transform = mat44_scaling(0.5, 0.5, 0.5);
+	// // vars.objs = list_init(obj);
+	// list_add(vars.objs, obj);
 
 	// LUZES
 

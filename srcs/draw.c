@@ -716,7 +716,6 @@ t_cor	lighting(t_material material, t_light light, t_tuple point, t_tuple eyev, 
 			specular = color_mul_scalar(light.cor, material.specular * factor);
 		}
 	}
-	// return specular;
 	return (color_add(color_add(ambient, diffuse), specular));
 }
 
@@ -736,14 +735,14 @@ t_hit	closest_hit(t_list *hits)
 	t_list	*temp_list;
 	int		hit_isfirst;
 
-	temp_list = NULL;
 	hit_isfirst = 1;
-	hit.t = -1;
+	hit.t = -42.0;
+	temp_list = NULL;
 	if (hits != NULL)
 		hits = first_item(hits);
 	while (hits != NULL)
 	{
-		if ((((t_hit *)hits->data)->t < hit.t && ((t_hit *)hits->data)->t > 0.0) || hit_isfirst)
+		if (((t_hit *)hits->data)->t > 0.0 && (((t_hit *)hits->data)->t < hit.t || hit_isfirst))
 		{
 			hit_isfirst = 0;
 			hit = *((t_hit *)hits->data);
@@ -794,6 +793,29 @@ t_list	*intersect_world(t_vars vars, t_ray ray)
 	return (hits);
 }
 
+t_comps	prepare_computations(t_hit	intersection, t_ray ray)
+{
+	t_comps	comps;
+
+	comps = (t_comps) {0};
+	comps.t = intersection.t;
+	comps.object = intersection.obj;
+	comps.point = ray_position(ray, comps.t);
+	comps.eyev = mul_scalar(ray.direction, -1.0);
+	comps.normalv = sp_normal(comps.object.sp, comps.point);
+	if (dot(comps.normalv, comps.eyev) < 0.0)
+	{
+		// printf("%s(%s:%d): in\n", __FILE__, __func__, __LINE__);
+		comps.inside = 1;
+		comps.normalv = mul_scalar(comps.normalv, -1);
+	}
+	else
+	{
+		// printf("%s(%s:%d): out\n", __FILE__, __func__, __LINE__);
+		comps.inside = 0;
+	}
+	return (comps);
+}
 
 void	draw_main(t_vars vars, int x, int y, t_img img)
 {
@@ -805,20 +827,23 @@ void	draw_main(t_vars vars, int x, int y, t_img img)
 	t_tuple	eye;
 	t_cor	hit_cor;
 	t_hit	hit;
+	t_comps	comps;
 
 	ray = gen_rays(vars, x, y);
 	hits = intersect_world(vars, ray);
 	hit = closest_hit(hits);
 	if (hits != NULL)
 		clear_list_all(hits);
-	if (hit.t != -1)
+	if (hit.t != -42.0)
 	{
-		ponto = ray_position(ray, hit.t);
-		normal = sp_normal(hit.obj.sp, ponto);
-		eye = mul_scalar(ray.direction, -1.0);
+		// ponto = ray_position(ray, hit.t);
+		// normal = sp_normal(hit.obj.sp, ponto);
+		// eye = mul_scalar(ray.direction, -1.0);
 		light.position = point(-10.0, 10.0, -10.0);
 		light.cor = color(1.0, 1.0, 1.0);
-		hit_cor = lighting(hit.obj.sp.material, light, ponto, eye, normal);
+		comps = prepare_computations(hit, ray);
+		// hit_cor = lighting(hit.obj.sp.material, light, ponto, eye, normal);
+		hit_cor = lighting(comps.object.sp.material, light, comps.point, comps.eyev, comps.normalv);
 		if (hit_cor.r > 1.0)
 			hit_cor.r = 1.0;
 		if (hit_cor.g > 1.0)
@@ -826,6 +851,10 @@ void	draw_main(t_vars vars, int x, int y, t_img img)
 		if (hit_cor.b > 1.0)
 			hit_cor.b = 1.0;
 		put_pixel(&img, x, y, hit_cor);
+	}
+	if (x == 3 && y == 5)
+	{
+		// testes
 	}
 }
 
@@ -852,5 +881,4 @@ void	draw(t_vars vars)
 	}
 	mlx_put_image_to_window(vars.mlx, vars.win, img.ptr, 0, 0);
 	mlx_destroy_image(vars.mlx, img.ptr);
-	// clear_list_all(vars.objs);
 }
