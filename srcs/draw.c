@@ -780,10 +780,16 @@ void	draw_main(t_vars vars, int x, int y, t_img img)
 				normal = sp_normal(((t_hit *)hits->data)->obj.sp, ponto);
 				eye = mul_scalar(ray.direction, -1.0);
 
-				light.position = point(-10.0, 10.0, -10.0);
+				light.position = point(10.0, 10.0, -10.0);
 				light.cor = color(1.0, 1.0, 1.0);
 
 				hit_cor = lighting(((t_hit *)hits->data)->obj.sp.material, light, ponto, eye, normal);
+				if (hit_cor.r > 1.0)
+					hit_cor.r = 1.0;
+				if (hit_cor.g > 1.0)
+					hit_cor.g = 1.0;
+				if (hit_cor.b > 1.0)
+					hit_cor.b = 1.0;
 				put_pixel(&img, x, y, hit_cor);
 			}
 			temp_list = hits;
