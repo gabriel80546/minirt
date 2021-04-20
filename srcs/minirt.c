@@ -134,20 +134,50 @@ t_vars	config_scene_easy(t_vars input)
 	vars.objs = NULL;
 	obj = NULL;
 
+
+
+/* 
+	The default world
+	Given light ← point_light(point(-10, 10, -10), color(1, 1, 1))
+	And s1 ← sphere() with:
+	| material.color     | (0.8, 1.0, 0.6)        |
+	| material.diffuse   | 0.7                    |
+	| material.specular  | 0.2                    |
+	And s2 ← sphere() with:
+	| transform | scaling(0.5, 0.5, 0.5) |
+	When w ← default_world()
+	Then w.light = light
+	And w contains s1
+	And w contains s2
+ */
+
 	// ESFERAS
 
 	obj = (t_objeto *)malloc(sizeof(t_objeto));
 	obj->tipo = SPHERE;
 	obj->sp.pos = point(0.0, 0.0, 0.0);
 	obj->sp.diametro = 157.0;
-	obj->sp.material.color = color(1.0, 0.2, 1.0);
+	obj->sp.material.color = color(0.8, 1.0, 0.6);
 	obj->sp.material.ambient = 0.1;
-	obj->sp.material.diffuse = 0.9;
-	obj->sp.material.specular = 0.9;
+	obj->sp.material.diffuse = 0.7;
+	obj->sp.material.specular = 0.2;
 	obj->sp.material.shininess = 200.0;
 	obj->sp.transform = mat44_identity();
 	vars.objs = list_init(obj);
 	// list_add(vars.objs, obj);
+
+	obj = (t_objeto *)malloc(sizeof(t_objeto));
+	obj->tipo = SPHERE;
+	obj->sp.pos = point(0.0, 0.0, 0.0);
+	obj->sp.diametro = 157.0;
+	obj->sp.material.color = color(1.0, 0.0, 0.0);
+	obj->sp.material.ambient = 0.1;
+	obj->sp.material.diffuse = 0.9;
+	obj->sp.material.specular = 0.9;
+	obj->sp.material.shininess = 200.0;
+	obj->sp.transform = mat44_scaling(0.5, 0.5, 0.5);
+	// vars.objs = list_init(obj);
+	list_add(vars.objs, obj);
 
 	// LUZES
 

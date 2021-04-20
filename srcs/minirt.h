@@ -177,4 +177,11 @@ t_tuple		vector(double x, double y, double z);
 t_tuple		point(double x, double y, double z);
 t_cor		color(double r, double g, double b);
 
+t_mat44		mat44_shearing(double xy, double xz, double yx, double yz, double zx, double zy);
+t_mat44		mat44_rotate_z(double r);
+t_mat44		mat44_rotate_y(double r);
+t_mat44		mat44_rotate_x(double r);
+t_mat44		mat44_scaling(double x, double y, double z);
+t_mat44		mat44_translate(double x, double y, double z);
+
 #endif

@@ -535,7 +535,6 @@ t_mat44	mat44_scaling(double x, double y, double z)
 
 t_mat44	mat44_rotate_x(double r)
 {
-
 	t_mat44	saida;
 
 	saida = mat44_identity();
@@ -548,7 +547,6 @@ t_mat44	mat44_rotate_x(double r)
 
 t_mat44	mat44_rotate_y(double r)
 {
-
 	t_mat44	saida;
 
 	saida = mat44_identity();
@@ -647,27 +645,6 @@ t_list	*ray_sp_intercection(t_ray ray, t_esfera sp)
 		hit->t = solution.s2;
 		list_add(saida, hit);
 	}
-	return (saida);
-}
-
-t_vec	setup_tela(t_vars vars, int x, int y)
-{
-	t_vec	saida;
-	double	ttan;
-	double	tcam;
-
-	ttan = (tan((((vars.cam.fov) / 2.0) * PI) / 180.0));
-	tcam = (((vars.largura - vars.altura) / 2));
-	saida.x =  ((((2 * ttan) / vars.largura) * x) - ttan);
-	saida.y = -((((2 * ttan) / vars.largura) * (y + tcam)) - ttan);
-	saida.z =  1.0;
-
-	saida = rotacao_x(saida, vec_to_spherical_inc(vars.cam.direc));
-	saida = rotacao_y(saida, vec_to_spherical_azi(vars.cam.direc));
-
-	saida.x += vars.cam.pos.x;
-	saida.y += vars.cam.pos.y;
-	saida.z += vars.cam.pos.z;
 	return (saida);
 }
 
