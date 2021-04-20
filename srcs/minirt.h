@@ -184,4 +184,7 @@ t_mat44		mat44_rotate_x(double r);
 t_mat44		mat44_scaling(double x, double y, double z);
 t_mat44		mat44_translate(double x, double y, double z);
 
+t_mat44		mat44_mul(t_mat44 a, t_mat44 b);
+t_tuple		mat44_tuple_mul(t_mat44 mat, t_tuple tupla);
+
 #endif

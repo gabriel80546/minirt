@@ -175,6 +175,7 @@ t_vars	config_scene_easy(t_vars input)
 	obj->sp.material.diffuse = 0.9;
 	obj->sp.material.specular = 0.9;
 	obj->sp.material.shininess = 200.0;
+	// obj->sp.transform = mat44_mul(mat44_scaling(0.5, 0.5, 0.5), mat44_translate(2.5, 0, 0));
 	obj->sp.transform = mat44_scaling(0.5, 0.5, 0.5);
 	// vars.objs = list_init(obj);
 	list_add(vars.objs, obj);

@@ -739,6 +739,8 @@ t_hit	closest_hit(t_list *hits)
 	temp_list = NULL;
 	hit_isfirst = 1;
 	hit.t = -1;
+	if (hits != NULL)
+		hits = first_item(hits);
 	while (hits != NULL)
 	{
 		if ((((t_hit *)hits->data)->t < hit.t && ((t_hit *)hits->data)->t > 0.0) || hit_isfirst)
@@ -754,44 +756,77 @@ t_hit	closest_hit(t_list *hits)
 	return (hit);
 }
 
+
+t_list	*intersect_world(t_vars vars, t_ray ray)
+{
+	t_list	*hits_inter;
+	t_list	*hits;
+	t_list	*temp_list;
+	t_list	*temp_temp_list;
+
+	if (vars.objs != NULL)
+		vars.objs = first_item(vars.objs);
+	temp_list = NULL;
+	hits = NULL;
+	while (vars.objs != NULL)
+	{
+		ray.direction = normalize(ray.direction);
+		if (((t_objeto *)vars.objs->data)->tipo == SPHERE)
+			hits_inter = ray_sp_intercection(ray, ((t_objeto *)vars.objs->data)->sp);
+		temp_temp_list = NULL;
+		while (hits_inter != NULL)
+		{
+			if (hits == NULL)
+				hits = list_init(hits_inter->data);
+			else
+				list_add(hits, hits_inter->data);
+			temp_temp_list = hits_inter;
+			hits_inter = hits_inter->next;
+		}
+		if (temp_temp_list != NULL)
+			hits_inter = temp_temp_list;
+		clear_list(hits_inter);
+		temp_list = vars.objs;
+		vars.objs = vars.objs->next;
+	}
+	if (temp_list != NULL)
+		vars.objs = temp_list;
+	return (hits);
+}
+
+
 void	draw_main(t_vars vars, int x, int y, t_img img)
 {
 	t_ray	ray;
 	t_list	*hits;
-	t_light		light;
-	t_tuple		ponto;
-	t_tuple		normal;
-	t_tuple		eye;
-	t_cor		hit_cor;
-	t_hit		hit;
+	t_light	light;
+	t_tuple	ponto;
+	t_tuple	normal;
+	t_tuple	eye;
+	t_cor	hit_cor;
+	t_hit	hit;
 
 	ray = gen_rays(vars, x, y);
-	if (((t_objeto *)vars.objs->data)->tipo == SPHERE)
-	{
-		ray.direction = normalize(ray.direction);
-		hits = ray_sp_intercection(ray, ((t_objeto *)vars.objs->data)->sp);
-		hit = closest_hit(hits);
-		if (hit.t != -1)
-		{
-			ponto = ray_position(ray, hit.t);
-			normal = sp_normal(hit.obj.sp, ponto);
-			eye = mul_scalar(ray.direction, -1.0);
-			light.position = point(-10.0, 10.0, -10.0);
-			light.cor = color(1.0, 1.0, 1.0);
-			hit_cor = lighting(hit.obj.sp.material, light, ponto, eye, normal);
-			if (hit_cor.r > 1.0)
-				hit_cor.r = 1.0;
-			if (hit_cor.g > 1.0)
-				hit_cor.g = 1.0;
-			if (hit_cor.b > 1.0)
-				hit_cor.b = 1.0;
-			put_pixel(&img, x, y, hit_cor);
-		}
-	}
-	else
-		printf("%s(%s:%d): objs nao aponta para uma esfera\n", __FILE__, __func__, __LINE__);
+	hits = intersect_world(vars, ray);
+	hit = closest_hit(hits);
 	if (hits != NULL)
 		clear_list_all(hits);
+	if (hit.t != -1)
+	{
+		ponto = ray_position(ray, hit.t);
+		normal = sp_normal(hit.obj.sp, ponto);
+		eye = mul_scalar(ray.direction, -1.0);
+		light.position = point(-10.0, 10.0, -10.0);
+		light.cor = color(1.0, 1.0, 1.0);
+		hit_cor = lighting(hit.obj.sp.material, light, ponto, eye, normal);
+		if (hit_cor.r > 1.0)
+			hit_cor.r = 1.0;
+		if (hit_cor.g > 1.0)
+			hit_cor.g = 1.0;
+		if (hit_cor.b > 1.0)
+			hit_cor.b = 1.0;
+		put_pixel(&img, x, y, hit_cor);
+	}
 }
 
 void	draw(t_vars vars)
@@ -817,4 +852,5 @@ void	draw(t_vars vars)
 	}
 	mlx_put_image_to_window(vars.mlx, vars.win, img.ptr, 0, 0);
 	mlx_destroy_image(vars.mlx, img.ptr);
+	// clear_list_all(vars.objs);
 }
