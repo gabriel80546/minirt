@@ -681,7 +681,7 @@ t_ray	gen_rays(t_vars vars, int x, int y)
 	tcam = (((vars.largura - vars.altura) / 2));
 	saida.origin = point(vars.cam.pos.x, vars.cam.pos.y, vars.cam.pos.z);
 	saida.direction = normalize(vector(
-					((((2 * ttan) / vars.largura) * x) - ttan),
+					 ((((2 * ttan) / vars.largura) * x) - ttan),
 					-((((2 * ttan) / vars.largura) * (y + tcam)) - ttan),
 					1.0));
 	return (saida);
@@ -717,15 +717,9 @@ t_cor	lighting(t_material material, t_light light, t_tuple point, t_tuple eyev, 
 	t_cor	specular;
 	double	factor;
 
-	// combine the surface color with the light's color/intensity
 	effective_color = color_mul(material.color, light.cor);
-	// find the direction to the light source
 	lightv = normalize(tup_sub(light.position, point));
-	// compute the ambient contribution
 	ambient = color_mul_scalar(effective_color, material.ambient);
-	// light_dot_normal represents the cosine of the angle between the
-	// light vector and the normal vector. A negative number means the
-	// light is on the other side of the surface.
 	light_dot_normal = dot(lightv, normalv);
 	if (light_dot_normal < 0.0)
 	{
@@ -734,23 +728,18 @@ t_cor	lighting(t_material material, t_light light, t_tuple point, t_tuple eyev, 
 	}
 	else
 	{
-		// compute the diffuse contribution
 		diffuse = color_mul_scalar(effective_color, material.diffuse * light_dot_normal);
-		// reflect_dot_eye represents the cosine of the angle betweenthe
-		// reflection vector and the eye vector. A negative numbermeans the
-		// light reflects away from the eye.
 		reflectv = reflect(mul_scalar(lightv, -1.0), normalv);
 		reflect_dot_eye = dot(reflectv, eyev);
 		if (reflect_dot_eye <= 0)
 			specular = color(0.0, 0.0, 0.0);
 		else
 		{
-			// compute the specular contribution
 			factor = pow(reflect_dot_eye, material.shininess);
 			specular = color_mul_scalar(light.cor, material.specular * factor);
 		}
 	}
-	// Add the three contributions together to get the final shading
+	// return specular;
 	return (color_add(color_add(ambient, diffuse), specular));
 }
 
@@ -781,17 +770,16 @@ void	draw_main(t_vars vars, int x, int y, t_img img)
 		ray.direction = normalize(ray.direction);
 		hits = ray_sp_intercection(ray, ((t_objeto *)vars.objs->data)->sp);
 		temp_list = NULL;
+		if (hits != NULL)
+			hits = last_item(hits);
 		while (hits != NULL)
 		{
 			if (((t_hit *)hits->data)->t > 0.0)
 			{
 				ponto = ray_position(ray, ((t_hit *)hits->data)->t);
 				normal = sp_normal(((t_hit *)hits->data)->obj.sp, ponto);
-				eye = mul_scalar(ray.direction, 1.0);
-				// eye = vector(0, 0, 1);
+				eye = mul_scalar(ray.direction, -1.0);
 
-
-				light.bright = 0.8;
 				light.position = point(-10.0, 10.0, -10.0);
 				light.cor = color(1.0, 1.0, 1.0);
 
@@ -799,7 +787,7 @@ void	draw_main(t_vars vars, int x, int y, t_img img)
 				put_pixel(&img, x, y, hit_cor);
 			}
 			temp_list = hits;
-			hits = hits->next;
+			hits = hits->prev;
 		}
 		if (temp_list != NULL)
 			hits = temp_list;
