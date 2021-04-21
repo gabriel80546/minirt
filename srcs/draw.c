@@ -648,22 +648,6 @@ t_list	*ray_sp_intercection(t_ray ray, t_esfera sp)
 	return (saida);
 }
 
-t_ray	gen_rays(t_vars vars, int x, int y)
-{
-	t_ray	saida;
-	double	ttan;
-	double	tcam;
-
-	ttan = (tan((((vars.cam.fov) / 2.0) * PI) / 180.0));
-	tcam = (((vars.largura - vars.altura) / 2));
-	saida.origin = point(vars.cam.pos.x, vars.cam.pos.y, vars.cam.pos.z);
-	saida.direction = normalize(vector(
-					 ((((2 * ttan) / vars.largura) * x) - ttan),
-					-((((2 * ttan) / vars.largura) * (y + tcam)) - ttan),
-					1.0));
-	return (saida);
-}
-
 t_tuple	sp_normal(t_esfera sphere, t_tuple world_point)
 {
 	t_tuple	object_point;
@@ -911,16 +895,10 @@ t_ray	ray_for_pixel(t_camera camera, int px, int py)
 	t_tuple origin;
 	t_tuple direction;
 
-	// the offset from the edge of the canvas to the pixel's center
 	xoffset = (px + 0.5) * camera.pixel_size;
 	yoffset = (py + 0.5) * camera.pixel_size;
-	// the untransformed coordinates of the pixel in world space.
-	// (remember that the camera looks toward -z, so +x is to the*left*.)
 	world_x = camera.half_width - xoffset;
 	world_y = camera.half_height - yoffset;
-	// using the camera matrix, transform the canvas point and the origin,
-	// and then compute the ray's direction vector.
-	// (remember that the canvas is at z=-1)
 
 	pixel = mat44_tuple_mul(mat44_inverse(camera.transform), point(world_x, world_y, -1));
 	origin = mat44_tuple_mul(mat44_inverse(camera.transform), point(0, 0, 0));
@@ -930,18 +908,12 @@ t_ray	ray_for_pixel(t_camera camera, int px, int py)
 	return (ray);
 }
 
-// void	render(t_camera camera, t_vars world)
-// {
-// 	return ;
-// }
-
 void	draw_main(t_vars vars, int x, int y, t_img img)
 {
 	t_ray	ray;
 	t_cor	hit_cor;
 	t_camera	camera;
 
-	// ray = gen_rays(vars, x, y);
 	camera = setup_camera(vars);
 	ray = ray_for_pixel(camera, x, y);
 	hit_cor = color_at(vars, ray);
