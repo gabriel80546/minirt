@@ -207,11 +207,6 @@ int	cor_to_rgb(t_cor cor)
 
 void	print_tuple(t_tuple tupla, char *file, const char *func, int line)
 {
-	// printf("%s(%s:%d): tupla.x = % 6.6lf\n", file, func, line, tupla.x);
-	// printf("%s(%s:%d): tupla.y = % 6.6lf\n", file, func, line, tupla.y);
-	// printf("%s(%s:%d): tupla.z = % 6.6lf\n", file, func, line, tupla.z);
-	// printf("%s(%s:%d): tupla.w = % 6.6lf\n", file, func, line, tupla.w);
-
 	say("tupla.x = % 6.6lf\n", file, func, line, tupla.x);
 	say("tupla.y = % 6.6lf\n", file, func, line, tupla.y);
 	say("tupla.z = % 6.6lf\n", file, func, line, tupla.z);
@@ -821,11 +816,7 @@ t_comps	prepare_computations(t_hit	intersection, t_ray ray)
 t_cor	shade_hit(t_vars world, t_comps comps)
 {
 	t_cor saida;
-	t_light teste;
 
-	teste = *((t_light *)world.lights->data);
-	// printf("teste.position => \n");
-	print_tuple(teste.position, __FILE__, __func__, __LINE__);
 	saida = lighting(comps.object.sp.material,
 	*((t_light *)world.lights->data),
 	comps.point,
@@ -834,33 +825,23 @@ t_cor	shade_hit(t_vars world, t_comps comps)
 	return (saida);
 }
 
-void	draw_main(t_vars vars, int x, int y, t_img img)
+t_cor	color_at(t_vars vars, t_ray ray)
 {
-	t_ray	ray;
 	t_list	*hits;
 	t_light	light;
-	t_tuple	ponto;
-	t_tuple	normal;
-	t_tuple	eye;
 	t_cor	hit_cor;
 	t_hit	hit;
 	t_comps	comps;
-	t_esfera	sp;
 
-	ray = gen_rays(vars, x, y);
+	hit_cor = color(0.0, 0.0, 0.0);
 	hits = intersect_world(vars, ray);
 	hit = closest_hit(hits);
 	if (hits != NULL)
 		clear_list_all(hits);
 	if (hit.t != -42.0)
 	{
-		// ponto = ray_position(ray, hit.t);
-		// normal = sp_normal(hit.obj.sp, ponto);
-		// eye = mul_scalar(ray.direction, -1.0);
-		light.position = point(-10.0, 10.0, -10.0);
-		light.cor = color(1.0, 1.0, 1.0);
+		light = *((t_light *)vars.lights->data);
 		comps = prepare_computations(hit, ray);
-		// hit_cor = lighting(hit.obj.sp.material, light, ponto, eye, normal);
 		hit_cor = lighting(comps.object.sp.material, light, comps.point, comps.eyev, comps.normalv);
 		if (hit_cor.r > 1.0)
 			hit_cor.r = 1.0;
@@ -868,71 +849,23 @@ void	draw_main(t_vars vars, int x, int y, t_img img)
 			hit_cor.g = 1.0;
 		if (hit_cor.b > 1.0)
 			hit_cor.b = 1.0;
-		put_pixel(&img, x, y, hit_cor);
 	}
+	return (hit_cor);
+}
+
+
+void	draw_main(t_vars vars, int x, int y, t_img img)
+{
+	t_ray	ray;
+	t_cor	hit_cor;
+
+	ray = gen_rays(vars, x, y);
+	hit_cor = color_at(vars, ray);
+	put_pixel(&img, x, y, hit_cor);
+	
 	if (x == 3 && y == 5)
 	{
-		// Shading an intersection
-		// Given w ← default_world()
-		// And r ← ray(point(0, 0, -5), vector(0, 0, 1))
-		// And shape ← the first object in w
-		// And i ← intersection(4, shape)
-		// When comps ← prepare_computations(i, r)
-		// And c ← shade_hit(w, comps)
-		// Then c = color(0.38066, 0.47583, 0.2855)
-		ray = ray_create(point(0, 0, -5), vector(0, 0, 1));
-		// hits = ray_sp_intercection(ray, ((t_objeto *)vars.objs->data)->sp);
-		// hit = closest_hit(hits);
-		sp = (t_esfera) {0};
-		hit.t = 4;
-		hit.obj.sp = sp;
-		hit.obj.sp = ((t_objeto *)vars.objs->data)->sp;
-		hit.obj.tipo = SPHERE;
-		comps = prepare_computations(hit, ray);
-		say("comps.t = % 6.6lf\n", DEB, comps.t);
-		say("comps.inside = %d\n", DEB, comps.inside);
-		say("comps.eyev => \n", DEB);
-		print_tuple(comps.eyev, DEB);
-		hit_cor = shade_hit(vars, comps);
-		say("hit_cor.r = % 6.6lf\n", DEB, hit_cor.r);
-		say("hit_cor.g = % 6.6lf\n", DEB, hit_cor.g);
-		say("hit_cor.b = % 6.6lf\n", DEB, hit_cor.b);
-
-		// Scenario: Shading an intersection from the inside
-		// Given w ← default_world()
-		// And w.light ← point_light(point(0, 0.25, 0), color(1, 1, 1))
-		// And r ← ray(point(0, 0, 0), vector(0, 0, 1))
-		// And shape ← the second object in w
-		// And i ← intersection(0.5, shape)     ????????????????????????????????????????????????????????
-		// When comps ← prepare_computations(i, r)
-		// And c ← shade_hit(w, comps)
-		// Then c = color(0.90498, 0.90498, 0.90498)
-
-		// ray = ray_create(point(0, 0, -5), vector(0, 0, 1));
-		// // light.position = point(0, 0.25, 0) ?????????? fudeu
-		// hits = ray_sp_intercection(ray, ((t_objeto *)vars.objs->data)->sp);
-		// hit = closest_hit(hits);
-		// comps = prepare_computations(hit, ray);
-		// hit_cor = shade_hit(vars, comps);
-		// printf("hit_cor.r = % 6.6lf\n", hit_cor.r);
-		// printf("hit_cor.g = % 6.6lf\n", hit_cor.g);
-		// printf("hit_cor.b = % 6.6lf\n", hit_cor.b);
-		ray = ray_create(point(0, 0, 0), vector(0, 0, 1));
-		hits = ray_sp_intercection(ray, ((t_objeto *)vars.objs->data)->sp);
-		sp = (t_esfera) {0};
-		hit.t = 0.5;
-		hit.obj.sp = ((t_objeto *)vars.objs->data)->sp;
-		hit.obj.tipo = SPHERE;
-		// hit = closest_hit(hits);
-		comps = prepare_computations(hit, ray);
-		say("comps.t = % 6.6lf\n", DEB, comps.t);
-		say("comps.inside = %d\n", DEB, comps.inside);
-		say("comps.eyev => \n", DEB);
-		print_tuple(comps.eyev, DEB);
-		hit_cor = shade_hit(vars, comps);
-		say("hit_cor.r = % 6.6lf\n", DEB, hit_cor.r);
-		say("hit_cor.g = % 6.6lf\n", DEB, hit_cor.g);
-		say("hit_cor.b = % 6.6lf\n", DEB, hit_cor.b);
+		// testes
 	}
 }
 

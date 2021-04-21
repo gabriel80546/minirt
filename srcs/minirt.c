@@ -177,6 +177,7 @@ t_vars	config_scene_easy(t_vars input)
 	obj->sp.pos = point(0.0, 0.0, 0.0);
 	obj->sp.diametro = 157.0;
 	obj->sp.material.color = color(0.8, 1.0, 0.6);
+	// obj->sp.material.color = color(1.0, 1.0, 1.0);
 	obj->sp.material.ambient = 0.1;
 	obj->sp.material.diffuse = 0.7;
 	obj->sp.material.specular = 0.2;
@@ -201,12 +202,12 @@ t_vars	config_scene_easy(t_vars input)
 
 	// LUZES
 
-	// temp_direc.x = -10.0;
-	// temp_direc.y =  10.0;
-	// temp_direc.z = -10.0;
-	temp_direc.x =  0.0;
-	temp_direc.y =  0.25;
-	temp_direc.z =  0.0;
+	temp_direc.x = -10.0;
+	temp_direc.y =  10.0;
+	temp_direc.z = -10.0;
+	// temp_direc.x =  0.0;
+	// temp_direc.y =  0.25;
+	// temp_direc.z =  0.0;
 
 	vars.lights = NULL;
 	light = (t_light *)malloc(sizeof(t_light));
