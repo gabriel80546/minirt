@@ -805,15 +805,11 @@ t_comps	prepare_computations(t_hit	intersection, t_ray ray)
 	comps.normalv = sp_normal(comps.object.sp, comps.point);
 	if (dot(comps.normalv, comps.eyev) < 0.0)
 	{
-		// printf("%s(%s:%d): in\n", __FILE__, __func__, __LINE__);
 		comps.inside = 1;
 		comps.normalv = mul_scalar(comps.normalv, -1);
 	}
 	else
-	{
-		// printf("%s(%s:%d): out\n", __FILE__, __func__, __LINE__);
 		comps.inside = 0;
-	}
 	return (comps);
 }
 
