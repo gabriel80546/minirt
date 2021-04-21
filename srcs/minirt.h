@@ -125,7 +125,19 @@ typedef struct	s_cam
 	t_vec		direc;
 	t_vec		rot;
 	double		fov;
+	t_mat44		transform;
 }				t_cam;
+
+typedef struct	s_camera
+{
+	double	hsize;
+	double	vsize;
+	double	field_of_view;
+	double	pixel_size;
+	double	half_width;
+	double	half_height;
+	t_mat44	transform;
+}				t_camera;
 
 typedef struct	s_light
 {
@@ -201,5 +213,6 @@ t_mat44		mat44_translate(double x, double y, double z);
 t_mat44		mat44_mul(t_mat44 a, t_mat44 b);
 t_tuple		mat44_tuple_mul(t_mat44 mat, t_tuple tupla);
 int			say(const char *format, char *file, const char *func, int line, ...);
+t_mat44		view_transform(t_tuple from, t_tuple to, t_tuple up);
 
 #endif
