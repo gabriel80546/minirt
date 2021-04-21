@@ -18,6 +18,8 @@
 
 # define PI 3.1415926535897932384626433832795028841971
 
+# define DEB __FILE__, __func__, __LINE__
+
 
 typedef struct	s_tuple
 {
@@ -198,5 +200,6 @@ t_mat44		mat44_translate(double x, double y, double z);
 
 t_mat44		mat44_mul(t_mat44 a, t_mat44 b);
 t_tuple		mat44_tuple_mul(t_mat44 mat, t_tuple tupla);
+int			say(const char *format, char *file, const char *func, int line, ...);
 
 #endif

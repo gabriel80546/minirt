@@ -205,39 +205,44 @@ int	cor_to_rgb(t_cor cor)
 }
 
 
-void	print_tuple(t_tuple tupla)
+void	print_tuple(t_tuple tupla, char *file, const char *func, int line)
 {
-	printf("%s(%s:%d): tupla.x = % 6.6lf\n", __FILE__, __func__, __LINE__, tupla.x);
-	printf("%s(%s:%d): tupla.y = % 6.6lf\n", __FILE__, __func__, __LINE__, tupla.y);
-	printf("%s(%s:%d): tupla.z = % 6.6lf\n", __FILE__, __func__, __LINE__, tupla.z);
-	printf("%s(%s:%d): tupla.w = % 6.6lf\n", __FILE__, __func__, __LINE__, tupla.w);
+	// printf("%s(%s:%d): tupla.x = % 6.6lf\n", file, func, line, tupla.x);
+	// printf("%s(%s:%d): tupla.y = % 6.6lf\n", file, func, line, tupla.y);
+	// printf("%s(%s:%d): tupla.z = % 6.6lf\n", file, func, line, tupla.z);
+	// printf("%s(%s:%d): tupla.w = % 6.6lf\n", file, func, line, tupla.w);
+
+	say("tupla.x = % 6.6lf\n", file, func, line, tupla.x);
+	say("tupla.y = % 6.6lf\n", file, func, line, tupla.y);
+	say("tupla.z = % 6.6lf\n", file, func, line, tupla.z);
+	say("tupla.w = % 6.6lf\n", file, func, line, tupla.w);
 }
 
-void	print_mat44(t_mat44 mat)
+void	print_mat44(t_mat44 mat, char *file, const char *func, int line)
 {
-	printf("%s(%s:%d): /***********************************************\\\n", __FILE__, __func__, __LINE__);
-	printf("%s(%s:%d): | % 6.6lf | % 6.6lf | % 6.6lf | % 6.6lf |\n", __FILE__, __func__, __LINE__, mat.m[0],  mat.m[1],  mat.m[2],  mat.m[3]);
-	printf("%s(%s:%d): | % 6.6lf | % 6.6lf | % 6.6lf | % 6.6lf |\n", __FILE__, __func__, __LINE__, mat.m[4],  mat.m[5],  mat.m[6],  mat.m[7]);
-	printf("%s(%s:%d): | % 6.6lf | % 6.6lf | % 6.6lf | % 6.6lf |\n", __FILE__, __func__, __LINE__, mat.m[8],  mat.m[9],  mat.m[10], mat.m[11]);
-	printf("%s(%s:%d): | % 6.6lf | % 6.6lf | % 6.6lf | % 6.6lf |\n", __FILE__, __func__, __LINE__, mat.m[12], mat.m[13], mat.m[14], mat.m[15]);
-	printf("%s(%s:%d): \\***********************************************/\n", __FILE__, __func__, __LINE__);
+	say("/***********************************************\\\n", file, func, line);
+	say("| % 6.6lf | % 6.6lf | % 6.6lf | % 6.6lf |\n", file, func, line, mat.m[0],  mat.m[1],  mat.m[2],  mat.m[3]);
+	say("| % 6.6lf | % 6.6lf | % 6.6lf | % 6.6lf |\n", file, func, line, mat.m[4],  mat.m[5],  mat.m[6],  mat.m[7]);
+	say("| % 6.6lf | % 6.6lf | % 6.6lf | % 6.6lf |\n", file, func, line, mat.m[8],  mat.m[9],  mat.m[10], mat.m[11]);
+	say("| % 6.6lf | % 6.6lf | % 6.6lf | % 6.6lf |\n", file, func, line, mat.m[12], mat.m[13], mat.m[14], mat.m[15]);
+	say("\\***********************************************/\n", file, func, line);
 }
 
-void	print_mat22(t_mat22 mat)
+void	print_mat22(t_mat22 mat, char *file, const char *func, int line)
 {
-	printf("%s(%s:%d): /***********************\\\n", __FILE__, __func__, __LINE__);
-	printf("%s(%s:%d): | % 6.6lf | % 6.6lf |\n", __FILE__, __func__, __LINE__, mat.m[0],  mat.m[1]);
-	printf("%s(%s:%d): | % 6.6lf | % 6.6lf |\n", __FILE__, __func__, __LINE__, mat.m[2],  mat.m[3]);
-	printf("%s(%s:%d): \\***********************/\n", __FILE__, __func__, __LINE__);
+	say("/***********************\\\n", file, func, line);
+	say("| % 6.6lf | % 6.6lf |\n", file, func, line, mat.m[0],  mat.m[1]);
+	say("| % 6.6lf | % 6.6lf |\n", file, func, line, mat.m[2],  mat.m[3]);
+	say("\\***********************/\n", file, func, line);
 }
 
-void	print_mat33(t_mat33 mat)
+void	print_mat33(t_mat33 mat, char *file, const char *func, int line)
 {
-	printf("%s(%s:%d): /***********************************************\\\n", __FILE__, __func__, __LINE__);
-	printf("%s(%s:%d): | % 6.6lf | % 6.6lf | % 6.6lf |\n", __FILE__, __func__, __LINE__, mat.m[0],  mat.m[1],  mat.m[2]);
-	printf("%s(%s:%d): | % 6.6lf | % 6.6lf | % 6.6lf |\n", __FILE__, __func__, __LINE__, mat.m[3],  mat.m[4],  mat.m[5]);
-	printf("%s(%s:%d): | % 6.6lf | % 6.6lf | % 6.6lf |\n", __FILE__, __func__, __LINE__, mat.m[6],  mat.m[7],  mat.m[8]);
-	printf("%s(%s:%d): \\***********************************************/\n", __FILE__, __func__, __LINE__);
+	say("/***********************************************\\\n", file, func, line);
+	say("| % 6.6lf | % 6.6lf | % 6.6lf |\n", file, func, line, mat.m[0],  mat.m[1],  mat.m[2]);
+	say("| % 6.6lf | % 6.6lf | % 6.6lf |\n", file, func, line, mat.m[3],  mat.m[4],  mat.m[5]);
+	say("| % 6.6lf | % 6.6lf | % 6.6lf |\n", file, func, line, mat.m[6],  mat.m[7],  mat.m[8]);
+	say("\\***********************************************/\n", file, func, line);
 }
 
 int		mat44_coor(int row, int col)
@@ -813,6 +818,22 @@ t_comps	prepare_computations(t_hit	intersection, t_ray ray)
 	return (comps);
 }
 
+t_cor	shade_hit(t_vars world, t_comps comps)
+{
+	t_cor saida;
+	t_light teste;
+
+	teste = *((t_light *)world.lights->data);
+	// printf("teste.position => \n");
+	print_tuple(teste.position, __FILE__, __func__, __LINE__);
+	saida = lighting(comps.object.sp.material,
+	*((t_light *)world.lights->data),
+	comps.point,
+	comps.eyev,
+	comps.normalv);
+	return (saida);
+}
+
 void	draw_main(t_vars vars, int x, int y, t_img img)
 {
 	t_ray	ray;
@@ -824,6 +845,7 @@ void	draw_main(t_vars vars, int x, int y, t_img img)
 	t_cor	hit_cor;
 	t_hit	hit;
 	t_comps	comps;
+	t_esfera	sp;
 
 	ray = gen_rays(vars, x, y);
 	hits = intersect_world(vars, ray);
@@ -850,7 +872,67 @@ void	draw_main(t_vars vars, int x, int y, t_img img)
 	}
 	if (x == 3 && y == 5)
 	{
-		// testes
+		// Shading an intersection
+		// Given w ← default_world()
+		// And r ← ray(point(0, 0, -5), vector(0, 0, 1))
+		// And shape ← the first object in w
+		// And i ← intersection(4, shape)
+		// When comps ← prepare_computations(i, r)
+		// And c ← shade_hit(w, comps)
+		// Then c = color(0.38066, 0.47583, 0.2855)
+		ray = ray_create(point(0, 0, -5), vector(0, 0, 1));
+		// hits = ray_sp_intercection(ray, ((t_objeto *)vars.objs->data)->sp);
+		// hit = closest_hit(hits);
+		sp = (t_esfera) {0};
+		hit.t = 4;
+		hit.obj.sp = sp;
+		hit.obj.sp = ((t_objeto *)vars.objs->data)->sp;
+		hit.obj.tipo = SPHERE;
+		comps = prepare_computations(hit, ray);
+		say("comps.t = % 6.6lf\n", DEB, comps.t);
+		say("comps.inside = %d\n", DEB, comps.inside);
+		say("comps.eyev => \n", DEB);
+		print_tuple(comps.eyev, DEB);
+		hit_cor = shade_hit(vars, comps);
+		say("hit_cor.r = % 6.6lf\n", DEB, hit_cor.r);
+		say("hit_cor.g = % 6.6lf\n", DEB, hit_cor.g);
+		say("hit_cor.b = % 6.6lf\n", DEB, hit_cor.b);
+
+		// Scenario: Shading an intersection from the inside
+		// Given w ← default_world()
+		// And w.light ← point_light(point(0, 0.25, 0), color(1, 1, 1))
+		// And r ← ray(point(0, 0, 0), vector(0, 0, 1))
+		// And shape ← the second object in w
+		// And i ← intersection(0.5, shape)     ????????????????????????????????????????????????????????
+		// When comps ← prepare_computations(i, r)
+		// And c ← shade_hit(w, comps)
+		// Then c = color(0.90498, 0.90498, 0.90498)
+
+		// ray = ray_create(point(0, 0, -5), vector(0, 0, 1));
+		// // light.position = point(0, 0.25, 0) ?????????? fudeu
+		// hits = ray_sp_intercection(ray, ((t_objeto *)vars.objs->data)->sp);
+		// hit = closest_hit(hits);
+		// comps = prepare_computations(hit, ray);
+		// hit_cor = shade_hit(vars, comps);
+		// printf("hit_cor.r = % 6.6lf\n", hit_cor.r);
+		// printf("hit_cor.g = % 6.6lf\n", hit_cor.g);
+		// printf("hit_cor.b = % 6.6lf\n", hit_cor.b);
+		ray = ray_create(point(0, 0, 0), vector(0, 0, 1));
+		hits = ray_sp_intercection(ray, ((t_objeto *)vars.objs->data)->sp);
+		sp = (t_esfera) {0};
+		hit.t = 0.5;
+		hit.obj.sp = ((t_objeto *)vars.objs->data)->sp;
+		hit.obj.tipo = SPHERE;
+		// hit = closest_hit(hits);
+		comps = prepare_computations(hit, ray);
+		say("comps.t = % 6.6lf\n", DEB, comps.t);
+		say("comps.inside = %d\n", DEB, comps.inside);
+		say("comps.eyev => \n", DEB);
+		print_tuple(comps.eyev, DEB);
+		hit_cor = shade_hit(vars, comps);
+		say("hit_cor.r = % 6.6lf\n", DEB, hit_cor.r);
+		say("hit_cor.g = % 6.6lf\n", DEB, hit_cor.g);
+		say("hit_cor.b = % 6.6lf\n", DEB, hit_cor.b);
 	}
 }
 
