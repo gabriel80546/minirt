@@ -794,7 +794,7 @@ t_list	*intersect_world(t_vars vars, t_ray ray)
 	while (vars.objs != NULL)
 	{
 		ray.direction = normalize(ray.direction);
-		hits_inter = NULL;
+		// hits_inter = NULL;
 		if (((t_objeto *)vars.objs->data)->tipo == SPHERE)
 			hits_inter = ray_sp_intercection(ray, ((t_objeto *)vars.objs->data)->sp);
 		else if (((t_objeto *)vars.objs->data)->tipo == PLANE)
@@ -977,6 +977,8 @@ int	is_shadowed(t_vars world, t_tuple point)
 	r = ray_create(point, direction);
 	hits = intersect_world(world, r);
 	hit = closest_hit(hits);
+	if (hits != NULL)
+		clear_list_all(hits);
 	if (hit.t != -42.0 && hit.t < dist)
 		return (1);
 	else
