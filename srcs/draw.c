@@ -799,6 +799,9 @@ t_list	*intersect_world(t_vars vars, t_ray ray)
 			hits_inter = ray_sp_intercection(ray, ((t_objeto *)vars.objs->data)->sp);
 		else if (((t_objeto *)vars.objs->data)->tipo == PLANE)
 			hits_inter = ray_pl_intercection(ray, ((t_objeto *)vars.objs->data)->pl);
+		else if (((t_objeto *)vars.objs->data)->tipo == CYLINDER)
+			hits_inter = ray_cy_intercection(ray, ((t_objeto *)vars.objs->data)->cy);
+		
 		temp_temp_list = NULL;
 		while (hits_inter != NULL)
 		{
@@ -833,6 +836,8 @@ t_comps	prepare_computations(t_hit	intersection, t_ray ray)
 		comps.normalv = sp_normal(comps.object.sp, comps.point);
 	else if (comps.object.tipo == PLANE)
 		comps.normalv = pl_normal(comps.object.pl/* , comps.point */);
+	else if (comps.object.tipo == CYLINDER)
+		comps.normalv = cy_normal(comps.object.cy, comps.point);
 	comps.over_point = tup_add(comps.point, mul_scalar(comps.normalv, EPSILON));
 	if (dot(comps.normalv, comps.eyev) < 0.0)
 	{
@@ -855,6 +860,8 @@ t_cor	shade_hit(t_vars world, t_comps comps)
 		material = comps.object.sp.material;
 	else if (comps.object.tipo == PLANE)
 		material = comps.object.pl.material;
+	else if (comps.object.tipo == CYLINDER)
+		material = comps.object.cy.material;
 	saida = lighting_new(material,
 	*((t_light *)world.lights->data),
 	comps.over_point,
@@ -1033,6 +1040,65 @@ t_list	*ray_pl_intercection(t_ray ray, t_plano plane)
 	hit->obj.pl = plane;
 	hit->t = t;
 	saida = list_init(hit);
+	return (saida);
+}
+
+
+t_tuple	cy_normal(t_cylinder cylinder, t_tuple ponto)
+{
+	return mat44_tuple_mul(mat44_inverse(cylinder.transform), vector(ponto.x, 0, ponto.z));
+}
+
+// local_intersect(cylinder, ray)
+// 	a ← ray.direction.x² + ray.direction.z²
+// 	# ray is parallel to the y axis
+// 	return () if a is approximately zero
+// 	b ← 2 * ray.origin.x * ray.direction.x +
+// 		2 * ray.origin.z * ray.direction.z
+// 	c ← ray.origin.x² + ray.origin.z² - 1
+// 	disc ← b² - 4 * a * c
+// 	# ray does not intersect the cylinder
+// 	return () if disc < 0
+// 	t0 ← (-b - √(disc)) / (2 * a)
+// 	t1 ← (-b + √(disc)) / (2 * a)
+// 	return ( intersection(t0, cylinder), intersection(t1, cylinder) )
+// end function
+
+t_list	*ray_cy_intercection(t_ray ray, t_cylinder cylinder)
+{
+	t_list		*saida;
+	t_hit		*hit;
+	double		a;
+	double		b;
+	double		c;
+	t_solution	solution;
+
+	ray = ray_transform(ray, mat44_inverse(cylinder.transform));
+	saida = NULL;
+	a = pow(ray.direction.x, 2) + pow(ray.direction.z, 2);
+	// return () if a is approximately zero
+	if (equal(absolute(a), EPSILON))
+		return (saida);
+	b = (2 * ray.origin.x * ray.direction.x +
+		2 * ray.origin.z * ray.direction.z);
+	c = pow(ray.origin.x, 2) + pow(ray.origin.z, 2) - 1;
+	solution = (solve_equation(a, b, c));
+	if (solution.n >= 1 && solution.n <= 2)
+	{
+		hit = (t_hit *)malloc(sizeof(t_hit));
+		hit->obj.tipo = CYLINDER;
+		hit->obj.cy = cylinder;
+		hit->t = solution.s1;
+		saida = list_init(hit);
+	}
+	if (solution.n == 2)
+	{
+		hit = (t_hit *)malloc(sizeof(t_hit));
+		hit->obj.tipo = CYLINDER;
+		hit->obj.cy = cylinder;
+		hit->t = solution.s2;
+		list_add(saida, hit);
+	}
 	return (saida);
 }
 

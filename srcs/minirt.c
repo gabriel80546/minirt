@@ -235,6 +235,18 @@ t_vars	config_scene_easy(t_vars input)
 	// vars.objs = list_init(obj);
 	list_add(vars.objs, obj);
 
+	obj = (t_objeto *)malloc(sizeof(t_objeto));
+	obj->tipo = CYLINDER;
+	obj->cy.pos = point(0.0, 0.0, 0.0);
+	obj->cy.diameter = 157.0;
+	obj->cy.material.color = color(1.0, 0.0, 0.0);
+	obj->cy.material.ambient = 0.1;
+	obj->cy.material.diffuse = 0.7;
+	obj->cy.material.specular = 0.3;
+	obj->cy.material.shininess = 200.0;
+	obj->cy.transform = mat44_identity();
+	// vars.objs = list_init(obj);
+	list_add(vars.objs, obj);
 
 	obj = (t_objeto *)malloc(sizeof(t_objeto));
 	obj->tipo = SPHERE;

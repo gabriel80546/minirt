@@ -93,11 +93,13 @@ typedef struct	s_plano
 
 typedef struct	s_cylinder
 {
-	t_vec		pos;
-	t_vec		direc;
+	t_tuple		pos;
+	// t_vec		direc;
+	// int			cor;
 	double		diameter;
 	double		height;
-	int			cor;
+	t_material	material;
+	t_mat44		transform;
 }				t_cylinder;
 
 typedef struct	s_objeto
@@ -221,5 +223,8 @@ int			is_shadowed(t_vars world, t_tuple point);
 
 t_list		*ray_pl_intercection(t_ray ray, t_plano plane);
 t_tuple		pl_normal(/* t_plano plane, t_tuple world_point */);
+
+t_list		*ray_cy_intercection(t_ray ray, t_cylinder cylinder);
+t_tuple		cy_normal(t_cylinder cylinder, t_tuple ponto);
 
 #endif
