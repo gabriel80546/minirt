@@ -827,6 +827,7 @@ t_comps	prepare_computations(t_hit	intersection, t_ray ray)
 	comps.point = ray_position(ray, comps.t);
 	comps.eyev = mul_scalar(ray.direction, -1.0);
 	comps.normalv = sp_normal(comps.object.sp, comps.point);
+	comps.over_point = tup_add(comps.point, mul_scalar(comps.normalv, EPSILON));
 	if (dot(comps.normalv, comps.eyev) < 0.0)
 	{
 		comps.inside = 1;
@@ -839,20 +840,22 @@ t_comps	prepare_computations(t_hit	intersection, t_ray ray)
 
 t_cor	shade_hit(t_vars world, t_comps comps)
 {
-	t_cor saida;
+	t_cor	saida;
+	int		shadowed;
 
-	saida = lighting(comps.object.sp.material,
+
+	shadowed = is_shadowed(world, comps.over_point);
+	saida = lighting_new(comps.object.sp.material,
 	*((t_light *)world.lights->data),
-	comps.point,
+	comps.over_point,
 	comps.eyev,
-	comps.normalv);
+	comps.normalv, shadowed);
 	return (saida);
 }
 
 t_cor	color_at(t_vars vars, t_ray ray)
 {
 	t_list	*hits;
-	t_light	light;
 	t_cor	hit_cor;
 	t_hit	hit;
 	t_comps	comps;
@@ -864,9 +867,8 @@ t_cor	color_at(t_vars vars, t_ray ray)
 		clear_list_all(hits);
 	if (hit.t != -42.0)
 	{
-		light = *((t_light *)vars.lights->data);
 		comps = prepare_computations(hit, ray);
-		hit_cor = lighting(comps.object.sp.material, light, comps.point, comps.eyev, comps.normalv);
+		hit_cor = shade_hit(vars, comps);
 		if (hit_cor.r > 1.0)
 			hit_cor.r = 1.0;
 		if (hit_cor.g > 1.0)
@@ -976,11 +978,11 @@ void	draw_main(t_vars vars, int x, int y, t_img img)
 	t_ray	ray;
 	t_cor	hit_cor;
 	t_camera	camera;
-	t_material	m;
-	t_tuple		eyev;
-	t_tuple		normalv;
-	t_light		light;
-	int			in_shadow;
+	// t_material	m;
+	// t_tuple		eyev;
+	// t_tuple		normalv;
+	// t_light		light;
+	// int			in_shadow;
 
 	camera = setup_camera(vars);
 	ray = ray_for_pixel(camera, x, y);
@@ -989,64 +991,7 @@ void	draw_main(t_vars vars, int x, int y, t_img img)
 	
 	if (x == 3 && y == 5)
 	{
-		// Scenario: Lighting with the surface in shadow
-		// Given eyev ← vector(0, 0, -1)
-		// And normalv ← vector(0, 0, -1)
-		// And light ← point_light(point(0, 0, -10), color(1, 1, 1))
-		// And in_shadow ← true
-		// When result ← lighting(m, light, position, eyev, normalv, in_shadow)
-		// Then result = color(0.1, 0.1, 0.1)
-		// say("Hello World!\n", DEB);
-
-		eyev = vector(0, 0, -1);
-		normalv = vector(0, 0, -1);
-		light.position = point(0, 0, -10);
-		light.cor = color(1, 1, 1);
-		in_shadow = 1;
-
-		m.color = color(1.0, 1.0, 1.0);
-		m.ambient = 0.1;
-		m.diffuse = 0.7;
-		m.specular = 0.2;
-		m.shininess = 200.0;
-
-		hit_cor = lighting_new(m, light, point(0, 0, 0), eyev, normalv, in_shadow);
-		// say("hit_cor.r = % 6.6lf\n", DEB, hit_cor.r);
-		// say("hit_cor.g = % 6.6lf\n", DEB, hit_cor.g);
-		// say("hit_cor.b = % 6.6lf\n", DEB, hit_cor.b);
-		// When result ← lighting(m, light, position, eyev, normalv, in_shadow)
-		// Then result = color(0.1, 0.1, 0.1)
-	
-
-		say("****************Test****************\n", DEB);
-		say("Scenario: There is no shadow when nothing is collinear with point and light\n", DEB);
-		say("Given w ← default_world()\n", DEB);
-		say("And p ← point(0, 10, 0)\n", DEB);
-		say("Then is_shadowed(w, p) is false\n", DEB);
-		say("is_shadowed(vars, point(0, 10, 0)) = %d\n", DEB, is_shadowed(vars, point(0, 10, 0)));
-
-		say("****************Test****************\n", DEB);
-		say("Scenario: The shadow when an object is between the point and the light\n", DEB);
-		say("Given w ← default_world()\n", DEB);
-		say("And p ← point(10, -10, 10)\n", DEB);
-		say("Then is_shadowed(w, p) is true\n", DEB);
-		say("is_shadowed(vars, point(10, -10, 10)) = %d\n", DEB, is_shadowed(vars, point(10, -10, 10)));
-
-		say("****************Test****************\n", DEB);
-		say("Scenario: There is no shadow when an object is behind the light\n", DEB);
-		say("Given w ← default_world()\n", DEB);
-		say("And p ← point(-20, 20, -20)\n", DEB);
-		say("Then is_shadowed(w, p) is false\n", DEB);
-		say("is_shadowed(vars, point(-20, 20, -20)) = %d\n", DEB, is_shadowed(vars, point(-20, 20, -20)));
-
-		say("****************Test****************\n", DEB);
-		say("Scenario: There is no shadow when an object is behind the point\n", DEB);
-		say("Given w ← default_world()\n", DEB);
-		say("And p ← point(-2, 2, -2)\n", DEB);
-		say("Then is_shadowed(w, p) is false\n", DEB);
-		say("is_shadowed(vars, point(-2, 2, -2)) = %d\n", DEB, is_shadowed(vars, point(-2, 2, -2)));
-
-
+		// testes
 	}
 }
 

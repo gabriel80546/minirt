@@ -154,6 +154,7 @@ typedef struct	s_comps
 	t_tuple		eyev;
 	t_tuple		normalv;
 	int			inside;
+	t_tuple		over_point;
 }				t_comps;
 
 typedef struct  s_vars {
@@ -214,5 +215,6 @@ t_mat44		mat44_mul(t_mat44 a, t_mat44 b);
 t_tuple		mat44_tuple_mul(t_mat44 mat, t_tuple tupla);
 int			say(const char *format, char *file, const char *func, int line, ...);
 t_mat44		view_transform(t_tuple from, t_tuple to, t_tuple up);
+int			is_shadowed(t_vars world, t_tuple point);
 
 #endif

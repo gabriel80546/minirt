@@ -181,20 +181,20 @@ t_vars	config_scene_easy(t_vars input)
 	// ESFERAS
 
 
-	obj = (t_objeto *)malloc(sizeof(t_objeto));
-	obj->tipo = SPHERE;
-	obj->sp.pos = point(0.0, 0.0, 0.0);
-	obj->sp.diametro = 157.0;
-	obj->sp.material.color = color(1.0, 0.0, 0.0);
-	obj->sp.material.ambient = 0.1;
-	obj->sp.material.diffuse = 0.7;
-	obj->sp.material.specular = 0.2;
-	obj->sp.material.shininess = 200.0;
-	obj->sp.transform = mat44_identity();
-	vars.objs = list_init(obj);
-	// list_add(vars.objs, obj);
+	// UMA ESFERA VERMELHA NO (0, 0, 0)
+	// obj = (t_objeto *)malloc(sizeof(t_objeto));
+	// obj->tipo = SPHERE;
+	// obj->sp.pos = point(0.0, 0.0, 0.0);
+	// obj->sp.diametro = 157.0;
+	// obj->sp.material.color = color(1.0, 0.0, 0.0);
+	// obj->sp.material.ambient = 0.1;
+	// obj->sp.material.diffuse = 0.7;
+	// obj->sp.material.specular = 0.2;
+	// obj->sp.material.shininess = 200.0;
+	// obj->sp.transform = mat44_identity();
+	// vars.objs = list_init(obj);
+	// // list_add(vars.objs, obj);
 
-/*
 	obj = (t_objeto *)malloc(sizeof(t_objeto));
 	obj->tipo = SPHERE;
 	obj->sp.pos = point(0.0, 0.0, 0.0);
@@ -296,14 +296,13 @@ t_vars	config_scene_easy(t_vars input)
 							mat44_scaling(0.33, 0.33, 0.33));
 	// vars.objs = list_init(obj);
 	list_add(vars.objs, obj);
-*/
 
 
 
 	// LUZES
 
 	temp_direc.x = -10.0;
-	temp_direc.y =  10.0;
+	temp_direc.y =  6.0;
 	temp_direc.z = -10.0;
 	// temp_direc.x =  0.0;
 	// temp_direc.y =  0.25;
