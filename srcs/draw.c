@@ -794,8 +794,11 @@ t_list	*intersect_world(t_vars vars, t_ray ray)
 	while (vars.objs != NULL)
 	{
 		ray.direction = normalize(ray.direction);
+		hits_inter = NULL;
 		if (((t_objeto *)vars.objs->data)->tipo == SPHERE)
 			hits_inter = ray_sp_intercection(ray, ((t_objeto *)vars.objs->data)->sp);
+		else if (((t_objeto *)vars.objs->data)->tipo == PLANE)
+			hits_inter = ray_pl_intercection(ray, ((t_objeto *)vars.objs->data)->pl);
 		temp_temp_list = NULL;
 		while (hits_inter != NULL)
 		{
@@ -826,7 +829,10 @@ t_comps	prepare_computations(t_hit	intersection, t_ray ray)
 	comps.object = intersection.obj;
 	comps.point = ray_position(ray, comps.t);
 	comps.eyev = mul_scalar(ray.direction, -1.0);
-	comps.normalv = sp_normal(comps.object.sp, comps.point);
+	if (comps.object.tipo == SPHERE)
+		comps.normalv = sp_normal(comps.object.sp, comps.point);
+	else if (comps.object.tipo == PLANE)
+		comps.normalv = pl_normal(comps.object.pl/* , comps.point */);
 	comps.over_point = tup_add(comps.point, mul_scalar(comps.normalv, EPSILON));
 	if (dot(comps.normalv, comps.eyev) < 0.0)
 	{
@@ -840,12 +846,16 @@ t_comps	prepare_computations(t_hit	intersection, t_ray ray)
 
 t_cor	shade_hit(t_vars world, t_comps comps)
 {
-	t_cor	saida;
-	int		shadowed;
-
+	t_cor		saida;
+	int			shadowed;
+	t_material	material;
 
 	shadowed = is_shadowed(world, comps.over_point);
-	saida = lighting_new(comps.object.sp.material,
+	if (comps.object.tipo == SPHERE)
+		material = comps.object.sp.material;
+	else if (comps.object.tipo == PLANE)
+		material = comps.object.pl.material;
+	saida = lighting_new(material,
 	*((t_light *)world.lights->data),
 	comps.over_point,
 	comps.eyev,
@@ -878,6 +888,7 @@ t_cor	color_at(t_vars vars, t_ray ray)
 	}
 	return (hit_cor);
 }
+
 
 t_mat44	view_transform(t_tuple from, t_tuple to, t_tuple up)
 {
@@ -973,6 +984,56 @@ int	is_shadowed(t_vars world, t_tuple point)
 }
 
 
+// intersect(shape, ray)
+// 	local_ray ← transform(ray, inverse(shape.transform))
+// 	return local_intersect(shape, local_ray)
+// end function
+ 
+// normal_at(shape, point)
+// 	local_point  ← inverse(shape.transform) * point
+// 	local_normal ← local_normal_at(shape, local_point)
+// 	world_normal ← transpose(inverse(shape.transform)) *local_normal
+// 	world_normal.w ← 0
+// 	return normalize(world_normal)
+// end function
+
+t_tuple	sp_normal_new(t_esfera sphere, t_tuple world_point)
+{
+	t_tuple	object_point;
+	t_tuple	object_normal;
+	t_tuple	world_normal;
+
+	object_point = mat44_tuple_mul(mat44_inverse(sphere.transform), world_point);
+	object_normal = tup_sub(object_point, point(0.0, 0.0, 0.0));
+	world_normal = mat44_tuple_mul(mat44_transpose(mat44_inverse(sphere.transform)), object_normal);
+	world_normal.w = 0.0;
+	return normalize(world_normal);
+}
+
+t_tuple	pl_normal(t_plano plane/*, t_tuple world_point */)
+{
+	return mat44_tuple_mul(mat44_inverse(plane.transform), vector(0, 1, 0));
+}
+
+t_list	*ray_pl_intercection(t_ray ray, t_plano plane)
+{
+	t_list	*saida;
+	t_hit	*hit;
+	double	t;
+
+	ray = ray_transform(ray, mat44_inverse(plane.transform));
+	saida = NULL;
+	if (absolute(ray.direction.y) < EPSILON)
+		return (saida);
+	t = -ray.origin.y / ray.direction.y;
+	hit = (t_hit *)malloc(sizeof(t_hit));
+	hit->obj.tipo = PLANE;
+	hit->obj.pl = plane;
+	hit->t = t;
+	saida = list_init(hit);
+	return (saida);
+}
+
 void	draw_main(t_vars vars, int x, int y, t_img img)
 {
 	t_ray	ray;
@@ -991,7 +1052,43 @@ void	draw_main(t_vars vars, int x, int y, t_img img)
 	
 	if (x == 3 && y == 5)
 	{
-		// testes
+		// Scenario: The normal of a plane is constant everywhere
+		// Given p ← plane()
+		// When n1 ← local_normal_at(p, point(0, 0, 0))
+		// 	And n2 ← local_normal_at(p, point(10, 0, -10))
+		// 	And n3 ← local_normal_at(p, point(-5, 0, 150))
+		// Then n1 = vector(0, 1, 0)
+		// 	And n2 = vector(0, 1, 0)
+		// 	And n3 = vector(0, 1, 0)
+
+		// Scenario: Intersect with a ray parallel to the plane
+		// Given p ← plane()
+		// 	And r ← ray(point(0, 10, 0), vector(0, 0, 1))
+		// When xs ← local_intersect(p, r)
+		// Then xs is empty
+
+		// Scenario: Intersect with a coplanar ray
+		// Given p ← plane()
+		// 	And r ← ray(point(0, 0, 0), vector(0, 0, 1))
+		// When xs ← local_intersect(p, r)
+		// Then xs is empty
+
+		// Scenario: A ray intersecting a plane from above
+		// Given p ← plane()
+		// 	And r ← ray(point(0, 1, 0), vector(0, -1, 0))
+		// When xs ← local_intersect(p, r)
+		// Then xs.count = 1
+		// 	And xs[0].t = 1
+		// 	And xs[0].object = p
+
+		// Scenario: A ray intersecting a plane from below
+		// Given p ← plane()
+		// 	And r ← ray(point(0, -1, 0), vector(0, 1, 0))
+		// When xs ← local_intersect(p, r)
+		// Then xs.count = 1
+		// 	And xs[0].t = 1
+		// 	And xs[0].object = p
+		say("eae\n", DEB);
 	}
 }
 

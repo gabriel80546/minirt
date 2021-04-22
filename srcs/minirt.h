@@ -84,9 +84,11 @@ typedef struct	s_esfera
 
 typedef struct	s_plano
 {
-	t_vec		pos;
-	t_vec		direc;
-	int			cor;
+	t_tuple		pos;
+	// t_vec		direc;
+	// int			cor;
+	t_material	material;
+	t_mat44		transform;
 }				t_plano;
 
 typedef struct	s_cylinder
@@ -216,5 +218,8 @@ t_tuple		mat44_tuple_mul(t_mat44 mat, t_tuple tupla);
 int			say(const char *format, char *file, const char *func, int line, ...);
 t_mat44		view_transform(t_tuple from, t_tuple to, t_tuple up);
 int			is_shadowed(t_vars world, t_tuple point);
+
+t_list		*ray_pl_intercection(t_ray ray, t_plano plane);
+t_tuple		pl_normal(/* t_plano plane, t_tuple world_point */);
 
 #endif
