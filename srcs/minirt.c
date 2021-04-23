@@ -167,6 +167,19 @@ t_vars	config_scene_easy(t_vars input)
 	list_add(vars.objs, obj);
 
 	obj = (t_objeto *)malloc(sizeof(t_objeto));
+	obj->tipo = TRIANGLE;
+	obj->tr.pos_a = point(2.0, 1.0, 1.0);
+	obj->tr.pos_b = point(2.0, 2.0, 3.0);
+	obj->tr.pos_c = point(3.0, 2.0, 3.0);
+	obj->tr.material.color = color(0.0, 1.0, 0.0);
+	obj->tr.material.ambient = 0.1;
+	obj->tr.material.diffuse = 0.7;
+	obj->tr.material.specular = 0.3;
+	obj->tr.material.shininess = 200.0;
+	// vars.objs = list_init(obj);
+	list_add(vars.objs, obj);
+
+	obj = (t_objeto *)malloc(sizeof(t_objeto));
 	obj->tipo = SPHERE;
 	obj->sp.pos = point(0.0, 0.0, 0.0);
 	obj->sp.diametro = 157.0;

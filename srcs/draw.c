@@ -801,6 +801,8 @@ t_list	*intersect_world(t_vars vars, t_ray ray)
 			hits_inter = ray_pl_intercection(ray, ((t_objeto *)vars.objs->data)->pl);
 		else if (((t_objeto *)vars.objs->data)->tipo == CYLINDER)
 			hits_inter = ray_cy_intercection(ray, ((t_objeto *)vars.objs->data)->cy);
+		else if (((t_objeto *)vars.objs->data)->tipo == TRIANGLE)
+			hits_inter = ray_tr_intercection(ray, ((t_objeto *)vars.objs->data)->tr);
 		
 		temp_temp_list = NULL;
 		while (hits_inter != NULL)
@@ -838,6 +840,13 @@ t_comps	prepare_computations(t_hit	intersection, t_ray ray)
 		comps.normalv = pl_normal(comps.object.pl);
 	else if (comps.object.tipo == CYLINDER)
 		comps.normalv = cy_normal(comps.object.cy, comps.point);
+	else if (comps.object.tipo == TRIANGLE)
+	{
+		comps.normalv = tr_normal(comps.object.tr);
+		// print_tuple(comps.normalv, DEB);
+	}
+	else
+		comps.normalv = vector(0, 1, 0);
 	comps.over_point = tup_add(comps.point, mul_scalar(comps.normalv, EPSILON));
 	if (dot(comps.normalv, comps.eyev) < 0.0)
 	{
@@ -860,6 +869,8 @@ t_material	choose_material(t_comps comps)
 		saida = comps.object.pl.material;
 	else if (comps.object.tipo == CYLINDER)
 		saida = comps.object.cy.material;
+	else if (comps.object.tipo == TRIANGLE)
+		saida = comps.object.tr.material;
 	return (saida);
 }
 
@@ -1093,6 +1104,82 @@ t_list	*ray_cy_intercection(t_ray ray, t_cylinder cylinder)
 	}
 	return (saida);
 }
+
+
+// local_intersect(triangle, ray)
+// 	dir_cross_e2 = cross(ray.direction, triangle.e2)
+// 	det ← dot(triangle.e1, dir_cross_e2)
+// 	return () if abs(det) < EPSILON
+// 	// a bogus intersection to ensure the result isn't a false positive
+// 	return ( intersection(1, triangle) )
+// end function
+
+
+	// f ← 1.0 / det
+	// p1_to_origin ← ray.origin - triangle.p1
+	// u ← f * dot(p1_to_origin, dir_cross_e2)
+	// return () if u < 0 or u > 1
+
+
+
+t_tuple	tr_normal(t_triangle triangle)
+{
+	t_tuple	e1;
+	t_tuple	e2;
+	t_tuple normal;
+
+	// object_point = mat44_tuple_mul(mat44_inverse(.transform), world_point);
+	e1 = tup_sub(triangle.pos_b, triangle.pos_a);
+	e2 = tup_sub(triangle.pos_c, triangle.pos_a);
+	normal = normalize(cross(e1, e2));
+	// normal = normalize(cross(e2, e1));
+	return (normal);
+}
+
+t_list	*ray_tr_intercection(t_ray ray, t_triangle triangle)
+{
+	t_list	*saida;
+	t_tuple	dir_cross_e2;
+	t_tuple	p1_to_origin;
+	double	det;
+	double	f;
+	double	u;
+	t_tuple	e1;
+	t_tuple	e2;
+	// t_tuple	normal;
+	t_tuple	origin_cross_e1;
+	double	v;
+	double	t;
+	t_hit	*hit;
+
+	saida = NULL;
+	e1 = tup_sub(triangle.pos_b, triangle.pos_a);
+	e2 = tup_sub(triangle.pos_c, triangle.pos_a);
+	// normal = normalize(cross(e2, e1));
+	dir_cross_e2 = cross(ray.direction, e2);
+	det = dot(e1, dir_cross_e2);
+	if (absolute(det) < EPSILON)
+		return (saida);
+	f = 1.0 / det;
+	p1_to_origin = tup_sub(ray.origin, triangle.pos_a);
+	u = f * dot(p1_to_origin, dir_cross_e2);
+	if (u < 0 || u > 1)
+		return (saida);
+
+	origin_cross_e1 = cross(p1_to_origin, e1);
+	v = f * dot(ray.direction, origin_cross_e1);
+	if (v < 0 || (u + v) > 1)
+		return (saida);
+
+	t = f * dot(e2, origin_cross_e1);
+	hit = (t_hit *)malloc(sizeof(t_hit));
+	hit->obj.tipo = TRIANGLE;
+	hit->obj.tr = triangle;
+	hit->t = t;
+	saida = list_init(hit);
+	return (saida);
+}
+
 
 void	draw_main(t_vars vars, int x, int y, t_img img)
 {

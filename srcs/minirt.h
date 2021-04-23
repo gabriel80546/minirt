@@ -13,6 +13,7 @@
 # define SPHERE 1
 # define PLANE 2
 # define CYLINDER 3
+# define TRIANGLE 4
 
 # define EPSILON 0.00001
 
@@ -102,12 +103,22 @@ typedef struct	s_cylinder
 	t_mat44		transform;
 }				t_cylinder;
 
+typedef struct	s_triangle
+{
+	t_tuple		pos_a;
+	t_tuple		pos_b;
+	t_tuple		pos_c;
+	t_material	material;
+	// t_mat44		transform;
+}				t_triangle;
+
 typedef struct	s_objeto
 {
 	int			tipo;
 	t_esfera	sp;
 	t_plano		pl;
 	t_cylinder	cy;
+	t_triangle	tr;
 }				t_objeto;
 
 typedef struct	s_hit_old
@@ -226,5 +237,8 @@ t_tuple		pl_normal(t_plano plane);
 
 t_list		*ray_cy_intercection(t_ray ray, t_cylinder cylinder);
 t_tuple		cy_normal(t_cylinder cylinder, t_tuple ponto);
+
+t_list		*ray_tr_intercection(t_ray ray, t_triangle triangle);
+t_tuple		tr_normal(t_triangle triangle);
 
 #endif
