@@ -255,15 +255,15 @@ int		mat22_coor(int row, int col)
 
 void	print_mat4_cel(t_mat44 mat, int row, int col)
 {
-	printf("% 6.6lf", mat.m[mat44_coor(row, col)]);
+	say("% 6.6lf", DEB, mat.m[mat44_coor(row, col)]);
 }
 void	print_mat3_cel(t_mat33 mat, int row, int col)
 {
-	printf("% 6.6lf", mat.m[(3 * row) + col]);
+	say("% 6.6lf", DEB, mat.m[(3 * row) + col]);
 }
 void	print_mat2_cel(t_mat22 mat, int row, int col)
 {
-	printf("% 6.6lf", mat.m[(2 * row) + col]);
+	say("% 6.6lf", DEB, mat.m[(2 * row) + col]);
 }
 
 int		mat44_equal(t_mat44 mat_a, t_mat44 mat_b)
@@ -793,8 +793,8 @@ t_list	*intersect_world(t_vars vars, t_ray ray)
 	hits = NULL;
 	while (vars.objs != NULL)
 	{
+		hits_inter = NULL;
 		ray.direction = normalize(ray.direction);
-		// hits_inter = NULL;
 		if (((t_objeto *)vars.objs->data)->tipo == SPHERE)
 			hits_inter = ray_sp_intercection(ray, ((t_objeto *)vars.objs->data)->sp);
 		else if (((t_objeto *)vars.objs->data)->tipo == PLANE)
@@ -835,7 +835,7 @@ t_comps	prepare_computations(t_hit	intersection, t_ray ray)
 	if (comps.object.tipo == SPHERE)
 		comps.normalv = sp_normal(comps.object.sp, comps.point);
 	else if (comps.object.tipo == PLANE)
-		comps.normalv = pl_normal(comps.object.pl/* , comps.point */);
+		comps.normalv = pl_normal(comps.object.pl);
 	else if (comps.object.tipo == CYLINDER)
 		comps.normalv = cy_normal(comps.object.cy, comps.point);
 	comps.over_point = tup_add(comps.point, mul_scalar(comps.normalv, EPSILON));
@@ -849,6 +849,20 @@ t_comps	prepare_computations(t_hit	intersection, t_ray ray)
 	return (comps);
 }
 
+t_material	choose_material(t_comps comps)
+{
+	t_material saida;
+
+	saida = (t_material) {0};
+	if (comps.object.tipo == SPHERE)
+		saida = comps.object.sp.material;
+	else if (comps.object.tipo == PLANE)
+		saida = comps.object.pl.material;
+	else if (comps.object.tipo == CYLINDER)
+		saida = comps.object.cy.material;
+	return (saida);
+}
+
 t_cor	shade_hit(t_vars world, t_comps comps)
 {
 	t_cor		saida;
@@ -856,12 +870,7 @@ t_cor	shade_hit(t_vars world, t_comps comps)
 	t_material	material;
 
 	shadowed = is_shadowed(world, comps.over_point);
-	if (comps.object.tipo == SPHERE)
-		material = comps.object.sp.material;
-	else if (comps.object.tipo == PLANE)
-		material = comps.object.pl.material;
-	else if (comps.object.tipo == CYLINDER)
-		material = comps.object.cy.material;
+	material = choose_material(comps);
 	saida = lighting_new(material,
 	*((t_light *)world.lights->data),
 	comps.over_point,
@@ -959,7 +968,6 @@ t_ray	ray_for_pixel(t_camera camera, int px, int py)
 	yoffset = (py + 0.5) * camera.pixel_size;
 	world_x = camera.half_width - xoffset;
 	world_y = camera.half_height - yoffset;
-
 	pixel = mat44_tuple_mul(mat44_inverse(camera.transform), point(world_x, world_y, -1));
 	origin = mat44_tuple_mul(mat44_inverse(camera.transform), point(0, 0, 0));
 	direction = normalize(tup_sub(pixel, origin));
@@ -992,20 +1000,6 @@ int	is_shadowed(t_vars world, t_tuple point)
 		return (0);
 }
 
-
-// intersect(shape, ray)
-// 	local_ray ← transform(ray, inverse(shape.transform))
-// 	return local_intersect(shape, local_ray)
-// end function
- 
-// normal_at(shape, point)
-// 	local_point  ← inverse(shape.transform) * point
-// 	local_normal ← local_normal_at(shape, local_point)
-// 	world_normal ← transpose(inverse(shape.transform)) *local_normal
-// 	world_normal.w ← 0
-// 	return normalize(world_normal)
-// end function
-
 t_tuple	sp_normal_new(t_esfera sphere, t_tuple world_point)
 {
 	t_tuple	object_point;
@@ -1019,7 +1013,7 @@ t_tuple	sp_normal_new(t_esfera sphere, t_tuple world_point)
 	return normalize(world_normal);
 }
 
-t_tuple	pl_normal(t_plano plane/*, t_tuple world_point */)
+t_tuple	pl_normal(t_plano plane)
 {
 	return mat44_tuple_mul(mat44_inverse(plane.transform), vector(0, 1, 0));
 }
@@ -1043,39 +1037,31 @@ t_list	*ray_pl_intercection(t_ray ray, t_plano plane)
 	return (saida);
 }
 
-
-t_tuple	cy_normal(t_cylinder cylinder, t_tuple ponto)
+t_tuple	cy_normal(t_cylinder cylinder, t_tuple world_point)
 {
-	return mat44_tuple_mul(mat44_inverse(cylinder.transform), vector(ponto.x, 0, ponto.z));
+	t_tuple	object_point;
+
+	object_point = mat44_tuple_mul(mat44_inverse(cylinder.transform), world_point);
+	return vector(object_point.x, 0, object_point.z);
+	// return mat44_tuple_mul(mat44_inverse(cylinder.transform), vector(world_point.x, 0, world_point.z));
+	// return mat44_tuple_mul(cylinder.transform, vector(world_point.x, 0, world_point.z));
+	// return vector(world_point.x, 0, world_point.z);
 }
 
-// local_intersect(cylinder, ray)
-// 	a ← ray.direction.x² + ray.direction.z²
-// 	# ray is parallel to the y axis
-// 	return () if a is approximately zero
-// 	b ← 2 * ray.origin.x * ray.direction.x +
-// 		2 * ray.origin.z * ray.direction.z
-// 	c ← ray.origin.x² + ray.origin.z² - 1
-// 	disc ← b² - 4 * a * c
-// 	# ray does not intersect the cylinder
-// 	return () if disc < 0
-// 	t0 ← (-b - √(disc)) / (2 * a)
-// 	t1 ← (-b + √(disc)) / (2 * a)
-// 	return ( intersection(t0, cylinder), intersection(t1, cylinder) )
-// end function
 
+// t_tuple	sp_normal(t_esfera sphere, t_tuple world_point)
+// {
+// 	t_tuple	object_point;
+// 	t_tuple	object_normal;
+// 	t_tuple	world_normal;
 
-// t0 = (-b - √(disc)) / (2 * a)
-// t1 ← (-b + √(disc)) / (2 * a)
-// if t0 > t1 then swap(t0, t1)
-// xs = ()
-// y0 ← ray.origin.y + t0 * ray.direction.y
-// if cylinder.minimum < y0 and y0 < cylinder.maximum
-// 	add intersection(t0, cylinder) to xs
-// y1 ← ray.origin.y + t1 * ray.direction.y
-// if cylinder.minimum < y1 and y1 < cylinder.maximum
-// 	add intersection(t1, cylinder) to xs
-// return xs
+// 	object_point = mat44_tuple_mul(mat44_inverse(sphere.transform), world_point);
+// 	object_normal = tup_sub(object_point, point(0.0, 0.0, 0.0));
+// 	world_normal = mat44_tuple_mul(mat44_transpose(mat44_inverse(sphere.transform)), object_normal);
+// 	world_normal.w = 0.0;
+// 	return normalize(world_normal);
+// }
+
 
 
 t_list	*ray_cy_intercection(t_ray ray, t_cylinder cylinder)
@@ -1100,7 +1086,7 @@ t_list	*ray_cy_intercection(t_ray ray, t_cylinder cylinder)
 	if (solution.n >= 1 && solution.n <= 2)
 	{
 		y0 = ray.origin.y + solution.s1 * ray.direction.y;
-		if (y0 < 0.5 && y0 > -0.5)
+		if (y0 < (cylinder.height / 2) && y0 > -(cylinder.height / 2))
 		{
 			hit = (t_hit *)malloc(sizeof(t_hit));
 			hit->obj.tipo = CYLINDER;
@@ -1112,7 +1098,7 @@ t_list	*ray_cy_intercection(t_ray ray, t_cylinder cylinder)
 	if (solution.n == 2)
 	{
 		y0 = ray.origin.y + solution.s2 * ray.direction.y;
-		if (y0 < 0.5 && y0 > -0.5)
+		if (y0 < (cylinder.height / 2) && y0 > -(cylinder.height / 2))
 		{
 			hit = (t_hit *)malloc(sizeof(t_hit));
 			hit->obj.tipo = CYLINDER;
@@ -1140,7 +1126,7 @@ void	draw_main(t_vars vars, int x, int y, t_img img)
 	
 	if (x == 3 && y == 5)
 	{
-		say("eae\n", DEB);
+		// say("rendering image...\n", DEB);
 	}
 }
 

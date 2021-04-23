@@ -222,7 +222,7 @@ t_mat44		view_transform(t_tuple from, t_tuple to, t_tuple up);
 int			is_shadowed(t_vars world, t_tuple point);
 
 t_list		*ray_pl_intercection(t_ray ray, t_plano plane);
-t_tuple		pl_normal(/* t_plano plane, t_tuple world_point */);
+t_tuple		pl_normal(t_plano plane);
 
 t_list		*ray_cy_intercection(t_ray ray, t_cylinder cylinder);
 t_tuple		cy_normal(t_cylinder cylinder, t_tuple ponto);

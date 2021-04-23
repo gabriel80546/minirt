@@ -1,4 +1,4 @@
-gcc -Wall -Wextra -g *.c 
+gcc -O3 -Wall -Wextra -g *.c
  ../libs/gnl/get_next_line.c
  ../headers/math/*.c
  ../headers/list/*.c
