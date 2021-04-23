@@ -1064,6 +1064,20 @@ t_tuple	cy_normal(t_cylinder cylinder, t_tuple ponto)
 // 	return ( intersection(t0, cylinder), intersection(t1, cylinder) )
 // end function
 
+
+// t0 = (-b - √(disc)) / (2 * a)
+// t1 ← (-b + √(disc)) / (2 * a)
+// if t0 > t1 then swap(t0, t1)
+// xs = ()
+// y0 ← ray.origin.y + t0 * ray.direction.y
+// if cylinder.minimum < y0 and y0 < cylinder.maximum
+// 	add intersection(t0, cylinder) to xs
+// y1 ← ray.origin.y + t1 * ray.direction.y
+// if cylinder.minimum < y1 and y1 < cylinder.maximum
+// 	add intersection(t1, cylinder) to xs
+// return xs
+
+
 t_list	*ray_cy_intercection(t_ray ray, t_cylinder cylinder)
 {
 	t_list		*saida;
@@ -1072,11 +1086,11 @@ t_list	*ray_cy_intercection(t_ray ray, t_cylinder cylinder)
 	double		b;
 	double		c;
 	t_solution	solution;
+	double		y0;
 
 	ray = ray_transform(ray, mat44_inverse(cylinder.transform));
 	saida = NULL;
 	a = pow(ray.direction.x, 2) + pow(ray.direction.z, 2);
-	// return () if a is approximately zero
 	if (equal(absolute(a), EPSILON))
 		return (saida);
 	b = (2 * ray.origin.x * ray.direction.x +
@@ -1085,19 +1099,30 @@ t_list	*ray_cy_intercection(t_ray ray, t_cylinder cylinder)
 	solution = (solve_equation(a, b, c));
 	if (solution.n >= 1 && solution.n <= 2)
 	{
-		hit = (t_hit *)malloc(sizeof(t_hit));
-		hit->obj.tipo = CYLINDER;
-		hit->obj.cy = cylinder;
-		hit->t = solution.s1;
-		saida = list_init(hit);
+		y0 = ray.origin.y + solution.s1 * ray.direction.y;
+		if (y0 < 0.5 && y0 > -0.5)
+		{
+			hit = (t_hit *)malloc(sizeof(t_hit));
+			hit->obj.tipo = CYLINDER;
+			hit->obj.cy = cylinder;
+			hit->t = solution.s1;
+			saida = list_init(hit);
+		}
 	}
 	if (solution.n == 2)
 	{
-		hit = (t_hit *)malloc(sizeof(t_hit));
-		hit->obj.tipo = CYLINDER;
-		hit->obj.cy = cylinder;
-		hit->t = solution.s2;
-		list_add(saida, hit);
+		y0 = ray.origin.y + solution.s2 * ray.direction.y;
+		if (y0 < 0.5 && y0 > -0.5)
+		{
+			hit = (t_hit *)malloc(sizeof(t_hit));
+			hit->obj.tipo = CYLINDER;
+			hit->obj.cy = cylinder;
+			hit->t = solution.s2;
+			if (saida == NULL)
+				saida = list_init(hit);
+			else
+				list_add(saida, hit);
+		}
 	}
 	return (saida);
 }
@@ -1107,11 +1132,6 @@ void	draw_main(t_vars vars, int x, int y, t_img img)
 	t_ray	ray;
 	t_cor	hit_cor;
 	t_camera	camera;
-	// t_material	m;
-	// t_tuple		eyev;
-	// t_tuple		normalv;
-	// t_light		light;
-	// int			in_shadow;
 
 	camera = setup_camera(vars);
 	ray = ray_for_pixel(camera, x, y);
@@ -1120,42 +1140,6 @@ void	draw_main(t_vars vars, int x, int y, t_img img)
 	
 	if (x == 3 && y == 5)
 	{
-		// Scenario: The normal of a plane is constant everywhere
-		// Given p ← plane()
-		// When n1 ← local_normal_at(p, point(0, 0, 0))
-		// 	And n2 ← local_normal_at(p, point(10, 0, -10))
-		// 	And n3 ← local_normal_at(p, point(-5, 0, 150))
-		// Then n1 = vector(0, 1, 0)
-		// 	And n2 = vector(0, 1, 0)
-		// 	And n3 = vector(0, 1, 0)
-
-		// Scenario: Intersect with a ray parallel to the plane
-		// Given p ← plane()
-		// 	And r ← ray(point(0, 10, 0), vector(0, 0, 1))
-		// When xs ← local_intersect(p, r)
-		// Then xs is empty
-
-		// Scenario: Intersect with a coplanar ray
-		// Given p ← plane()
-		// 	And r ← ray(point(0, 0, 0), vector(0, 0, 1))
-		// When xs ← local_intersect(p, r)
-		// Then xs is empty
-
-		// Scenario: A ray intersecting a plane from above
-		// Given p ← plane()
-		// 	And r ← ray(point(0, 1, 0), vector(0, -1, 0))
-		// When xs ← local_intersect(p, r)
-		// Then xs.count = 1
-		// 	And xs[0].t = 1
-		// 	And xs[0].object = p
-
-		// Scenario: A ray intersecting a plane from below
-		// Given p ← plane()
-		// 	And r ← ray(point(0, -1, 0), vector(0, 1, 0))
-		// When xs ← local_intersect(p, r)
-		// Then xs.count = 1
-		// 	And xs[0].t = 1
-		// 	And xs[0].object = p
 		say("eae\n", DEB);
 	}
 }
