@@ -8,8 +8,8 @@ t_tuple	tr_normal(t_triangle triangle)
 
 	e1 = tup_sub(triangle.pos_b, triangle.pos_a);
 	e2 = tup_sub(triangle.pos_c, triangle.pos_a);
-	normal = normalize(cross(e1, e2));
-	// normal = normalize(cross(e2, e1));
+	// normal = normalize(cross(e1, e2));
+	normal = normalize(cross(e2, e1));
 	return (normal);
 }
 

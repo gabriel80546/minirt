@@ -88,9 +88,9 @@ t_vars	config_scene_easy(t_vars input)
 	obj->cy.material.diffuse = 0.7;
 	obj->cy.material.specular = 0.3;
 	obj->cy.material.shininess = 200.0;
-	obj->cy.transform = mat44_mul(mat44_scaling(0.5, 0.5, 0.5),
-			mat44_mul(mat44_rotate_x(PI / 4), mat44_translate(2.0, 10.0, 0.0)));
-	obj->cy.height = 10.0;
+	obj->cy.transform = mat44_mul(mat44_scaling(0.125, 1.0, 0.125),
+			mat44_translate(0.0, 0.0, 0.0));
+	obj->cy.height = 5.0;
 	list_add(vars.objs, obj);
 	obj = (t_objeto *)malloc(sizeof(t_objeto));
 	obj->tipo = TRIANGLE;

@@ -19,7 +19,7 @@ t_comps	prepare_computations(t_hit	intersection, t_ray ray)
 		comps.normalv = tr_normal(comps.object.tr);
 	else
 		comps.normalv = vector(0, 1, 0);
-	comps.over_point = tup_add(comps.point, mul_scalar(comps.normalv, EPSILON));
+	comps.over_point = ray_position(ray, comps.t - EPSILON);
 	if (dot(comps.normalv, comps.eyev) < 0.0)
 	{
 		comps.inside = 1;
