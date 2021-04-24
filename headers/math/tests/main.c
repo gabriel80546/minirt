@@ -2,6 +2,8 @@
 #include "algebra.h"
 #include <stdio.h>
 
+void	test_baskara(void);
+
 void	test_baskara(void)
 {
 	t_solution	s;
@@ -27,6 +29,7 @@ void	test_baskara(void)
 		printf("%4.1lfx² + %4.1lfx + %4.1lf = 0; nao tem solucao\n", a, b, c);
 }
 
+/*
 double	cosine_law(t_tuple A, t_tuple B, t_tuple C)
 {
 	double	BA;
@@ -40,8 +43,9 @@ double	cosine_law(t_tuple A, t_tuple B, t_tuple C)
 	theta_cos = ((AC * AC) - (BA * BA) - (BC * BC)) / (-2 * BA * BC);
 	return (theta_cos);
 }
+*/
 
-void main(void)
+int	main(void)
 {
 	t_tuple	A;
 	t_tuple	B;
@@ -58,4 +62,5 @@ void main(void)
 	C.z =-7.0;
 	printf("theta_cos = %lf\n", cosine_law(A, B, C));
 	printf("theta_degree = %lf\n", acos(cosine_law(A, B, C)) * (180 / 3.14159265358979));
+	return (0);
 }

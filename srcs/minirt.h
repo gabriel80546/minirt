@@ -121,17 +121,14 @@ typedef struct s_light
 
 typedef struct s_comps
 {
-	int			clang_padding_one;
-	int			clang_padding_two;
 	double		t;
 	t_objeto	object;
 	t_tuple		point;
 	t_tuple		eyev;
 	t_tuple		normalv;
 	int			inside;
-	int			clang_padding_three;
+	int			clang_padding;
 	t_tuple		over_point;
-	int			clang_padding_four;
 }				t_comps;
 
 typedef struct s_vars
@@ -155,7 +152,7 @@ typedef struct s_img
 	int			size_line;
 	int			endian;
 	int			bits_per_byte;
-	char		*data;
+	void		*data;
 }				t_img;
 
 typedef struct s_debug
@@ -208,7 +205,7 @@ t_cor		color_add(t_cor a, t_cor b);
 t_cor		color_sub(t_cor a, t_cor b);
 t_cor		color_mul_scalar(t_cor cor, double scalar);
 t_cor		color_mul(t_cor a, t_cor b);
-int			cor_to_rgb(t_cor cor);
+unsigned int	cor_to_rgb(t_cor cor);
 
 t_ray		ray_create(t_tuple origin, t_tuple direction);
 t_tuple		ray_position(t_ray ray, double dist);
@@ -248,5 +245,6 @@ t_cor		color_at(t_vars vars, t_ray ray);
 t_vars		config_cams(t_vars input);
 void		clean_all(t_vars vars);
 t_vars		config_scene_easy(t_vars input);
+void		draw_main(t_vars vars, int x, int y, t_img img);
 
 #endif

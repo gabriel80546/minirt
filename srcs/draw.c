@@ -24,10 +24,12 @@ void	put_pixel(t_img *img, int x, int y, t_cor cor)
 {
 	int	ratio;
 	int	offset;
+	unsigned int	*ptr;
 
+	ptr = (unsigned int *)img->data;
 	ratio = (img->bits_per_pixel / img->bits_per_byte);
 	offset = (x + (y * img->size_line / ratio));
-	*((unsigned int *)img->data + offset) = cor_to_rgb(cor);
+	*(ptr + offset) = (unsigned int)cor_to_rgb(cor);
 }
 
 void	draw_main(t_vars vars, int x, int y, t_img img)
@@ -60,6 +62,14 @@ void	draw(t_vars vars)
 		{
 			if (x == 3 && y == 5)
 			{
+				say("sizeof(double) = %ld\n", DEB, sizeof(double));
+				say("sizeof(t_objeto) = %ld\n", DEB, sizeof(t_objeto));
+				say("sizeof(t_tuple) = %ld\n", DEB, sizeof(t_tuple));
+				say("sizeof(t_tuple) = %ld\n", DEB, sizeof(t_tuple));
+				say("sizeof(t_tuple) = %ld\n", DEB, sizeof(t_tuple));
+				say("sizeof(int) = %ld\n", DEB, sizeof(int));
+				say("sizeof(t_tuple) = %ld\n\n", DEB, sizeof(t_tuple));
+
 				say("sizeof(t_comps) = %ld\n", DEB, sizeof(t_comps));
 				say("sizeof(double) = %ld\n", DEB, sizeof(double));
 			}

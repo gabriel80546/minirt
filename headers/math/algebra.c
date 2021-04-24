@@ -26,7 +26,7 @@ t_solution	solve_equation(double a, double b, double c)
 	saida.s2 = 0.0;
 	if (delta < 0.0)
 		saida.n = 0;
-	else if (delta == 0.0)
+	else if (equal(delta, 0.0))
 	{
 		saida.n = 1;
 		saida.s1 = -b / (2 * a);
