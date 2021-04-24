@@ -13,10 +13,14 @@ t_mat44	view_transform(t_tuple from, t_tuple to, t_tuple up)
 	upn = normalize(up);
 	left = cross(forward, upn);
 	true_up = cross(left, forward);
-	orientation.m[0] = left.x; orientation.m[1] = left.y; orientation.m[2] = left.z; orientation.m[3] = 0;
-	orientation.m[4] = true_up.x; orientation.m[5] = true_up.y; orientation.m[6] = true_up.z; orientation.m[7] = 0;
-	orientation.m[8] = -forward.x; orientation.m[9] = -forward.y; orientation.m[10] = -forward.z; orientation.m[11] = 0;
-	orientation.m[12] = 0; orientation.m[13] = 0; orientation.m[14] = 0; orientation.m[15] = 1;
+	orientation = set_row_ooone(orientation,
+			left.x, left.y, left.z, 0.0);
+	orientation = set_row_tttwo(orientation,
+			true_up.x, true_up.y, true_up.z, 0.0);
+	orientation = set_row_three(orientation,
+			-forward.x, -forward.y, -forward.z, 0.0);
+	orientation = set_row_ffour(orientation,
+			0.0, 0.0, 0.0, 1.0);
 	saida = mat44_mul(orientation, mat44_translate(-from.x, -from.y, -from.z));
 	return (saida);
 }
@@ -62,8 +66,10 @@ t_ray	ray_for_pixel(t_camera camera, int px, int py)
 	yoffset = (py + 0.5) * camera.pixel_size;
 	world_x = camera.half_width - xoffset;
 	world_y = camera.half_height - yoffset;
-	pixel = mat44_tuple_mul(mat44_inverse(camera.transform), point(world_x, world_y, -1));
-	origin = mat44_tuple_mul(mat44_inverse(camera.transform), point(0, 0, 0));
+	pixel = mat44_tuple_mul(mat44_inverse(camera.transform),
+			point(world_x, world_y, -1));
+	origin = mat44_tuple_mul(mat44_inverse(camera.transform),
+			point(0, 0, 0));
 	direction = normalize(tup_sub(pixel, origin));
 	ray = ray_create(origin, direction);
 	return (ray);

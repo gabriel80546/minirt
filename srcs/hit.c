@@ -13,7 +13,8 @@ t_hit	closest_hit(t_list *hits)
 		hits = first_item(hits);
 	while (hits != NULL)
 	{
-		if (((t_hit *)hits->data)->t > 0.0 && (((t_hit *)hits->data)->t < hit.t || hit_isfirst))
+		if (((t_hit *)hits->data)->t > 0.0
+			&& (((t_hit *)hits->data)->t < hit.t || hit_isfirst))
 		{
 			hit_isfirst = 0;
 			hit = *((t_hit *)hits->data);
@@ -42,13 +43,17 @@ t_list	*intersect_world(t_vars vars, t_ray ray)
 		hits_inter = NULL;
 		ray.direction = normalize(ray.direction);
 		if (((t_objeto *)vars.objs->data)->tipo == SPHERE)
-			hits_inter = ray_sp_intercection(ray, ((t_objeto *)vars.objs->data)->sp);
+			hits_inter = ray_sp_intercection(
+					ray, ((t_objeto *)vars.objs->data)->sp);
 		else if (((t_objeto *)vars.objs->data)->tipo == PLANE)
-			hits_inter = ray_pl_intercection(ray, ((t_objeto *)vars.objs->data)->pl);
+			hits_inter = ray_pl_intercection(
+					ray, ((t_objeto *)vars.objs->data)->pl);
 		else if (((t_objeto *)vars.objs->data)->tipo == CYLINDER)
-			hits_inter = ray_cy_intercection(ray, ((t_objeto *)vars.objs->data)->cy);
+			hits_inter = ray_cy_intercection(
+					ray, ((t_objeto *)vars.objs->data)->cy);
 		else if (((t_objeto *)vars.objs->data)->tipo == TRIANGLE)
-			hits_inter = ray_tr_intercection(ray, ((t_objeto *)vars.objs->data)->tr);
+			hits_inter = ray_tr_intercection(
+					ray, ((t_objeto *)vars.objs->data)->tr);
 		temp_temp_list = NULL;
 		while (hits_inter != NULL)
 		{

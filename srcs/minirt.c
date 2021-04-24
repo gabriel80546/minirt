@@ -32,7 +32,8 @@ t_vars	config_cams(t_vars input)
 	// cam->direc.y = 0.0;
 	// cam->direc.z = 3.0;
 	// cam->fov = 60.0;
-	// cam->transform = view_transform(point(0, 1.5, -5), point(0, 1, 0), vector(0, 1, 0));
+	// cam->transform = view_transform(point(0, 1.5, -5),
+	//		point(0, 1, 0), vector(0, 1, 0));
 	// saida.cams = list_init(cam);
 	i = 0;
 	while (i < 16)
@@ -46,7 +47,9 @@ t_vars	config_cams(t_vars input)
 		cam->direc.y = -cam->pos.y;
 		cam->direc.z = -cam->pos.z;
 		cam->fov = 60.0;
-		cam->transform = view_transform(mat44_tuple_mul(mat44_rotate_y(i * (PI / 8)), point(0, 1.5, -5)), point(0, 1, 0), vector(0, 1, 0));
+		cam->transform = view_transform(mat44_tuple_mul(mat44_rotate_y(
+						i * (PI / 8)), point(0, 1.5, -5)),
+				point(0, 1, 0), vector(0, 1, 0));
 		if (saida.cams == NULL)
 			saida.cams = list_init(cam);
 		else
@@ -124,7 +127,8 @@ t_vars	config_scene_easy(t_vars input)
 	obj->pl.material.specular = 0.2;
 	obj->pl.material.shininess = 200.0;
 	// obj->pl.transform = mat44_rotate_x(PI / 2);
-	obj->pl.transform = mat44_mul(mat44_rotate_x(PI / 2), mat44_translate(0, 10, 0));
+	obj->pl.transform = mat44_mul(mat44_rotate_x(PI / 2),
+			mat44_translate(0, 10, 0));
 	// vars.objs = list_init(obj);
 	list_add(vars.objs, obj);
 
@@ -151,7 +155,7 @@ t_vars	config_scene_easy(t_vars input)
 	obj->cy.material.specular = 0.3;
 	obj->cy.material.shininess = 200.0;
 	obj->cy.transform = mat44_mul(mat44_scaling(0.5, 0.5, 0.5),
-		mat44_mul(mat44_rotate_x(PI / 4), mat44_translate(2.0, 10.0, 0.0)));
+			mat44_mul(mat44_rotate_x(PI / 4), mat44_translate(2.0, 10.0, 0.0)));
 	obj->cy.height = 10.0;
 	// vars.objs = list_init(obj);
 	list_add(vars.objs, obj);
@@ -179,7 +183,7 @@ t_vars	config_scene_easy(t_vars input)
 	obj->sp.material.specular = 0.3;
 	obj->sp.material.shininess = 200.0;
 	obj->sp.transform = mat44_mul(mat44_translate(1.5, 0.5, -0.5),
-		mat44_scaling(0.5, 0.5, 0.5));
+			mat44_scaling(0.5, 0.5, 0.5));
 	// vars.objs = list_init(obj);
 	list_add(vars.objs, obj);
 
@@ -193,7 +197,7 @@ t_vars	config_scene_easy(t_vars input)
 	obj->sp.material.specular = 0.3;
 	obj->sp.material.shininess = 200.0;
 	obj->sp.transform = mat44_mul(mat44_translate(-1.5, 0.33, -0.75),
-		mat44_scaling(0.33, 0.33, 0.33));
+			mat44_scaling(0.33, 0.33, 0.33));
 	// vars.objs = list_init(obj);
 	list_add(vars.objs, obj);
 

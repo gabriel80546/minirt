@@ -92,7 +92,8 @@ t_tuple	cy_normal(t_cylinder cylinder, t_tuple world_point)
 {
 	t_tuple	object_point;
 
-	object_point = mat44_tuple_mul(mat44_inverse(cylinder.transform), world_point);
+	object_point = mat44_tuple_mul(
+			mat44_inverse(cylinder.transform), world_point);
 	return (vector(object_point.x, 0, object_point.z));
 }
 
@@ -112,7 +113,7 @@ t_list	*ray_cy_intercection(t_ray ray, t_cylinder cylinder)
 	if (equal(absolute(a), EPSILON))
 		return (saida);
 	b = (2 * ray.origin.x * ray.direction.x
-		+ 2 * ray.origin.z * ray.direction.z);
+			+ 2 * ray.origin.z * ray.direction.z);
 	c = pow(ray.origin.x, 2) + pow(ray.origin.z, 2) - 1;
 	solution = (solve_equation(a, b, c));
 	if (solution.n >= 1 && solution.n <= 2)
@@ -231,7 +232,8 @@ void	draw(t_vars vars)
 	t_img	img;
 
 	img.ptr = mlx_new_image(vars.mlx, vars.largura, vars.altura);
-	img.data = mlx_get_data_addr(img.ptr, &img.bits_per_pixel, &img.size_line, &img.endian);
+	img.data = mlx_get_data_addr(img.ptr,
+			&img.bits_per_pixel, &img.size_line, &img.endian);
 	img.bits_per_byte = 8;
 	y = 0;
 	while (y < vars.altura)

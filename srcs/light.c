@@ -5,7 +5,8 @@ t_tuple	reflect(t_tuple in, t_tuple normal)
 	return (tup_sub(in, mul_scalar(normal, 2 * dot(in, normal))));
 }
 
-t_cor	lighting(t_material material, t_light light, t_tuple point, t_tuple eyev, t_tuple normalv, int in_shadow)
+t_cor	lighting(t_material material, t_light light,
+		t_tuple point, t_tuple eyev, t_tuple normalv, int in_shadow)
 {
 	t_cor	effective_color;
 	t_cor	ambient;
@@ -28,7 +29,8 @@ t_cor	lighting(t_material material, t_light light, t_tuple point, t_tuple eyev, 
 	}
 	else
 	{
-		diffuse = color_mul_scalar(effective_color, material.diffuse * light_dot_normal);
+		diffuse = color_mul_scalar(
+				effective_color, material.diffuse * light_dot_normal);
 		reflectv = reflect(mul_scalar(lightv, -1.0), normalv);
 		reflect_dot_eye = dot(reflectv, eyev);
 		if (reflect_dot_eye <= 0)
