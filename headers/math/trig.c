@@ -26,7 +26,8 @@ t_tuple	spherical_to_tup(double radius, double inclination, double azimuth)
 
 t_tuple	spherical_to_tup_rt(double radius, double inclination, double azimuth)
 {
-	return (spherical_to_tup(radius, inclination - (PI / 2), -azimuth - (PI / 2)));
+	return (spherical_to_tup(radius,
+			inclination - (PI / 2), -azimuth - (PI / 2)));
 }
 
 double	tup_to_spherical_inc(t_tuple direc)

@@ -1,17 +1,20 @@
 #include "minirt.h"
 #include <stdarg.h>
+#include <sys/time.h>
 
 int	say(const char *format, char *file, const char *func, int line, ...)
 {
-	va_list		args;
-	int			saida;
-	static int	counter = 0;
+	va_list			args;
+	int				saida;
+	struct timeval	tempo;
 
-	printf("%05d:%s(%s:%d): ", counter, file, func, line);
+	gettimeofday(&tempo, NULL);
+	printf("%03ld.%06ld:%s(%s:%d): ", (tempo.tv_sec % 600), tempo.tv_usec,
+		file, func, line);
 	va_start(args, line);
 	saida = vprintf(format, args);
 	va_end(args);
-	counter++;
+	fflush(stdout);
 	return (saida);
 }
 

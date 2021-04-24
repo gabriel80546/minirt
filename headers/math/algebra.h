@@ -19,7 +19,7 @@ typedef struct s_tuple
 	double		y;
 	double		z;
 	double		w;
-}				t_tuple;
+}	t_tuple;
 
 typedef struct s_mat44
 {
@@ -42,8 +42,10 @@ double			max(double a, double b);
 double			distance(t_tuple A, t_tuple B);
 double			cosine_law(t_tuple A, t_tuple B, t_tuple C);
 
-t_tuple			spherical_to_tup(double radius, double inclination, double azimuth);
-t_tuple			spherical_to_tup_rt(double radius, double inclination, double azimuth);
+t_tuple			spherical_to_tup(double radius,
+					double inclination, double azimuth);
+t_tuple			spherical_to_tup_rt(double radius,
+					double inclination, double azimuth);
 double			tup_to_spherical_inc(t_tuple direc);
 double			tup_to_spherical_azi(t_tuple direc);
 
@@ -70,7 +72,8 @@ t_mat44			mat44_scaling(double x, double y, double z);
 t_mat44			mat44_rotate_x(double r);
 t_mat44			mat44_rotate_y(double r);
 t_mat44			mat44_rotate_z(double r);
-t_mat44			mat44_shearing(double xy, double xz, double yx, double yz, double zx, double zy);
+t_mat44			mat44_shearing(double xy, double xz, double yx, double yz,
+					double zx, double zy);
 
 double			absolute(double n);
 int				equal(double a, double b);
@@ -85,4 +88,12 @@ t_tuple			cross(t_tuple a, t_tuple b);
 t_tuple			tup_add(t_tuple a, t_tuple b);
 t_tuple			tup_sub(t_tuple a, t_tuple b);
 
+t_mat44			set_row_ooone(t_mat44 input, double c1, double c2,
+					double c3, double c4);
+t_mat44			set_row_tttwo(t_mat44 input, double c1, double c2,
+					double c3, double c4);
+t_mat44			set_row_three(t_mat44 input, double c1, double c2,
+					double c3, double c4);
+t_mat44			set_row_ffour(t_mat44 input, double c1, double c2,
+					double c3, double c4);
 #endif

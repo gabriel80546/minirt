@@ -42,9 +42,11 @@ t_tuple	sp_normal(t_esfera sphere, t_tuple world_point)
 	t_tuple	object_normal;
 	t_tuple	world_normal;
 
-	object_point = mat44_tuple_mul(mat44_inverse(sphere.transform), world_point);
+	object_point = mat44_tuple_mul(
+			mat44_inverse(sphere.transform), world_point);
 	object_normal = tup_sub(object_point, point(0.0, 0.0, 0.0));
-	world_normal = mat44_tuple_mul(mat44_transpose(mat44_inverse(sphere.transform)), object_normal);
+	world_normal = mat44_tuple_mul(
+			mat44_transpose(mat44_inverse(sphere.transform)), object_normal);
 	world_normal.w = 0.0;
 	return (normalize(world_normal));
 }

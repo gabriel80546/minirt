@@ -187,7 +187,6 @@ t_tuple		mat44_tuple_mul(t_mat44 mat, t_tuple tupla);
 int			say(const char *format, char *file, const char *func,
 				int line, ...);
 t_mat44		view_transform(t_tuple from, t_tuple to, t_tuple up);
-int			is_shadowed(t_vars world, t_tuple point);
 
 t_list		*ray_pl_intercection(t_ray ray, t_plano plane);
 t_tuple		pl_normal(t_plano plane);
@@ -215,6 +214,8 @@ t_tuple		sp_normal(t_esfera sphere, t_tuple world_point);
 t_tuple		reflect(t_tuple in, t_tuple normal);
 t_cor		lighting(t_material material, t_light light, t_tuple point,
 				t_tuple eyev, t_tuple normalv, int in_shadow);
+t_cor		shade_hit(t_vars world, t_comps comps);
+int			is_shadowed(t_vars world, t_tuple point);
 
 t_mat44		view_transform(t_tuple from, t_tuple to, t_tuple up);
 t_camera	setup_camera(t_vars vars);
@@ -225,14 +226,5 @@ t_list		*intersect_world(t_vars vars, t_ray ray);
 
 t_comps		prepare_computations(t_hit	intersection, t_ray ray);
 t_material	choose_material(t_comps comps);
-
-t_mat44		set_row_ooone(t_mat44 input, double c1, double c2,
-				double c3, double c4);
-t_mat44		set_row_tttwo(t_mat44 input, double c1, double c2,
-				double c3, double c4);
-t_mat44		set_row_three(t_mat44 input, double c1, double c2,
-				double c3, double c4);
-t_mat44		set_row_ffour(t_mat44 input, double c1, double c2,
-				double c3, double c4);
 
 #endif

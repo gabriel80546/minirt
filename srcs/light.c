@@ -46,3 +46,41 @@ t_cor	lighting(t_material material, t_light light,
 	else
 		return (color_add(color_add(ambient, diffuse), specular));
 }
+
+t_cor	shade_hit(t_vars world, t_comps comps)
+{
+	t_cor		saida;
+	int			shadowed;
+	t_material	material;
+
+	shadowed = is_shadowed(world, comps.over_point);
+	material = choose_material(comps);
+	saida = lighting(material,
+			*((t_light *)world.lights->data),
+			comps.over_point, comps.eyev,
+			comps.normalv, shadowed);
+	return (saida);
+}
+
+int	is_shadowed(t_vars world, t_tuple point)
+{
+	t_tuple	v;
+	double	dist;
+	t_tuple	direction;
+	t_ray	r;
+	t_list	*hits;
+	t_hit	hit;
+
+	v = tup_sub(((t_light *)world.lights->data)->position, point);
+	dist = magnitude(v);
+	direction = normalize(v);
+	r = ray_create(point, direction);
+	hits = intersect_world(world, r);
+	hit = closest_hit(hits);
+	if (hits != NULL)
+		clear_list_all(hits);
+	if (hit.t != -42.0 && hit.t < dist)
+		return (1);
+	else
+		return (0);
+}
