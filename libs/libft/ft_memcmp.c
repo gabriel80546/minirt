@@ -21,8 +21,8 @@ int	ft_memcmp(const void *s1, const void *s2, size_t n)
 	contador = 0;
 	while (contador < (int)n)
 	{
-		left = *((unsigned char *)s1 + contador);
-		right = *((unsigned char *)s2 + contador);
+		left = *((const unsigned char *)s1 + contador);
+		right = *((const unsigned char *)s2 + contador);
 		if (left != right)
 			return (left - right);
 		contador++;

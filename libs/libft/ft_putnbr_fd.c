@@ -48,6 +48,6 @@ void		ft_putnbr_fd(int n, int fd)
 		n = (n / 10);
 		i--;
 	}
-	numeros[i] = n;
+	numeros[i] = (char)n;
 	ft_putnbr_fd_p(numeros, fd);
 }

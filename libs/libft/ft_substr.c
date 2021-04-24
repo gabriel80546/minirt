@@ -31,8 +31,8 @@ char		*ft_substr(char const *s, unsigned int start, size_t len)
 	if (s == NULL)
 		return (NULL);
 	s_len = ft_strlen(s);
-	alocar = ((start >= s_len) ? 1 : ft_min(s_len + 1, len + 1));
-	saida = (char *)malloc(sizeof(char) * alocar);
+	alocar = ((start >= s_len) ? 1 : ft_min((int)s_len + 1, (int)len + 1));
+	saida = (char *)malloc(sizeof(char) * (unsigned long)alocar);
 	if (saida == NULL)
 		return (NULL);
 	if (start > s_len)
@@ -43,7 +43,7 @@ char		*ft_substr(char const *s, unsigned int start, size_t len)
 	contador = start;
 	while ((contador < (start + len)) && (contador < s_len))
 	{
-		*(saida + (contador - start)) = *((char *)s + contador);
+		*(saida + (contador - start)) = *((const char *)s + contador);
 		contador++;
 	}
 	*(saida + (contador - start)) = '\0';

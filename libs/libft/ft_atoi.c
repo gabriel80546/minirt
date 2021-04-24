@@ -20,7 +20,7 @@ static int	ft_atoi_backend(int y, int sinal, char backend[40])
 
 	if (y == 0)
 		return (0);
-	contador = ft_strlen(backend);
+	contador = (int)ft_strlen(backend);
 	dez = 1;
 	saida = 0;
 	while (contador > 0)
@@ -61,7 +61,7 @@ static int	ft_atoi_ptwo(const char *nptr, int *contador, int *y, char *backend)
 		return (-1);
 	else if (*(nptr + *contador) >= '0' && *(nptr + *contador) <= '9')
 	{
-		backend[*y] = *((char *)nptr + *contador);
+		backend[*y] = *((const char *)nptr + *contador);
 		*y += 1;
 	}
 	else

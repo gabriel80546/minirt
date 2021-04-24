@@ -19,12 +19,12 @@ void	*ft_memccpy(void *dest, const void *src, int c, size_t n)
 	i = 0;
 	while (i < n)
 	{
-		if (*((char *)src + i) == (char)c)
+		if (*((const char *)src + i) == (char)c)
 		{
-			*((unsigned char *)dest + i) = *((char *)src + i);
-			return (dest + i + 1);
+			*((unsigned char *)dest + i) = *((const unsigned char *)src + i);
+			return ((char *)dest + i + 1);
 		}
-		*((unsigned char *)dest + i) = *((unsigned char *)src + i);
+		*((unsigned char *)dest + i) = *((const unsigned char *)src + i);
 		i++;
 	}
 	return (NULL);

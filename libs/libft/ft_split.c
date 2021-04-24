@@ -58,7 +58,7 @@ static int	ft_split_wa(char **saida, char const *s, char c)
 		{
 			if (v[2] > 0)
 			{
-				*(saida + v[1]) = (char *)malloc(sizeof(char) * (v[2] + 1));
+				*(saida + v[1]) = (char *)malloc(sizeof(char) * ((unsigned long)v[2] + 1));
 				if (*(saida + v[1]) == NULL)
 					return (-1);
 				v[1] += 1;
@@ -105,15 +105,13 @@ static void	ft_split_set(char **saida, char const *s, char c)
 
 char		**ft_split(char const *s, char c)
 {
-	int		i;
 	int		words;
 	char	**saida;
 
 	if (s == NULL)
 		return (NULL);
-	i = 0;
 	words = ft_split_wc(s, c);
-	saida = (char **)malloc(sizeof(char *) * (words + 1));
+	saida = (char **)malloc(sizeof(char *) * ((unsigned long)words + 1));
 	if (saida == NULL)
 		return (NULL);
 	*(saida + words) = NULL;

@@ -9,6 +9,7 @@ t_mat44	view_transform(t_tuple from, t_tuple to, t_tuple up)
 	t_tuple	true_up;
 	t_mat44	orientation;
 
+	orientation = (t_mat44){0};
 	forward = normalize(tup_sub(to, from));
 	upn = normalize(up);
 	left = cross(forward, upn);

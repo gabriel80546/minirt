@@ -28,7 +28,7 @@ t_mat44	mat44_inverse(t_mat44 mat)
 	double	c;
 	double	d_orig;
 
-	if (mat44_det(mat) != 0)
+	if (!equal(mat44_det(mat), 0))
 	{
 		saida = mat;
 		d_orig = mat44_det(saida);

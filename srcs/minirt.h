@@ -73,6 +73,7 @@ typedef struct s_triangle
 typedef struct s_objeto
 {
 	int			tipo;
+	int			clang_padding;
 	t_esfera	sp;
 	t_plano		pl;
 	t_cylinder	cy;
@@ -120,13 +121,17 @@ typedef struct s_light
 
 typedef struct s_comps
 {
+	int			clang_padding_one;
+	int			clang_padding_two;
 	double		t;
 	t_objeto	object;
 	t_tuple		point;
 	t_tuple		eyev;
 	t_tuple		normalv;
 	int			inside;
+	int			clang_padding_three;
 	t_tuple		over_point;
+	int			clang_padding_four;
 }				t_comps;
 
 typedef struct s_vars
@@ -168,6 +173,7 @@ typedef struct s_debug
 }				t_debug;
 
 void		draw(t_vars vars);
+void		put_pixel(t_img *img, int x, int y, t_cor cor);
 
 t_mat44		mat44_identity(void);
 t_tuple		vector(double x, double y, double z);
@@ -227,5 +233,20 @@ t_list		*intersect_world(t_vars vars, t_ray ray);
 
 t_comps		prepare_computations(t_hit	intersection, t_ray ray);
 t_material	choose_material(t_comps comps);
+
+void		print_mat4_cel(t_mat44 mat, int row, int col);
+void		print_mat3_cel(t_mat33 mat, int row, int col);
+void		print_mat2_cel(t_mat22 mat, int row, int col);
+
+void		print_tuple(t_tuple tupla, char *file, const char *func, int line);
+void		print_mat44(t_mat44 mat, char *file, const char *func, int line);
+void		print_mat22(t_mat22 mat, char *file, const char *func, int line);
+void		print_mat33(t_mat33 mat, char *file, const char *func, int line);
+
+int			key_hook(int keycode, void *param);
+t_cor		color_at(t_vars vars, t_ray ray);
+t_vars		config_cams(t_vars input);
+void		clean_all(t_vars vars);
+t_vars		config_scene_easy(t_vars input);
 
 #endif

@@ -11,6 +11,7 @@ typedef struct s_solution
 	double		s1;
 	double		s2;
 	int			n;
+	int			clang_padding;
 }				t_solution;
 
 typedef struct s_tuple

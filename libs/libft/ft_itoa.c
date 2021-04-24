@@ -16,7 +16,7 @@
 static int	ft_itoa_log(long n)
 {
 	int contador;
-	int temp;
+	long temp;
 
 	contador = 0;
 	if (n < 0)
@@ -62,7 +62,7 @@ char		*ft_itoa(int n)
 
 	if (n == -2147483648LL)
 		return (ft_itoa_overfl());
-	saida = (char *)malloc(sizeof(char) * ft_itoa_log(n));
+	saida = (char *)malloc(sizeof(char) * (unsigned long)ft_itoa_log(n));
 	if (saida == NULL)
 		return (NULL);
 	*(saida + 0) = '-';

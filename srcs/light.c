@@ -79,7 +79,7 @@ int	is_shadowed(t_vars world, t_tuple point)
 	hit = closest_hit(hits);
 	if (hits != NULL)
 		clear_list_all(hits);
-	if (hit.t != -42.0 && hit.t < dist)
+	if (!equal(hit.t,-42.0) && hit.t < dist)
 		return (1);
 	else
 		return (0);

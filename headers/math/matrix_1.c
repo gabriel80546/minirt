@@ -31,6 +31,7 @@ t_mat44	mat44_mul(t_mat44 a, t_mat44 b)
 	int		row;
 	int		col;
 
+	saida = (t_mat44){0};
 	row = 0;
 	while (row < 4)
 	{
@@ -68,6 +69,7 @@ t_mat44	mat44_identity(void)
 {
 	t_mat44	saida;
 
+	saida = (t_mat44){0};
 	saida = set_row_ooone(saida, 1.0, 0.0, 0.0, 0.0);
 	saida = set_row_tttwo(saida, 0.0, 1.0, 0.0, 0.0);
 	saida = set_row_three(saida, 0.0, 0.0, 1.0, 0.0);
@@ -79,6 +81,7 @@ t_mat44	mat44_transpose(t_mat44 mat)
 {
 	t_mat44	saida;
 
+	saida = (t_mat44){0};
 	saida = set_row_ooone(saida, mat.m[0], mat.m[4], mat.m[8], mat.m[12]);
 	saida = set_row_tttwo(saida, mat.m[1], mat.m[5], mat.m[9], mat.m[13]);
 	saida = set_row_three(saida, mat.m[2], mat.m[6], mat.m[10], mat.m[14]);

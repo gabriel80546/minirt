@@ -15,8 +15,8 @@
 
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 {
-	int		contador;
-	char	*saida;
+	unsigned int	contador;
+	char			*saida;
 
 	if (s == NULL || f == NULL)
 		return (NULL);
@@ -26,7 +26,7 @@ char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 	contador = 0;
 	while (*(s + contador) != '\0')
 	{
-		*(saida + contador) = f(contador, *((char *)s + contador));
+		*(saida + contador) = f(contador, *((const char *)s + contador));
 		contador++;
 	}
 	*(saida + contador) = '\0';

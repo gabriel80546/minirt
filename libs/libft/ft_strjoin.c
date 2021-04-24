@@ -26,14 +26,14 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		return (NULL);
 	next = 0;
 	contador = 0;
-	while (*((char *)s1 + contador) != '\0')
+	while (*((const char *)s1 + contador) != '\0')
 	{
-		*(saida + contador) = *((char *)s1 + contador);
+		*(saida + contador) = *((const char *)s1 + contador);
 		contador++;
 	}
-	while (*((char *)s2 + next) != '\0')
+	while (*((const char *)s2 + next) != '\0')
 	{
-		*(saida + contador) = *((char *)s2 + next);
+		*(saida + contador) = *((const char *)s2 + next);
 		next++;
 		contador++;
 	}

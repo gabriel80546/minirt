@@ -147,8 +147,11 @@ void	clean_all(t_vars vars)
 		clear_list_all(vars.lights);
 }
 
-int	key_hook(int keycode, t_vars *vars)
+int	key_hook(int keycode, void *param)
 {
+	t_vars *vars;
+
+	vars = (t_vars *)param;
 	if (keycode == 65307)
 	{
 		say("fechando... :)\n", DEB);
@@ -190,7 +193,7 @@ int	main(void)
 	vars.win = mlx_new_window(vars.mlx, vars.largura, vars.altura, "miniRT");
 	draw(vars);
 	clean_all(vars);
-	mlx_key_hook(vars.win, key_hook, &vars);
+	mlx_key_hook(vars.win, &key_hook, &vars);
 	mlx_loop(vars.mlx);
 	return (0);
 }

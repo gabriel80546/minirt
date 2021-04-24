@@ -1,9 +1,6 @@
 gcc -Wall -Wextra -g3 -fsanitize=address *.c
- ../libs/gnl/get_next_line.c
  ../headers/math/*.c
  ../headers/list/*.c
- ../libs/gnl/get_next_line_utils.c
- ../libs/gnl/get_next_line.h
  objs/*.c
  -I .
  -I ../assets/minilibx-linux

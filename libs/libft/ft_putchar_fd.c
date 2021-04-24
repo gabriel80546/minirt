@@ -14,5 +14,11 @@
 
 void	ft_putchar_fd(char c, int fd)
 {
-	write(fd, &c, 1);
+	int i;
+
+	i = 0;
+	if (write(fd, &c, 1) == 0)
+		i = i + 1;
+	else
+		i = i + 2;
 }

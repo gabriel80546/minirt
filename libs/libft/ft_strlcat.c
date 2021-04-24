@@ -20,7 +20,7 @@ static int	ft_max(int a, int b)
 		return (b);
 }
 
-static void	ft_strlcat_tudo(char *dest, const char *src, size_t dl, size_t sl)
+static void	ft_strlcat_tudo(char *dest, char *src, size_t dl, size_t sl)
 {
 	size_t	i;
 
@@ -33,7 +33,7 @@ static void	ft_strlcat_tudo(char *dest, const char *src, size_t dl, size_t sl)
 	*((char *)dest + i + dl) = '\0';
 }
 
-static void	ft_strlcat_part(char *dest, const char *src, size_t dl, size_t s)
+static void	ft_strlcat_part(char *dest, char *src, size_t dl, size_t s)
 {
 	size_t	i;
 	int		temp;
@@ -48,7 +48,7 @@ static void	ft_strlcat_part(char *dest, const char *src, size_t dl, size_t s)
 	*((char *)dest + i) = '\0';
 }
 
-size_t		ft_strlcat(char *dest, const char *src, size_t size)
+size_t		ft_strlcat(char *dest, char *src, size_t size)
 {
 	size_t	dest_l;
 	size_t	src_l;

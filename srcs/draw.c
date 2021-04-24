@@ -12,7 +12,7 @@ t_cor	color_at(t_vars vars, t_ray ray)
 	hit = closest_hit(hits);
 	if (hits != NULL)
 		clear_list_all(hits);
-	if (hit.t != -42.0)
+	if (!equal(hit.t, -42.0))
 	{
 		comps = prepare_computations(hit, ray);
 		hit_cor = shade_hit(vars, comps);
@@ -58,6 +58,11 @@ void	draw(t_vars vars)
 		x = 0;
 		while (x < vars.largura)
 		{
+			if (x == 3 && y == 5)
+			{
+				say("sizeof(t_comps) = %ld\n", DEB, sizeof(t_comps));
+				say("sizeof(double) = %ld\n", DEB, sizeof(double));
+			}
 			draw_main(vars, x, y, img);
 			x++;
 		}
