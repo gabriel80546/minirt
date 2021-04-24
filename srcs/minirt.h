@@ -207,4 +207,20 @@ t_ray		ray_create(t_tuple origin, t_tuple direction);
 t_tuple		ray_position(t_ray ray, double dist);
 t_ray		ray_transform(t_ray ray, t_mat44 matrix);
 
+t_list		*ray_sp_intercection(t_ray ray, t_esfera sp);
+t_tuple		sp_normal(t_esfera sphere, t_tuple world_point);
+
+t_tuple		reflect(t_tuple in, t_tuple normal);
+t_cor		lighting(t_material material, t_light light, t_tuple point, t_tuple eyev, t_tuple normalv, int in_shadow);
+
+t_mat44		view_transform(t_tuple from, t_tuple to, t_tuple up);
+t_camera	setup_camera(t_vars vars);
+t_ray		ray_for_pixel(t_camera camera, int px, int py);
+
+t_hit		closest_hit(t_list *hits);
+t_list		*intersect_world(t_vars vars, t_ray ray);
+
+t_comps		prepare_computations(t_hit	intersection, t_ray ray);
+t_material	choose_material(t_comps comps);
+
 #endif
