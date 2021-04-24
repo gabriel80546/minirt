@@ -74,3 +74,21 @@ t_ray	ray_for_pixel(t_camera camera, int px, int py)
 	ray = ray_create(origin, direction);
 	return (ray);
 }
+
+t_cam	empty_cam(void)
+{
+	t_cam	saida;
+
+	saida.pos.x = 0.0;
+	saida.pos.y = 0.0;
+	saida.pos.z = 0.0;
+	saida.direc.x = 0.0;
+	saida.direc.y = 0.0;
+	saida.direc.z = 1.0;
+	saida.transform = mat44_identity();
+	saida.rot.x = 0.0;
+	saida.rot.y = 0.0;
+	saida.rot.z = 0.0;
+	saida.fov = 90.0;
+	return (saida);
+}

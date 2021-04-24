@@ -220,6 +220,7 @@ int			is_shadowed(t_vars world, t_tuple point);
 t_mat44		view_transform(t_tuple from, t_tuple to, t_tuple up);
 t_camera	setup_camera(t_vars vars);
 t_ray		ray_for_pixel(t_camera camera, int px, int py);
+t_cam		empty_cam(void);
 
 t_hit		closest_hit(t_list *hits);
 t_list		*intersect_world(t_vars vars, t_ray ray);
