@@ -21,6 +21,7 @@ t_tuple	spherical_to_tup(double radius, double inclination, double azimuth)
 	saida.x = radius * cos(azimuth) * sin(inclination);
 	saida.y = radius * cos(inclination);
 	saida.z = radius * sin(azimuth) * sin(inclination);
+	saida.w = 1.0;
 	return (saida);
 }
 

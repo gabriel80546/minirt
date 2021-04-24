@@ -34,10 +34,13 @@ t_list	*ray_cy_intercection(t_ray ray, t_cylinder cylinder)
 		if (y0 < (cylinder.height / 2) && y0 > -(cylinder.height / 2))
 		{
 			hit = (t_hit *)malloc(sizeof(t_hit));
-			hit->obj.tipo = CYLINDER;
-			hit->obj.cy = cylinder;
-			hit->t = solution.s1;
-			saida = list_init(hit);
+			if (hit != NULL)
+			{
+				hit->obj.tipo = CYLINDER;
+				hit->obj.cy = cylinder;
+				hit->t = solution.s1;
+				saida = list_init(hit);
+			}
 		}
 	}
 	if (solution.n == 2)
@@ -46,13 +49,16 @@ t_list	*ray_cy_intercection(t_ray ray, t_cylinder cylinder)
 		if (y0 < (cylinder.height / 2) && y0 > -(cylinder.height / 2))
 		{
 			hit = (t_hit *)malloc(sizeof(t_hit));
-			hit->obj.tipo = CYLINDER;
-			hit->obj.cy = cylinder;
-			hit->t = solution.s2;
-			if (saida == NULL)
-				saida = list_init(hit);
-			else
-				list_add(saida, hit);
+			if (hit != NULL)
+			{
+				hit->obj.tipo = CYLINDER;
+				hit->obj.cy = cylinder;
+				hit->t = solution.s2;
+				if (saida == NULL)
+					saida = list_init(hit);
+				else
+					list_add(saida, hit);
+			}
 		}
 	}
 	return (saida);

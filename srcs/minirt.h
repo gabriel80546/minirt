@@ -72,8 +72,7 @@ typedef struct s_triangle
 
 typedef struct s_objeto
 {
-	int			tipo;
-	int			clang_padding;
+	long		tipo;
 	t_esfera	sp;
 	t_plano		pl;
 	t_cylinder	cy;
@@ -126,8 +125,7 @@ typedef struct s_comps
 	t_tuple		point;
 	t_tuple		eyev;
 	t_tuple		normalv;
-	int			inside;
-	int			clang_padding;
+	long		inside;
 	t_tuple		over_point;
 }				t_comps;
 

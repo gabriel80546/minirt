@@ -5,7 +5,6 @@ int	mat44_equal(t_mat44 mat_a, t_mat44 mat_b)
 {
 	int	saida;
 
-	saida = 1;
 	saida = equal(mat_a.m[0], mat_b.m[0]);
 	saida = saida && equal(mat_a.m[1], mat_b.m[1]);
 	saida = saida && equal(mat_a.m[2], mat_b.m[2]);

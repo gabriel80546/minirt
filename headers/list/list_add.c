@@ -11,8 +11,12 @@ void	list_add(t_list *lista, void *conteudo)
 		lista = lista->next;
 	}
 	lista = (t_list *)malloc(sizeof(t_list));
+	if (lista == NULL)
+		return ;
 	lista->prev = last;
 	lista->data = conteudo;
 	lista->next = NULL;
+	if (last == NULL)
+		return ;
 	last->next = lista;
 }

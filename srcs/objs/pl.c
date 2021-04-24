@@ -17,9 +17,12 @@ t_list	*ray_pl_intercection(t_ray ray, t_plano plane)
 		return (saida);
 	t = -ray.origin.y / ray.direction.y;
 	hit = (t_hit *)malloc(sizeof(t_hit));
-	hit->obj.tipo = PLANE;
-	hit->obj.pl = plane;
-	hit->t = t;
-	saida = list_init(hit);
+	if (hit != NULL)
+	{
+		hit->obj.tipo = PLANE;
+		hit->obj.pl = plane;
+		hit->t = t;
+		saida = list_init(hit);
+	}
 	return (saida);
 }

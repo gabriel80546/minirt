@@ -46,9 +46,12 @@ t_list	*ray_tr_intercection(t_ray ray, t_triangle triangle)
 		return (saida);
 	t = f * dot(e2, origin_cross_e1);
 	hit = (t_hit *)malloc(sizeof(t_hit));
-	hit->obj.tipo = TRIANGLE;
-	hit->obj.tr = triangle;
-	hit->t = t;
-	saida = list_init(hit);
+	if (hit != NULL)
+	{
+		hit->obj.tipo = TRIANGLE;
+		hit->obj.tr = triangle;
+		hit->t = t;
+		saida = list_init(hit);
+	}
 	return (saida);
 }

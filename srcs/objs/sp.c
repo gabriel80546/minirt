@@ -20,18 +20,24 @@ t_list	*ray_sp_intercection(t_ray ray, t_esfera sp)
 	if (solution.n >= 1 && solution.n <= 2)
 	{
 		hit = (t_hit *)malloc(sizeof(t_hit));
-		hit->obj.tipo = SPHERE;
-		hit->obj.sp = sp;
-		hit->t = solution.s1;
-		saida = list_init(hit);
+		if (hit != NULL)
+		{
+			hit->obj.tipo = SPHERE;
+			hit->obj.sp = sp;
+			hit->t = solution.s1;
+			saida = list_init(hit);
+		}
 	}
 	if (solution.n == 2)
 	{
 		hit = (t_hit *)malloc(sizeof(t_hit));
-		hit->obj.tipo = SPHERE;
-		hit->obj.sp = sp;
-		hit->t = solution.s2;
-		list_add(saida, hit);
+		if (hit != NULL)
+		{
+			hit->obj.tipo = SPHERE;
+			hit->obj.sp = sp;
+			hit->t = solution.s2;
+			list_add(saida, hit);
+		}
 	}
 	return (saida);
 }

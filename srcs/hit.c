@@ -19,11 +19,8 @@ t_hit	closest_hit(t_list *hits)
 			hit_isfirst = 0;
 			hit = *((t_hit *)hits->data);
 		}
-		temp_list = hits;
 		hits = hits->next;
 	}
-	if (temp_list != NULL)
-		hits = temp_list;
 	return (hit);
 }
 
