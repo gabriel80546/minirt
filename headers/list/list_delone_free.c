@@ -1,4 +1,3 @@
-
 #include "list.h"
 
 t_list	*list_delone_free(t_list *lista)
@@ -10,7 +9,6 @@ t_list	*list_delone_free(t_list *lista)
 	temp_list_a = lista->prev;
 	temp_list_b = lista->next;
 	temp_list_c = lista;
-
 	if (lista == NULL)
 		return (NULL);
 	if (lista->prev == NULL && lista->next == NULL)

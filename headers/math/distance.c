@@ -1,12 +1,11 @@
-
 #include "algebra.h"
 
 double	distance(t_tuple A, t_tuple B)
 {
-	double a;
-	double b;
-	double c;
-	double d;
+	double	a;
+	double	b;
+	double	c;
+	double	d;
 
 	a = (A.x - B.x);
 	b = (A.y - B.y);

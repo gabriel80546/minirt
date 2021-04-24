@@ -1,9 +1,8 @@
-
 #include "list.h"
 
 t_list	*list_init(void	*conteudo)
 {
-	t_list *saida;
+	t_list	*saida;
 
 	if (conteudo == NULL)
 		return (NULL);

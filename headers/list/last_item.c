@@ -1,12 +1,11 @@
-
 #include "list.h"
 
 t_list	*last_item(t_list *lista)
 {
-	t_list *temp_list;
+	t_list	*temp_list;
 
 	if (lista == NULL)
-		return NULL;
+		return (NULL);
 	while (lista != NULL)
 	{
 		temp_list = lista;

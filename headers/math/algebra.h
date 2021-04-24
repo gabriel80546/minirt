@@ -1,5 +1,3 @@
-
-
 #ifndef ALGEBRA_H
 # define ALGEBRA_H
 
@@ -8,14 +6,14 @@
 # define EPSILON 0.00001
 # define PI 3.1415926535897932384626433832795028841971
 
-typedef struct	s_solution
+typedef struct s_solution
 {
 	double		s1;
 	double		s2;
 	int			n;
 }				t_solution;
 
-typedef struct	s_tuple
+typedef struct s_tuple
 {
 	double		x;
 	double		y;
@@ -23,17 +21,17 @@ typedef struct	s_tuple
 	double		w;
 }				t_tuple;
 
-typedef struct	s_mat44
+typedef struct s_mat44
 {
 	double	m[16];
 }				t_mat44;
 
-typedef struct	s_mat33
+typedef struct s_mat33
 {
 	double	m[9];
 }				t_mat33;
 
-typedef struct	s_mat22
+typedef struct s_mat22
 {
 	double	m[4];
 }				t_mat22;
@@ -74,17 +72,17 @@ t_mat44			mat44_rotate_y(double r);
 t_mat44			mat44_rotate_z(double r);
 t_mat44			mat44_shearing(double xy, double xz, double yx, double yz, double zx, double zy);
 
-double		absolute(double n);
-int			equal(double a, double b);
-t_tuple		vector(double x, double y, double z);
-t_tuple		point(double x, double y, double z);
-t_tuple		tupla(double x, double y, double z, double w);
-t_tuple		mul_scalar(t_tuple input, double scalar);
-double		magnitude(t_tuple tupla);
-t_tuple		normalize(t_tuple tupla);
-double		dot(t_tuple	a, t_tuple b);
-t_tuple		cross(t_tuple a, t_tuple b);
-t_tuple		tup_add(t_tuple a, t_tuple b);
-t_tuple		tup_sub(t_tuple a, t_tuple b);
+double			absolute(double n);
+int				equal(double a, double b);
+t_tuple			vector(double x, double y, double z);
+t_tuple			point(double x, double y, double z);
+t_tuple			tupla(double x, double y, double z, double w);
+t_tuple			mul_scalar(t_tuple input, double scalar);
+double			magnitude(t_tuple tupla);
+t_tuple			normalize(t_tuple tupla);
+double			dot(t_tuple	a, t_tuple b);
+t_tuple			cross(t_tuple a, t_tuple b);
+t_tuple			tup_add(t_tuple a, t_tuple b);
+t_tuple			tup_sub(t_tuple a, t_tuple b);
 
 #endif

@@ -1,8 +1,7 @@
-
 #include "minirt.h"
 #include <stdarg.h>
 
-int		say(const char *format, char *file, const char *func, int line, ...)
+int	say(const char *format, char *file, const char *func, int line, ...)
 {
 	va_list		args;
 	int			saida;
@@ -16,7 +15,6 @@ int		say(const char *format, char *file, const char *func, int line, ...)
 	return (saida);
 }
 
-
 t_vars	config_cams(t_vars input)
 {
 	t_vars	saida;
@@ -26,7 +24,6 @@ t_vars	config_cams(t_vars input)
 	i = -5;
 	saida.cams = NULL;
 	saida = input;
-
 	// cam = (t_cam *)malloc(sizeof(t_cam));
 	// cam->pos.x =  0.0;
 	// cam->pos.y =  0.0;
@@ -37,7 +34,6 @@ t_vars	config_cams(t_vars input)
 	// cam->fov = 60.0;
 	// cam->transform = view_transform(point(0, 1.5, -5), point(0, 1, 0), vector(0, 1, 0));
 	// saida.cams = list_init(cam);
-
 	i = 0;
 	while (i < 16)
 	{
@@ -57,7 +53,6 @@ t_vars	config_cams(t_vars input)
 			list_add(saida.cams, cam);
 		i++;
 	}
-
 	return (saida);
 }
 
@@ -67,7 +62,6 @@ t_vars	config_scene_easy(t_vars input)
 	t_objeto	*obj;
 	t_light		*light;
 	t_tuple		temp_direc;
-	// int			i;
 
 	vars = input;
 	vars.largura = 200;
@@ -76,9 +70,6 @@ t_vars	config_scene_easy(t_vars input)
 	vars.ambient = 0x404040;
 	vars.objs = NULL;
 	obj = NULL;
-
-
-
 /* 
 	The default world
 	Given light ← point_light(point(-10, 10, -10), color(1, 1, 1))
@@ -95,7 +86,6 @@ t_vars	config_scene_easy(t_vars input)
  */
 
 	// ESFERAS
-
 
 	// // UMA ESFERA VERMELHA NO (0, 0, 0)
 	// obj = (t_objeto *)malloc(sizeof(t_objeto));
@@ -160,8 +150,8 @@ t_vars	config_scene_easy(t_vars input)
 	obj->cy.material.diffuse = 0.7;
 	obj->cy.material.specular = 0.3;
 	obj->cy.material.shininess = 200.0;
-	obj->cy.transform = mat44_mul(mat44_scaling(0.5, 0.5, 0.5), 
-							mat44_mul(mat44_rotate_x(PI / 4), mat44_translate(2.0, 10.0, 0.0)));
+	obj->cy.transform = mat44_mul(mat44_scaling(0.5, 0.5, 0.5),
+		mat44_mul(mat44_rotate_x(PI / 4), mat44_translate(2.0, 10.0, 0.0)));
 	obj->cy.height = 10.0;
 	// vars.objs = list_init(obj);
 	list_add(vars.objs, obj);
@@ -188,8 +178,8 @@ t_vars	config_scene_easy(t_vars input)
 	obj->sp.material.diffuse = 0.7;
 	obj->sp.material.specular = 0.3;
 	obj->sp.material.shininess = 200.0;
-	obj->sp.transform = mat44_mul(mat44_translate(1.5, 0.5, -0.5), 
-							mat44_scaling(0.5, 0.5, 0.5));
+	obj->sp.transform = mat44_mul(mat44_translate(1.5, 0.5, -0.5),
+		mat44_scaling(0.5, 0.5, 0.5));
 	// vars.objs = list_init(obj);
 	list_add(vars.objs, obj);
 
@@ -202,15 +192,15 @@ t_vars	config_scene_easy(t_vars input)
 	obj->sp.material.diffuse = 0.7;
 	obj->sp.material.specular = 0.3;
 	obj->sp.material.shininess = 200.0;
-	obj->sp.transform = mat44_mul(mat44_translate(-1.5, 0.33, -0.75), 
-							mat44_scaling(0.33, 0.33, 0.33));
+	obj->sp.transform = mat44_mul(mat44_translate(-1.5, 0.33, -0.75),
+		mat44_scaling(0.33, 0.33, 0.33));
 	// vars.objs = list_init(obj);
 	list_add(vars.objs, obj);
 
 	// LUZES
 
 	temp_direc.x = -10.0;
-	temp_direc.y =  10.0;
+	temp_direc.y = 10.0;
 	temp_direc.z = -10.0;
 	// temp_direc.x =  0.0;
 	// temp_direc.y =  0.25;
@@ -220,7 +210,7 @@ t_vars	config_scene_easy(t_vars input)
 	light = (t_light *)malloc(sizeof(t_light));
 	light->bright = 0.8;
 	light->position = point(temp_direc.x, temp_direc.y, temp_direc.z);
-	light->cor =  color(1.0, 1.0, 1.0);
+	light->cor = color(1.0, 1.0, 1.0);
 	vars.lights = list_init(light);
 
 	// light = (t_light *)malloc(sizeof(t_light));
@@ -251,7 +241,7 @@ void	clean_all(t_vars vars)
 		clear_list_all(vars.lights);
 }
 
-int		key_hook(int keycode, t_vars *vars)
+int	key_hook(int keycode, t_vars *vars)
 {
 	if (keycode == 65307)
 	{
@@ -290,7 +280,7 @@ t_cam	empty_cam(void)
 	return (saida);
 }
 
-int		main(void)
+int	main(void)
 {
 	t_vars	vars;
 

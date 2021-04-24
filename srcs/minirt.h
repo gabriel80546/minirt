@@ -1,39 +1,35 @@
-
 #ifndef MINIRT_H
 # define MINIRT_H
 
-#include <stdlib.h>
+# include <stdlib.h>
 
-#include <stdio.h>
-#include "mlx.h"
-#include "algebra.h"
-#include "list.h"
-#include <math.h>
+# include <stdio.h>
+# include "mlx.h"
+# include "algebra.h"
+# include "list.h"
+# include <math.h>
 
 # define SPHERE 1
 # define PLANE 2
 # define CYLINDER 3
 # define TRIANGLE 4
 
-
 # define DEB __FILE__, __func__, __LINE__
 
-
-typedef struct	s_cor
+typedef struct s_cor
 {
 	double	r;
 	double	g;
 	double	b;
 }				t_cor;
 
-
-typedef struct	s_ray
+typedef struct s_ray
 {
 	t_tuple		origin;
 	t_tuple		direction;
 }				t_ray;
 
-typedef	struct	s_material
+typedef struct s_material
 {
 	t_cor		color;
 	double		ambient;
@@ -42,51 +38,39 @@ typedef	struct	s_material
 	double		shininess;
 }				t_material;
 
-
-typedef struct	s_esfera
+typedef struct s_esfera
 {
 	t_tuple		pos;
 	double		diametro;
 	t_mat44		transform;
 	t_material	material;
-	// int			cor;
-	// double		ambient;
-	// double		diffuse;
-	// double		specular;
-	// double		shininess;
 }				t_esfera;
 
-
-typedef struct	s_plano
+typedef struct s_plano
 {
 	t_tuple		pos;
-	// t_tuple		direc;
-	// int			cor;
 	t_material	material;
 	t_mat44		transform;
 }				t_plano;
 
-typedef struct	s_cylinder
+typedef struct s_cylinder
 {
 	t_tuple		pos;
-	// t_tuple		direc;
-	// int			cor;
 	double		diameter;
 	double		height;
 	t_material	material;
 	t_mat44		transform;
 }				t_cylinder;
 
-typedef struct	s_triangle
+typedef struct s_triangle
 {
 	t_tuple		pos_a;
 	t_tuple		pos_b;
 	t_tuple		pos_c;
 	t_material	material;
-	// t_mat44		transform;
 }				t_triangle;
 
-typedef struct	s_objeto
+typedef struct s_objeto
 {
 	int			tipo;
 	t_esfera	sp;
@@ -95,20 +79,19 @@ typedef struct	s_objeto
 	t_triangle	tr;
 }				t_objeto;
 
-typedef struct	s_hit_old
+typedef struct s_hit_old
 {
 	t_objeto	obj;
 	t_tuple		ponto;
 }				t_hit_old;
 
-
-typedef struct	s_hit
+typedef struct s_hit
 {
 	t_objeto	obj;
 	double		t;
 }				t_hit;
 
-typedef struct	s_cam
+typedef struct s_cam
 {
 	t_tuple		pos;
 	t_tuple		direc;
@@ -117,7 +100,7 @@ typedef struct	s_cam
 	t_mat44		transform;
 }				t_cam;
 
-typedef struct	s_camera
+typedef struct s_camera
 {
 	double	hsize;
 	double	vsize;
@@ -128,14 +111,14 @@ typedef struct	s_camera
 	t_mat44	transform;
 }				t_camera;
 
-typedef struct	s_light
+typedef struct s_light
 {
 	t_tuple		position;
 	double		bright;
 	t_cor		cor;
 }				t_light;
 
-typedef struct	s_comps
+typedef struct s_comps
 {
 	double		t;
 	t_objeto	object;
@@ -146,18 +129,19 @@ typedef struct	s_comps
 	t_tuple		over_point;
 }				t_comps;
 
-typedef struct  s_vars {
-    void        *mlx;
-    void        *win;
-	int			largura;
-	int			altura;
-	t_cam		cam;
-	t_list		*objs;
-	t_list		*lights;
-	t_list		*cams;
-	int			ambient;
-	int			gray;
-}               t_vars;
+typedef struct s_vars
+{
+	void	*mlx;
+	void	*win;
+	int		largura;
+	int		altura;
+	t_cam	cam;
+	t_list	*objs;
+	t_list	*lights;
+	t_list	*cams;
+	int		ambient;
+	int		gray;
+}				t_vars;
 
 typedef struct s_img
 {
@@ -169,7 +153,7 @@ typedef struct s_img
 	char		*data;
 }				t_img;
 
-typedef struct	s_debug
+typedef struct s_debug
 {
 	int			x;
 	int			y;
@@ -182,9 +166,6 @@ typedef struct	s_debug
 	int			plane_pixels;
 	int			plane_iluminated;
 }				t_debug;
-
-
-
 
 void		draw(t_vars vars);
 
@@ -221,5 +202,9 @@ t_cor		color_sub(t_cor a, t_cor b);
 t_cor		color_mul_scalar(t_cor cor, double scalar);
 t_cor		color_mul(t_cor a, t_cor b);
 int			cor_to_rgb(t_cor cor);
+
+t_ray		ray_create(t_tuple origin, t_tuple direction);
+t_tuple		ray_position(t_ray ray, double dist);
+t_ray		ray_transform(t_ray ray, t_mat44 matrix);
 
 #endif

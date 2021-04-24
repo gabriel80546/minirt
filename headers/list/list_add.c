@@ -1,4 +1,3 @@
-
 #include "list.h"
 
 void	list_add(t_list *lista, void *conteudo)
@@ -6,7 +5,7 @@ void	list_add(t_list *lista, void *conteudo)
 	t_list	*last;
 
 	last = NULL;
-	while(lista != NULL)
+	while (lista != NULL)
 	{
 		last = lista;
 		lista = lista->next;

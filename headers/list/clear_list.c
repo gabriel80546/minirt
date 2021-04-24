@@ -1,9 +1,8 @@
-
 #include "list.h"
 
 void	clear_list(t_list *lista)
 {
-	t_list *last;
+	t_list	*last;
 
 	lista = first_item(lista);
 	while (lista != NULL)
