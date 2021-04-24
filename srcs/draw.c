@@ -16,12 +16,6 @@ t_cor	color_at(t_vars vars, t_ray ray)
 	{
 		comps = prepare_computations(hit, ray);
 		hit_cor = shade_hit(vars, comps);
-		if (hit_cor.r > 1.0)
-			hit_cor.r = 1.0;
-		if (hit_cor.g > 1.0)
-			hit_cor.g = 1.0;
-		if (hit_cor.b > 1.0)
-			hit_cor.b = 1.0;
 	}
 	return (hit_cor);
 }

@@ -28,6 +28,12 @@ int	cor_to_rgb(t_cor cor)
 	int	g;
 	int	b;
 
+	if (cor.r > 1.0)
+		cor.r = 1.0;
+	if (cor.g > 1.0)
+		cor.g = 1.0;
+	if (cor.b > 1.0)
+		cor.b = 1.0;
 	r = (int)(cor.r * 255);
 	g = (int)(cor.g * 255);
 	b = (int)(cor.b * 255);
