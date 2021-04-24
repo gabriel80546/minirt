@@ -1,4 +1,3 @@
-
 #include "minirt.h"
 
 void	print_tuple(t_tuple tupla, char *file, const char *func, int line)
@@ -12,9 +11,9 @@ void	print_tuple(t_tuple tupla, char *file, const char *func, int line)
 void	print_mat44(t_mat44 mat, char *file, const char *func, int line)
 {
 	say("/***********************************************\\\n", file, func, line);
-	say("| % 6.6lf | % 6.6lf | % 6.6lf | % 6.6lf |\n", file, func, line, mat.m[0],  mat.m[1],  mat.m[2],  mat.m[3]);
-	say("| % 6.6lf | % 6.6lf | % 6.6lf | % 6.6lf |\n", file, func, line, mat.m[4],  mat.m[5],  mat.m[6],  mat.m[7]);
-	say("| % 6.6lf | % 6.6lf | % 6.6lf | % 6.6lf |\n", file, func, line, mat.m[8],  mat.m[9],  mat.m[10], mat.m[11]);
+	say("| % 6.6lf | % 6.6lf | % 6.6lf | % 6.6lf |\n", file, func, line, mat.m[0], mat.m[1], mat.m[2], mat.m[3]);
+	say("| % 6.6lf | % 6.6lf | % 6.6lf | % 6.6lf |\n", file, func, line, mat.m[4], mat.m[5], mat.m[6], mat.m[7]);
+	say("| % 6.6lf | % 6.6lf | % 6.6lf | % 6.6lf |\n", file, func, line, mat.m[8], mat.m[9], mat.m[10], mat.m[11]);
 	say("| % 6.6lf | % 6.6lf | % 6.6lf | % 6.6lf |\n", file, func, line, mat.m[12], mat.m[13], mat.m[14], mat.m[15]);
 	say("\\***********************************************/\n", file, func, line);
 }
@@ -22,17 +21,17 @@ void	print_mat44(t_mat44 mat, char *file, const char *func, int line)
 void	print_mat22(t_mat22 mat, char *file, const char *func, int line)
 {
 	say("/***********************\\\n", file, func, line);
-	say("| % 6.6lf | % 6.6lf |\n", file, func, line, mat.m[0],  mat.m[1]);
-	say("| % 6.6lf | % 6.6lf |\n", file, func, line, mat.m[2],  mat.m[3]);
+	say("| % 6.6lf | % 6.6lf |\n", file, func, line, mat.m[0], mat.m[1]);
+	say("| % 6.6lf | % 6.6lf |\n", file, func, line, mat.m[2], mat.m[3]);
 	say("\\***********************/\n", file, func, line);
 }
 
 void	print_mat33(t_mat33 mat, char *file, const char *func, int line)
 {
 	say("/***********************************************\\\n", file, func, line);
-	say("| % 6.6lf | % 6.6lf | % 6.6lf |\n", file, func, line, mat.m[0],  mat.m[1],  mat.m[2]);
-	say("| % 6.6lf | % 6.6lf | % 6.6lf |\n", file, func, line, mat.m[3],  mat.m[4],  mat.m[5]);
-	say("| % 6.6lf | % 6.6lf | % 6.6lf |\n", file, func, line, mat.m[6],  mat.m[7],  mat.m[8]);
+	say("| % 6.6lf | % 6.6lf | % 6.6lf |\n", file, func, line, mat.m[0], mat.m[1], mat.m[2]);
+	say("| % 6.6lf | % 6.6lf | % 6.6lf |\n", file, func, line, mat.m[3], mat.m[4], mat.m[5]);
+	say("| % 6.6lf | % 6.6lf | % 6.6lf |\n", file, func, line, mat.m[6], mat.m[7], mat.m[8]);
 	say("\\***********************************************/\n", file, func, line);
 }
 
@@ -40,10 +39,12 @@ void	print_mat4_cel(t_mat44 mat, int row, int col)
 {
 	say("% 6.6lf", DEB, mat.m[mat44_coor(row, col)]);
 }
+
 void	print_mat3_cel(t_mat33 mat, int row, int col)
 {
 	say("% 6.6lf", DEB, mat.m[(3 * row) + col]);
 }
+
 void	print_mat2_cel(t_mat22 mat, int row, int col)
 {
 	say("% 6.6lf", DEB, mat.m[(2 * row) + col]);
@@ -68,7 +69,7 @@ t_tuple	ray_position(t_ray ray, double dist)
 
 t_ray	ray_transform(t_ray ray, t_mat44 matrix)
 {
-	t_ray saida;
+	t_ray	saida;
 
 	saida = ray;
 	saida.origin = mat44_tuple_mul(matrix, saida.origin);
@@ -78,18 +79,16 @@ t_ray	ray_transform(t_ray ray, t_mat44 matrix)
 
 t_list	*ray_sp_intercection(t_ray ray, t_esfera sp)
 {
-	t_tuple sphere_to_ray;
-	double	a;
-	double	b;
-	double	c;
-	t_list	*saida;
-	t_hit	*hit;
+	t_tuple		sphere_to_ray;
+	double		a;
+	double		b;
+	double		c;
+	t_list		*saida;
+	t_hit		*hit;
 	t_solution	solution;
 
 	saida = NULL;
-
 	ray = ray_transform(ray, mat44_inverse(sp.transform));
-
 	sphere_to_ray = tup_sub(ray.origin, point(0, 0, 0));
 	a = dot(ray.direction, ray.direction);
 	b = 2 * dot(ray.direction, sphere_to_ray);
@@ -124,19 +123,19 @@ t_tuple	sp_normal(t_esfera sphere, t_tuple world_point)
 	object_normal = tup_sub(object_point, point(0.0, 0.0, 0.0));
 	world_normal = mat44_tuple_mul(mat44_transpose(mat44_inverse(sphere.transform)), object_normal);
 	world_normal.w = 0.0;
-	return normalize(world_normal);
+	return (normalize(world_normal));
 }
 
 t_tuple	reflect(t_tuple in, t_tuple normal)
 {
-	return tup_sub(in, mul_scalar(normal, 2 * dot(in, normal)));
+	return (tup_sub(in, mul_scalar(normal, 2 * dot(in, normal))));
 }
 
 t_cor	lighting(t_material material, t_light light, t_tuple point, t_tuple eyev, t_tuple normalv)
 {
 	t_cor	effective_color;
 	t_cor	ambient;
-	t_tuple lightv;
+	t_tuple	lightv;
 	t_tuple	reflectv;
 	double	reflect_dot_eye;
 	double	light_dot_normal;
@@ -173,7 +172,7 @@ t_cor	lighting_new(t_material material, t_light light, t_tuple point, t_tuple ey
 {
 	t_cor	effective_color;
 	t_cor	ambient;
-	t_tuple lightv;
+	t_tuple	lightv;
 	t_tuple	reflectv;
 	double	reflect_dot_eye;
 	double	light_dot_normal;
@@ -235,7 +234,6 @@ t_hit	closest_hit(t_list *hits)
 	return (hit);
 }
 
-
 t_list	*intersect_world(t_vars vars, t_ray ray)
 {
 	t_list	*hits_inter;
@@ -259,7 +257,6 @@ t_list	*intersect_world(t_vars vars, t_ray ray)
 			hits_inter = ray_cy_intercection(ray, ((t_objeto *)vars.objs->data)->cy);
 		else if (((t_objeto *)vars.objs->data)->tipo == TRIANGLE)
 			hits_inter = ray_tr_intercection(ray, ((t_objeto *)vars.objs->data)->tr);
-		
 		temp_temp_list = NULL;
 		while (hits_inter != NULL)
 		{
@@ -285,7 +282,7 @@ t_comps	prepare_computations(t_hit	intersection, t_ray ray)
 {
 	t_comps	comps;
 
-	comps = (t_comps) {0};
+	comps = (t_comps){0};
 	comps.t = intersection.t;
 	comps.object = intersection.obj;
 	comps.point = ray_position(ray, comps.t);
@@ -297,10 +294,7 @@ t_comps	prepare_computations(t_hit	intersection, t_ray ray)
 	else if (comps.object.tipo == CYLINDER)
 		comps.normalv = cy_normal(comps.object.cy, comps.point);
 	else if (comps.object.tipo == TRIANGLE)
-	{
 		comps.normalv = tr_normal(comps.object.tr);
-		// print_tuple(comps.normalv, DEB);
-	}
 	else
 		comps.normalv = vector(0, 1, 0);
 	comps.over_point = tup_add(comps.point, mul_scalar(comps.normalv, EPSILON));
@@ -316,9 +310,9 @@ t_comps	prepare_computations(t_hit	intersection, t_ray ray)
 
 t_material	choose_material(t_comps comps)
 {
-	t_material saida;
+	t_material	saida;
 
-	saida = (t_material) {0};
+	saida = (t_material){0};
 	if (comps.object.tipo == SPHERE)
 		saida = comps.object.sp.material;
 	else if (comps.object.tipo == PLANE)
@@ -339,10 +333,9 @@ t_cor	shade_hit(t_vars world, t_comps comps)
 	shadowed = is_shadowed(world, comps.over_point);
 	material = choose_material(comps);
 	saida = lighting_new(material,
-	*((t_light *)world.lights->data),
-	comps.over_point,
-	comps.eyev,
-	comps.normalv, shadowed);
+			*((t_light *)world.lights->data),
+			comps.over_point, comps.eyev,
+			comps.normalv, shadowed);
 	return (saida);
 }
 
@@ -372,7 +365,6 @@ t_cor	color_at(t_vars vars, t_ray ray)
 	return (hit_cor);
 }
 
-
 t_mat44	view_transform(t_tuple from, t_tuple to, t_tuple up)
 {
 	t_mat44	saida;
@@ -386,23 +378,23 @@ t_mat44	view_transform(t_tuple from, t_tuple to, t_tuple up)
 	upn = normalize(up);
 	left = cross(forward, upn);
 	true_up = cross(left, forward);
-	orientation.m[0]  = left.x;     orientation.m[1]  = left.y;     orientation.m[2]  = left.z;     orientation.m[3]  = 0;
-	orientation.m[4]  = true_up.x;  orientation.m[5]  = true_up.y;  orientation.m[6]  = true_up.z;  orientation.m[7]  = 0;
-	orientation.m[8]  = -forward.x; orientation.m[9]  = -forward.y; orientation.m[10] = -forward.z; orientation.m[11] = 0;
-	orientation.m[12] = 0;          orientation.m[13] = 0;          orientation.m[14] = 0;          orientation.m[15] = 1;
+	orientation.m[0] = left.x; orientation.m[1] = left.y; orientation.m[2] = left.z; orientation.m[3] = 0;
+	orientation.m[4] = true_up.x; orientation.m[5] = true_up.y; orientation.m[6] = true_up.z; orientation.m[7] = 0;
+	orientation.m[8] = -forward.x; orientation.m[9] = -forward.y; orientation.m[10] = -forward.z; orientation.m[11] = 0;
+	orientation.m[12] = 0; orientation.m[13] = 0; orientation.m[14] = 0; orientation.m[15] = 1;
 	saida = mat44_mul(orientation, mat44_translate(-from.x, -from.y, -from.z));
 	return (saida);
 }
 
 t_camera	setup_camera(t_vars vars)
 {
-	t_camera camera;
-	double half_view;
-	double aspect;
+	t_camera	camera;
+	double		half_view;
+	double		aspect;
 
 	camera.hsize = (double)vars.largura;
 	camera.vsize = (double)vars.altura;
-	camera.field_of_view = (vars.cam.fov/180.0) * (PI);
+	camera.field_of_view = (vars.cam.fov / 180.0) * (PI);
 	camera.transform = vars.cam.transform;
 	half_view = tan(camera.field_of_view / 2);
 	aspect = camera.hsize / camera.vsize;
@@ -422,14 +414,14 @@ t_camera	setup_camera(t_vars vars)
 
 t_ray	ray_for_pixel(t_camera camera, int px, int py)
 {
-	t_ray ray;
+	t_ray	ray;
 	double	xoffset;
 	double	yoffset;
 	double	world_x;
 	double	world_y;
-	t_tuple pixel;
-	t_tuple origin;
-	t_tuple direction;
+	t_tuple	pixel;
+	t_tuple	origin;
+	t_tuple	direction;
 
 	xoffset = (px + 0.5) * camera.pixel_size;
 	yoffset = (py + 0.5) * camera.pixel_size;
@@ -438,11 +430,9 @@ t_ray	ray_for_pixel(t_camera camera, int px, int py)
 	pixel = mat44_tuple_mul(mat44_inverse(camera.transform), point(world_x, world_y, -1));
 	origin = mat44_tuple_mul(mat44_inverse(camera.transform), point(0, 0, 0));
 	direction = normalize(tup_sub(pixel, origin));
-
 	ray = ray_create(origin, direction);
 	return (ray);
 }
-
 
 int	is_shadowed(t_vars world, t_tuple point)
 {
@@ -477,12 +467,12 @@ t_tuple	sp_normal_new(t_esfera sphere, t_tuple world_point)
 	object_normal = tup_sub(object_point, point(0.0, 0.0, 0.0));
 	world_normal = mat44_tuple_mul(mat44_transpose(mat44_inverse(sphere.transform)), object_normal);
 	world_normal.w = 0.0;
-	return normalize(world_normal);
+	return (normalize(world_normal));
 }
 
 t_tuple	pl_normal(t_plano plane)
 {
-	return mat44_tuple_mul(mat44_inverse(plane.transform), vector(0, 1, 0));
+	return (mat44_tuple_mul(mat44_inverse(plane.transform), vector(0, 1, 0)));
 }
 
 t_list	*ray_pl_intercection(t_ray ray, t_plano plane)
@@ -509,7 +499,7 @@ t_tuple	cy_normal(t_cylinder cylinder, t_tuple world_point)
 	t_tuple	object_point;
 
 	object_point = mat44_tuple_mul(mat44_inverse(cylinder.transform), world_point);
-	return vector(object_point.x, 0, object_point.z);
+	return (vector(object_point.x, 0, object_point.z));
 }
 
 t_list	*ray_cy_intercection(t_ray ray, t_cylinder cylinder)
@@ -527,8 +517,8 @@ t_list	*ray_cy_intercection(t_ray ray, t_cylinder cylinder)
 	a = pow(ray.direction.x, 2) + pow(ray.direction.z, 2);
 	if (equal(absolute(a), EPSILON))
 		return (saida);
-	b = (2 * ray.origin.x * ray.direction.x +
-		2 * ray.origin.z * ray.direction.z);
+	b = (2 * ray.origin.x * ray.direction.x
+		+ 2 * ray.origin.z * ray.direction.z);
 	c = pow(ray.origin.x, 2) + pow(ray.origin.z, 2) - 1;
 	solution = (solve_equation(a, b, c));
 	if (solution.n >= 1 && solution.n <= 2)
@@ -565,9 +555,8 @@ t_tuple	tr_normal(t_triangle triangle)
 {
 	t_tuple	e1;
 	t_tuple	e2;
-	t_tuple normal;
+	t_tuple	normal;
 
-	// object_point = mat44_tuple_mul(mat44_inverse(.transform), world_point);
 	e1 = tup_sub(triangle.pos_b, triangle.pos_a);
 	e2 = tup_sub(triangle.pos_c, triangle.pos_a);
 	normal = normalize(cross(e1, e2));
@@ -585,7 +574,6 @@ t_list	*ray_tr_intercection(t_ray ray, t_triangle triangle)
 	double	u;
 	t_tuple	e1;
 	t_tuple	e2;
-	// t_tuple	normal;
 	t_tuple	origin_cross_e1;
 	double	v;
 	double	t;
@@ -594,7 +582,6 @@ t_list	*ray_tr_intercection(t_ray ray, t_triangle triangle)
 	saida = NULL;
 	e1 = tup_sub(triangle.pos_b, triangle.pos_a);
 	e2 = tup_sub(triangle.pos_c, triangle.pos_a);
-	// normal = normalize(cross(e2, e1));
 	dir_cross_e2 = cross(ray.direction, e2);
 	det = dot(e1, dir_cross_e2);
 	if (absolute(det) < EPSILON)
@@ -604,12 +591,10 @@ t_list	*ray_tr_intercection(t_ray ray, t_triangle triangle)
 	u = f * dot(p1_to_origin, dir_cross_e2);
 	if (u < 0 || u > 1)
 		return (saida);
-
 	origin_cross_e1 = cross(p1_to_origin, e1);
 	v = f * dot(ray.direction, origin_cross_e1);
 	if (v < 0 || (u + v) > 1)
 		return (saida);
-
 	t = f * dot(e2, origin_cross_e1);
 	hit = (t_hit *)malloc(sizeof(t_hit));
 	hit->obj.tipo = TRIANGLE;
@@ -621,7 +606,7 @@ t_list	*ray_tr_intercection(t_ray ray, t_triangle triangle)
 
 void	put_pixel(t_img *img, int x, int y, t_cor cor)
 {
-	int ratio;
+	int	ratio;
 	int	offset;
 
 	ratio = (img->bits_per_pixel / img->bits_per_byte);
@@ -631,15 +616,14 @@ void	put_pixel(t_img *img, int x, int y, t_cor cor)
 
 void	draw_main(t_vars vars, int x, int y, t_img img)
 {
-	t_ray	ray;
-	t_cor	hit_cor;
+	t_ray		ray;
+	t_cor		hit_cor;
 	t_camera	camera;
 
 	camera = setup_camera(vars);
 	ray = ray_for_pixel(camera, x, y);
 	hit_cor = color_at(vars, ray);
 	put_pixel(&img, x, y, hit_cor);
-	
 	if (x == 3 && y == 5)
 	{
 		// say("rendering image...\n", DEB);
@@ -655,7 +639,6 @@ void	draw(t_vars vars)
 	img.ptr = mlx_new_image(vars.mlx, vars.largura, vars.altura);
 	img.data = mlx_get_data_addr(img.ptr, &img.bits_per_pixel, &img.size_line, &img.endian);
 	img.bits_per_byte = 8;
-
 	y = 0;
 	while (y < vars.altura)
 	{

@@ -92,7 +92,7 @@ t_mat44	mat44_identity(void)
 
 t_mat44	mat44_transpose(t_mat44 mat)
 {
-	t_mat44 saida;
+	t_mat44	saida;
 
 	saida.m[0] = mat.m[0]; saida.m[1] = mat.m[4]; saida.m[2] = mat.m[8]; saida.m[3] = mat.m[12];
 	saida.m[4] = mat.m[1]; saida.m[5] = mat.m[5]; saida.m[6] = mat.m[9]; saida.m[7] = mat.m[13];
@@ -165,7 +165,6 @@ t_mat33	mat44_sub_matrix(t_mat44 mat, int row, int col)
 		}
 		i++;
 	}
-	
 	return (saida);
 }
 
@@ -181,18 +180,17 @@ double	mat33_minor(t_mat33 mat, int row, int col)
 
 double	mat33_cofactor(t_mat33 mat, int row, int col)
 {
-	
 	if ((row + col) % 2 == 0)
 		return (mat33_minor(mat, row, col));
 	else
-		return -(mat33_minor(mat, row, col));
+		return (-mat33_minor(mat, row, col));
 }
 
 double	mat33_det(t_mat33 mat)
 {
 	double	saida;
-	saida = 0;
 
+	saida = 0;
 	saida += (mat.m[mat33_coor(0, 0)] * mat33_cofactor(mat, 0, 0));
 	saida += (mat.m[mat33_coor(0, 1)] * mat33_cofactor(mat, 0, 1));
 	saida += (mat.m[mat33_coor(0, 2)] * mat33_cofactor(mat, 0, 2));
@@ -211,18 +209,17 @@ double	mat44_minor(t_mat44 mat, int row, int col)
 
 double	mat44_cofactor(t_mat44 mat, int row, int col)
 {
-	
 	if ((row + col) % 2 == 0)
 		return (mat44_minor(mat, row, col));
 	else
-		return -(mat44_minor(mat, row, col));
+		return (-mat44_minor(mat, row, col));
 }
 
 double	mat44_det(t_mat44 mat)
 {
 	double	saida;
-	saida = 0;
 
+	saida = 0;
 	saida += (mat.m[mat44_coor(0, 0)] * mat44_cofactor(mat, 0, 0));
 	saida += (mat.m[mat44_coor(0, 1)] * mat44_cofactor(mat, 0, 1));
 	saida += (mat.m[mat44_coor(0, 2)] * mat44_cofactor(mat, 0, 2));
@@ -232,7 +229,7 @@ double	mat44_det(t_mat44 mat)
 
 t_mat44	mat44_inverse(t_mat44 mat)
 {
-	t_mat44 saida;
+	t_mat44	saida;
 	int		row;
 	int		col;
 	double	c;
@@ -265,7 +262,6 @@ t_mat44	mat44_translate(double x, double y, double z)
 	t_mat44	saida;
 
 	saida = mat44_identity();
-
 	saida.m[3] = x;
 	saida.m[7] = y;
 	saida.m[11] = z;
@@ -277,7 +273,6 @@ t_mat44	mat44_scaling(double x, double y, double z)
 	t_mat44	saida;
 
 	saida = mat44_identity();
-
 	saida.m[0] = x;
 	saida.m[5] = y;
 	saida.m[10] = z;
