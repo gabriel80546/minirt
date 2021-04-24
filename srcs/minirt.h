@@ -15,20 +15,9 @@
 # define CYLINDER 3
 # define TRIANGLE 4
 
-# define EPSILON 0.00001
-
-# define PI 3.1415926535897932384626433832795028841971
 
 # define DEB __FILE__, __func__, __LINE__
 
-
-typedef struct	s_tuple
-{
-	double	x;
-	double	y;
-	double	z;
-	double	w;
-}				t_tuple;
 
 typedef struct	s_cor
 {
@@ -36,21 +25,6 @@ typedef struct	s_cor
 	double	g;
 	double	b;
 }				t_cor;
-
-typedef struct	s_mat44
-{
-	double	m[16];
-}				t_mat44;
-
-typedef struct	s_mat33
-{
-	double	m[9];
-}				t_mat33;
-
-typedef struct	s_mat22
-{
-	double	m[4];
-}				t_mat22;
 
 
 typedef struct	s_ray
@@ -86,7 +60,7 @@ typedef struct	s_esfera
 typedef struct	s_plano
 {
 	t_tuple		pos;
-	// t_vec		direc;
+	// t_tuple		direc;
 	// int			cor;
 	t_material	material;
 	t_mat44		transform;
@@ -95,7 +69,7 @@ typedef struct	s_plano
 typedef struct	s_cylinder
 {
 	t_tuple		pos;
-	// t_vec		direc;
+	// t_tuple		direc;
 	// int			cor;
 	double		diameter;
 	double		height;
@@ -124,7 +98,7 @@ typedef struct	s_objeto
 typedef struct	s_hit_old
 {
 	t_objeto	obj;
-	t_vec		ponto;
+	t_tuple		ponto;
 }				t_hit_old;
 
 
@@ -136,9 +110,9 @@ typedef struct	s_hit
 
 typedef struct	s_cam
 {
-	t_vec		pos;
-	t_vec		direc;
-	t_vec		rot;
+	t_tuple		pos;
+	t_tuple		direc;
+	t_tuple		rot;
 	double		fov;
 	t_mat44		transform;
 }				t_cam;
@@ -240,5 +214,12 @@ t_tuple		cy_normal(t_cylinder cylinder, t_tuple ponto);
 
 t_list		*ray_tr_intercection(t_ray ray, t_triangle triangle);
 t_tuple		tr_normal(t_triangle triangle);
+
+t_cor		color(double r, double g, double b);
+t_cor		color_add(t_cor a, t_cor b);
+t_cor		color_sub(t_cor a, t_cor b);
+t_cor		color_mul_scalar(t_cor cor, double scalar);
+t_cor		color_mul(t_cor a, t_cor b);
+int			cor_to_rgb(t_cor cor);
 
 #endif

@@ -27,7 +27,7 @@ void	test_baskara(void)
 		printf("%4.1lfx² + %4.1lfx + %4.1lf = 0; nao tem solucao\n", a, b, c);
 }
 
-double	cosine_law(t_vec A, t_vec B, t_vec C)
+double	cosine_law(t_tuple A, t_tuple B, t_tuple C)
 {
 	double	BA;
 	double	BC;
@@ -43,9 +43,9 @@ double	cosine_law(t_vec A, t_vec B, t_vec C)
 
 void main(void)
 {
-	t_vec	A;
-	t_vec	B;
-	t_vec	C;
+	t_tuple	A;
+	t_tuple	B;
+	t_tuple	C;
 
 	A.x = 0.0;
 	A.y = 1.0;

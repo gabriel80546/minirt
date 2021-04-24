@@ -1,7 +1,7 @@
 
 #include "algebra.h"
 
-double	distance(t_vec A, t_vec B)
+double	distance(t_tuple A, t_tuple B)
 {
 	double a;
 	double b;

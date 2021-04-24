@@ -2,9 +2,9 @@
 #include "../minirt.h"
 
 
-t_vec	spherical_to_vec(double radius, double inclination, double azimuth)
+t_tuple	spherical_to_tup(double radius, double inclination, double azimuth)
 {
-	t_vec saida;
+	t_tuple saida;
 
 	saida.x = radius * cos(azimuth) * sin(inclination);
 	saida.y = radius * cos(inclination);
@@ -12,12 +12,12 @@ t_vec	spherical_to_vec(double radius, double inclination, double azimuth)
 	return (saida);
 }
 
-t_vec	spherical_to_vec_rt(double radius, double inclination, double azimuth)
+t_tuple	spherical_to_tup_rt(double radius, double inclination, double azimuth)
 {
-	return spherical_to_vec(radius, inclination - (PI / 2), -azimuth - (PI / 2));
+	return spherical_to_tup(radius, inclination - (PI / 2), -azimuth - (PI / 2));
 }
 
-double	vec_to_spherical_inc(t_vec direc)
+double	tup_to_spherical_inc(t_tuple direc)
 {
 	double a;
 	double b;
@@ -36,7 +36,7 @@ double	vec_to_spherical_inc(t_vec direc)
 	return (e);
 }
 
-double	vec_to_spherical_azi(t_vec direc)
+double	tup_to_spherical_azi(t_tuple direc)
 {
 	return (atan2(direc.x, direc.z));
 }
@@ -131,7 +131,7 @@ t_vars	config_scene_cube_sphere(t_vars input)
 	t_vars		vars;
 	t_objeto	*obj;
 	t_light		*light;
-	t_vec		direc;
+	t_tuple		direc;
 	double		inc;
 	double		azi;
 	int			i;
@@ -150,60 +150,60 @@ t_vars	config_scene_cube_sphere(t_vars input)
 	obj->sp.pos.x = 0.0;
 	obj->sp.pos.y = 0.0;
 	obj->sp.pos.z = 0.0;
-	obj->sp.raio = 0.25;
-	obj->sp.cor = 0x606060;
+	// obj->sp.raio = 0.25;
+	// obj->sp.cor = 0x606060;
 	vars.objs = list_init(obj);
 
 	direc.x =  1.0;
 	direc.y =  1.0;
 	direc.z =  1.0;
-	inc = vec_to_spherical_inc(direc);
-	azi = vec_to_spherical_azi(direc);
+	inc = tup_to_spherical_inc(direc);
+	azi = tup_to_spherical_azi(direc);
 
 	obj = (t_objeto *)malloc(sizeof(t_objeto));
 	obj->tipo = SPHERE;
-	obj->sp.pos = spherical_to_vec_rt(distance(empty_vec(), direc), inc, azi);
-	obj->sp.raio = 0.375;
-	obj->sp.cor = 0x80FFFF;
+	// // obj->sp.pos = spherical_to_tup_rt(distance(empty_vec(), direc), inc, azi);
+	// // obj->sp.raio = 0.375;
+	// obj->sp.cor = 0x80FFFF;
 	list_add(vars.objs, obj);
 
 	direc.x =  1.0;
 	direc.y =  1.0;
 	direc.z = -1.0;
-	inc = vec_to_spherical_inc(direc);
-	azi = vec_to_spherical_azi(direc);
+	inc = tup_to_spherical_inc(direc);
+	azi = tup_to_spherical_azi(direc);
 
 	obj = (t_objeto *)malloc(sizeof(t_objeto));
 	obj->tipo = SPHERE;
-	obj->sp.pos = spherical_to_vec_rt(distance(empty_vec(), direc), inc, azi);
-	obj->sp.raio = 0.375;
-	obj->sp.cor = 0xFF80FF;
+	// // obj->sp.pos = spherical_to_tup_rt(distance(empty_vec(), direc), inc, azi);
+	// // obj->sp.raio = 0.375;
+	// obj->sp.cor = 0xFF80FF;
 	list_add(vars.objs, obj);
 
 	direc.x = -1.0;
 	direc.y =  1.0;
 	direc.z =  1.0;
-	inc = vec_to_spherical_inc(direc);
-	azi = vec_to_spherical_azi(direc);
+	inc = tup_to_spherical_inc(direc);
+	azi = tup_to_spherical_azi(direc);
 
 	obj = (t_objeto *)malloc(sizeof(t_objeto));
 	obj->tipo = SPHERE;
-	obj->sp.pos = spherical_to_vec_rt(distance(empty_vec(), direc), inc, azi);
-	obj->sp.raio = 0.375;
-	obj->sp.cor = 0xFFFF80;
+	// // obj->sp.pos = spherical_to_tup_rt(distance(empty_vec(), direc), inc, azi);
+	// // obj->sp.raio = 0.375;
+	// obj->sp.cor = 0xFFFF80;
 	list_add(vars.objs, obj);
 
 	direc.x = -1.0;
 	direc.y =  1.0;
 	direc.z = -1.0;
-	inc = vec_to_spherical_inc(direc);
-	azi = vec_to_spherical_azi(direc);
+	inc = tup_to_spherical_inc(direc);
+	azi = tup_to_spherical_azi(direc);
 
 	obj = (t_objeto *)malloc(sizeof(t_objeto));
 	obj->tipo = SPHERE;
-	obj->sp.pos = spherical_to_vec_rt(distance(empty_vec(), direc), inc, azi);
-	obj->sp.raio = 0.375;
-	obj->sp.cor = 0xFF8080;
+	// // obj->sp.pos = spherical_to_tup_rt(distance(empty_vec(), direc), inc, azi);
+	// // obj->sp.raio = 0.375;
+	// obj->sp.cor = 0xFF8080;
 	list_add(vars.objs, obj);
 
 
@@ -211,227 +211,58 @@ t_vars	config_scene_cube_sphere(t_vars input)
 	direc.x =  1.0;
 	direc.y = -1.0;
 	direc.z =  1.0;
-	inc = vec_to_spherical_inc(direc);
-	azi = vec_to_spherical_azi(direc);
+	inc = tup_to_spherical_inc(direc);
+	azi = tup_to_spherical_azi(direc);
 
 	obj = (t_objeto *)malloc(sizeof(t_objeto));
 	obj->tipo = SPHERE;
-	obj->sp.pos = spherical_to_vec_rt(distance(empty_vec(), direc), inc /* (7 * PI / 4) */, azi);
-	// obj->sp.pos = direc;
-	obj->sp.raio = 0.375;
-	obj->sp.cor = 0x80FF80;
+	// obj->sp.pos = spherical_to_tup_rt(distance(empty_vec(), direc), inc /* (7 * PI / 4) */, azi);
+	// // obj->sp.pos = direc;
+	// // obj->sp.raio = 0.375;
+	// obj->sp.cor = 0x80FF80;
 	list_add(vars.objs, obj);
 
 	direc.x =  1.0;
 	direc.y = -1.0;
 	direc.z = -1.0;
-	inc = vec_to_spherical_inc(direc);
-	azi = vec_to_spherical_azi(direc);
+	inc = tup_to_spherical_inc(direc);
+	azi = tup_to_spherical_azi(direc);
 
 	obj = (t_objeto *)malloc(sizeof(t_objeto));
 	obj->tipo = SPHERE;
-	obj->sp.pos = spherical_to_vec_rt(distance(empty_vec(), direc), inc, azi);
-	obj->sp.raio = 0.375;
-	obj->sp.cor = 0x8080FF;
+	// // obj->sp.pos = spherical_to_tup_rt(distance(empty_vec(), direc), inc, azi);
+	// // obj->sp.raio = 0.375;
+	// obj->sp.cor = 0x8080FF;
 	list_add(vars.objs, obj);
 
 	direc.x = -1.0;
 	direc.y = -1.0;
 	direc.z =  1.0;
-	inc = vec_to_spherical_inc(direc);
-	azi = vec_to_spherical_azi(direc);
+	inc = tup_to_spherical_inc(direc);
+	azi = tup_to_spherical_azi(direc);
 
 	obj = (t_objeto *)malloc(sizeof(t_objeto));
 	obj->tipo = SPHERE;
-	obj->sp.pos = spherical_to_vec_rt(distance(empty_vec(), direc), inc, azi);
-	obj->sp.raio = 0.375;
-	obj->sp.cor = 0x808080;
+	// // obj->sp.pos = spherical_to_tup_rt(distance(empty_vec(), direc), inc, azi);
+	// // obj->sp.raio = 0.375;
+	// obj->sp.cor = 0x808080;
 	list_add(vars.objs, obj);
 
 	direc.x = -1.0;
 	direc.y = -1.0;
 	direc.z = -1.0;
-	inc = vec_to_spherical_inc(direc);
-	azi = vec_to_spherical_azi(direc);
+	inc = tup_to_spherical_inc(direc);
+	azi = tup_to_spherical_azi(direc);
 
 	obj = (t_objeto *)malloc(sizeof(t_objeto));
 	obj->tipo = SPHERE;
-	obj->sp.pos = spherical_to_vec_rt(distance(empty_vec(), direc), inc, azi);
-	obj->sp.raio = 0.375;
-	obj->sp.cor = 0x808000;
+	// // obj->sp.pos = spherical_to_tup_rt(distance(empty_vec(), direc), inc, azi);
+	// // obj->sp.raio = 0.375;
+	// obj->sp.cor = 0x808000;
 	list_add(vars.objs, obj);
 
 
 
-
-
-
-
-
-
-
-	direc.x =  1.0;
-	direc.y =  0.0;
-	direc.z =  1.0;
-	inc = vec_to_spherical_inc(direc);
-	azi = vec_to_spherical_azi(direc);
-
-	obj = (t_objeto *)malloc(sizeof(t_objeto));
-	obj->tipo = SPHERE;
-	obj->sp.pos = spherical_to_vec_rt(distance(empty_vec(), direc), inc, azi);
-	obj->sp.raio = 0.375;
-	obj->sp.cor = 0xFF0000;
-	list_add(vars.objs, obj);
-
-	direc.x =  1.0;
-	direc.y =  0.0;
-	direc.z = -1.0;
-	inc = vec_to_spherical_inc(direc);
-	azi = vec_to_spherical_azi(direc);
-
-	obj = (t_objeto *)malloc(sizeof(t_objeto));
-	obj->tipo = SPHERE;
-	obj->sp.pos = spherical_to_vec_rt(distance(empty_vec(), direc), inc, azi);
-	obj->sp.raio = 0.375;
-	obj->sp.cor = 0x00FF00;
-	list_add(vars.objs, obj);
-
-	direc.x = -1.0;
-	direc.y =  0.0;
-	direc.z = -1.0;
-	inc = vec_to_spherical_inc(direc);
-	azi = vec_to_spherical_azi(direc);
-
-	obj = (t_objeto *)malloc(sizeof(t_objeto));
-	obj->tipo = SPHERE;
-	obj->sp.pos = spherical_to_vec_rt(distance(empty_vec(), direc), inc, azi);
-	obj->sp.raio = 0.375;
-	obj->sp.cor = 0x0000FF;
-	list_add(vars.objs, obj);
-
-	direc.x = -1.0;
-	direc.y =  0.0;
-	direc.z =  1.0;
-	inc = vec_to_spherical_inc(direc);
-	azi = vec_to_spherical_azi(direc);
-
-	obj = (t_objeto *)malloc(sizeof(t_objeto));
-	obj->tipo = SPHERE;
-	obj->sp.pos = spherical_to_vec_rt(distance(empty_vec(), direc), inc, azi);
-	obj->sp.raio = 0.375;
-	obj->sp.cor = 0xFF00FF;
-	list_add(vars.objs, obj);
-
-
-
-
-
-	direc.x =  1.0;
-	direc.y =  1.0;
-	direc.z =  0.0;
-	inc = vec_to_spherical_inc(direc);
-	azi = vec_to_spherical_azi(direc);
-
-	obj = (t_objeto *)malloc(sizeof(t_objeto));
-	obj->tipo = SPHERE;
-	obj->sp.pos = spherical_to_vec_rt(distance(empty_vec(), direc), inc, azi);
-	obj->sp.raio = 0.375;
-	obj->sp.cor = 0xFFFF00;
-	list_add(vars.objs, obj);
-
-	direc.x =  1.0;
-	direc.y = -1.0;
-	direc.z =  0.0;
-	inc = vec_to_spherical_inc(direc);
-	azi = vec_to_spherical_azi(direc);
-
-	obj = (t_objeto *)malloc(sizeof(t_objeto));
-	obj->tipo = SPHERE;
-	obj->sp.pos = spherical_to_vec_rt(distance(empty_vec(), direc), inc, azi);
-	obj->sp.raio = 0.375;
-	obj->sp.cor = 0x00FFFF;
-	list_add(vars.objs, obj);
-
-	direc.x = -1.0;
-	direc.y =  1.0;
-	direc.z =  0.0;
-	inc = vec_to_spherical_inc(direc);
-	azi = vec_to_spherical_azi(direc);
-
-	obj = (t_objeto *)malloc(sizeof(t_objeto));
-	obj->tipo = SPHERE;
-	obj->sp.pos = spherical_to_vec_rt(distance(empty_vec(), direc), inc, azi);
-	obj->sp.raio = 0.375;
-	obj->sp.cor = 0x800000;
-	list_add(vars.objs, obj);
-
-	direc.x = -1.0;
-	direc.y = -1.0;
-	direc.z =  0.0;
-	inc = vec_to_spherical_inc(direc);
-	azi = vec_to_spherical_azi(direc);
-
-	obj = (t_objeto *)malloc(sizeof(t_objeto));
-	obj->tipo = SPHERE;
-	obj->sp.pos = spherical_to_vec_rt(distance(empty_vec(), direc), inc, azi);
-	obj->sp.raio = 0.375;
-	obj->sp.cor = 0x008000;
-	list_add(vars.objs, obj);
-
-
-
-
-	direc.x =  0.0;
-	direc.y =  1.0;
-	direc.z =  1.0;
-	inc = vec_to_spherical_inc(direc);
-	azi = vec_to_spherical_azi(direc);
-
-	obj = (t_objeto *)malloc(sizeof(t_objeto));
-	obj->tipo = SPHERE;
-	obj->sp.pos = spherical_to_vec_rt(distance(empty_vec(), direc), inc, azi);
-	obj->sp.raio = 0.375;
-	obj->sp.cor = 0x000080;
-	list_add(vars.objs, obj);
-
-	direc.x =  0.0;
-	direc.y = -1.0;
-	direc.z =  1.0;
-	inc = vec_to_spherical_inc(direc);
-	azi = vec_to_spherical_azi(direc);
-
-	obj = (t_objeto *)malloc(sizeof(t_objeto));
-	obj->tipo = SPHERE;
-	obj->sp.pos = spherical_to_vec_rt(distance(empty_vec(), direc), inc, azi);
-	obj->sp.raio = 0.375;
-	obj->sp.cor = 0x800000;
-	list_add(vars.objs, obj);
-
-	direc.x =  0.0;
-	direc.y =  1.0;
-	direc.z = -1.0;
-	inc = vec_to_spherical_inc(direc);
-	azi = vec_to_spherical_azi(direc);
-
-	obj = (t_objeto *)malloc(sizeof(t_objeto));
-	obj->tipo = SPHERE;
-	obj->sp.pos = spherical_to_vec_rt(distance(empty_vec(), direc), inc, azi);
-	obj->sp.raio = 0.375;
-	obj->sp.cor = 0x008000;
-	list_add(vars.objs, obj);
-
-	direc.x =  0.0;
-	direc.y = -1.0;
-	direc.z = -1.0;
-	inc = vec_to_spherical_inc(direc);
-	azi = vec_to_spherical_azi(direc);
-
-	obj = (t_objeto *)malloc(sizeof(t_objeto));
-	obj->tipo = SPHERE;
-	obj->sp.pos = spherical_to_vec_rt(distance(empty_vec(), direc), inc, azi);
-	obj->sp.raio = 0.375;
-	obj->sp.cor = 0x008080;
-	list_add(vars.objs, obj);
 
 
 
@@ -441,55 +272,224 @@ t_vars	config_scene_cube_sphere(t_vars input)
 
 	direc.x =  1.0;
 	direc.y =  0.0;
-	direc.z =  0.0;
-	inc = vec_to_spherical_inc(direc);
-	azi = vec_to_spherical_azi(direc);
+	direc.z =  1.0;
+	inc = tup_to_spherical_inc(direc);
+	azi = tup_to_spherical_azi(direc);
 
 	obj = (t_objeto *)malloc(sizeof(t_objeto));
 	obj->tipo = SPHERE;
-	obj->sp.pos = spherical_to_vec_rt(distance(empty_vec(), direc), inc, azi);
-	obj->sp.raio = 0.375;
-	obj->sp.cor = 0xFF0000;
+	// // obj->sp.pos = spherical_to_tup_rt(distance(empty_vec(), direc), inc, azi);
+	// // obj->sp.raio = 0.375;
+	// obj->sp.cor = 0xFF0000;
+	list_add(vars.objs, obj);
+
+	direc.x =  1.0;
+	direc.y =  0.0;
+	direc.z = -1.0;
+	inc = tup_to_spherical_inc(direc);
+	azi = tup_to_spherical_azi(direc);
+
+	obj = (t_objeto *)malloc(sizeof(t_objeto));
+	obj->tipo = SPHERE;
+	// // obj->sp.pos = spherical_to_tup_rt(distance(empty_vec(), direc), inc, azi);
+	// // obj->sp.raio = 0.375;
+	// obj->sp.cor = 0x00FF00;
+	list_add(vars.objs, obj);
+
+	direc.x = -1.0;
+	direc.y =  0.0;
+	direc.z = -1.0;
+	inc = tup_to_spherical_inc(direc);
+	azi = tup_to_spherical_azi(direc);
+
+	obj = (t_objeto *)malloc(sizeof(t_objeto));
+	obj->tipo = SPHERE;
+	// // obj->sp.pos = spherical_to_tup_rt(distance(empty_vec(), direc), inc, azi);
+	// // obj->sp.raio = 0.375;
+	// obj->sp.cor = 0x0000FF;
+	list_add(vars.objs, obj);
+
+	direc.x = -1.0;
+	direc.y =  0.0;
+	direc.z =  1.0;
+	inc = tup_to_spherical_inc(direc);
+	azi = tup_to_spherical_azi(direc);
+
+	obj = (t_objeto *)malloc(sizeof(t_objeto));
+	obj->tipo = SPHERE;
+	// // obj->sp.pos = spherical_to_tup_rt(distance(empty_vec(), direc), inc, azi);
+	// // obj->sp.raio = 0.375;
+	// obj->sp.cor = 0xFF00FF;
+	list_add(vars.objs, obj);
+
+
+
+
+
+	direc.x =  1.0;
+	direc.y =  1.0;
+	direc.z =  0.0;
+	inc = tup_to_spherical_inc(direc);
+	azi = tup_to_spherical_azi(direc);
+
+	obj = (t_objeto *)malloc(sizeof(t_objeto));
+	obj->tipo = SPHERE;
+	// // obj->sp.pos = spherical_to_tup_rt(distance(empty_vec(), direc), inc, azi);
+	// // obj->sp.raio = 0.375;
+	// obj->sp.cor = 0xFFFF00;
+	list_add(vars.objs, obj);
+
+	direc.x =  1.0;
+	direc.y = -1.0;
+	direc.z =  0.0;
+	inc = tup_to_spherical_inc(direc);
+	azi = tup_to_spherical_azi(direc);
+
+	obj = (t_objeto *)malloc(sizeof(t_objeto));
+	obj->tipo = SPHERE;
+	// // obj->sp.pos = spherical_to_tup_rt(distance(empty_vec(), direc), inc, azi);
+	// // obj->sp.raio = 0.375;
+	// obj->sp.cor = 0x00FFFF;
+	list_add(vars.objs, obj);
+
+	direc.x = -1.0;
+	direc.y =  1.0;
+	direc.z =  0.0;
+	inc = tup_to_spherical_inc(direc);
+	azi = tup_to_spherical_azi(direc);
+
+	obj = (t_objeto *)malloc(sizeof(t_objeto));
+	obj->tipo = SPHERE;
+	// // obj->sp.pos = spherical_to_tup_rt(distance(empty_vec(), direc), inc, azi);
+	// // obj->sp.raio = 0.375;
+	// // obj->sp.cor = 0x800000;
+	list_add(vars.objs, obj);
+
+	direc.x = -1.0;
+	direc.y = -1.0;
+	direc.z =  0.0;
+	inc = tup_to_spherical_inc(direc);
+	azi = tup_to_spherical_azi(direc);
+
+	obj = (t_objeto *)malloc(sizeof(t_objeto));
+	obj->tipo = SPHERE;
+	// // obj->sp.pos = spherical_to_tup_rt(distance(empty_vec(), direc), inc, azi);
+	// // obj->sp.raio = 0.375;
+	// // obj->sp.cor = 0x008000;
+	list_add(vars.objs, obj);
+
+
+
+
+	direc.x =  0.0;
+	direc.y =  1.0;
+	direc.z =  1.0;
+	inc = tup_to_spherical_inc(direc);
+	azi = tup_to_spherical_azi(direc);
+
+	obj = (t_objeto *)malloc(sizeof(t_objeto));
+	obj->tipo = SPHERE;
+	// // obj->sp.pos = spherical_to_tup_rt(distance(empty_vec(), direc), inc, azi);
+	// // obj->sp.raio = 0.375;
+	// obj->sp.cor = 0x000080;
+	list_add(vars.objs, obj);
+
+	direc.x =  0.0;
+	direc.y = -1.0;
+	direc.z =  1.0;
+	inc = tup_to_spherical_inc(direc);
+	azi = tup_to_spherical_azi(direc);
+
+	obj = (t_objeto *)malloc(sizeof(t_objeto));
+	obj->tipo = SPHERE;
+	// obj->sp.pos = spherical_to_tup_rt(distance(empty_vec(), direc), inc, azi);
+	// obj->sp.raio = 0.375;
+	// obj->sp.cor = 0x800000;
+	list_add(vars.objs, obj);
+
+	direc.x =  0.0;
+	direc.y =  1.0;
+	direc.z = -1.0;
+	inc = tup_to_spherical_inc(direc);
+	azi = tup_to_spherical_azi(direc);
+
+	obj = (t_objeto *)malloc(sizeof(t_objeto));
+	obj->tipo = SPHERE;
+	// obj->sp.pos = spherical_to_tup_rt(distance(empty_vec(), direc), inc, azi);
+	// obj->sp.raio = 0.375;
+	// obj->sp.cor = 0x008000;
+	list_add(vars.objs, obj);
+
+	direc.x =  0.0;
+	direc.y = -1.0;
+	direc.z = -1.0;
+	inc = tup_to_spherical_inc(direc);
+	azi = tup_to_spherical_azi(direc);
+
+	obj = (t_objeto *)malloc(sizeof(t_objeto));
+	obj->tipo = SPHERE;
+	// obj->sp.pos = spherical_to_tup_rt(distance(empty_vec(), direc), inc, azi);
+	// obj->sp.raio = 0.375;
+	// obj->sp.cor = 0x008080;
+	list_add(vars.objs, obj);
+
+
+
+
+
+
+
+	direc.x =  1.0;
+	direc.y =  0.0;
+	direc.z =  0.0;
+	inc = tup_to_spherical_inc(direc);
+	azi = tup_to_spherical_azi(direc);
+
+	obj = (t_objeto *)malloc(sizeof(t_objeto));
+	obj->tipo = SPHERE;
+	// obj->sp.pos = spherical_to_tup_rt(distance(empty_vec(), direc), inc, azi);
+	// obj->sp.raio = 0.375;
+	// obj->sp.cor = 0xFF0000;
 	list_add(vars.objs, obj);
 
 	direc.x = -1.0;
 	direc.y =  0.0;
 	direc.z =  0.0;
-	inc = vec_to_spherical_inc(direc);
-	azi = vec_to_spherical_azi(direc);
+	inc = tup_to_spherical_inc(direc);
+	azi = tup_to_spherical_azi(direc);
 
 	obj = (t_objeto *)malloc(sizeof(t_objeto));
 	obj->tipo = SPHERE;
-	obj->sp.pos = spherical_to_vec_rt(distance(empty_vec(), direc), inc, azi);
-	obj->sp.raio = 0.375;
-	obj->sp.cor = 0xFF0000;
+	// obj->sp.pos = spherical_to_tup_rt(distance(empty_vec(), direc), inc, azi);
+	// obj->sp.raio = 0.375;
+	// obj->sp.cor = 0xFF0000;
 	list_add(vars.objs, obj);
 
 
 	direc.x =  0.0;
 	direc.y =  1.0;
 	direc.z =  0.0;
-	inc = vec_to_spherical_inc(direc);
-	azi = vec_to_spherical_azi(direc);
+	inc = tup_to_spherical_inc(direc);
+	azi = tup_to_spherical_azi(direc);
 
 	obj = (t_objeto *)malloc(sizeof(t_objeto));
 	obj->tipo = SPHERE;
-	obj->sp.pos = spherical_to_vec_rt(distance(empty_vec(), direc), inc, azi);
-	obj->sp.raio = 0.375;
-	obj->sp.cor = 0x00FF00;
+	// obj->sp.pos = spherical_to_tup_rt(distance(empty_vec(), direc), inc, azi);
+	// obj->sp.raio = 0.375;
+	// obj->sp.cor = 0x00FF00;
 	list_add(vars.objs, obj);
 
 	direc.x =  0.0;
 	direc.y = -1.0;
 	direc.z =  0.0;
-	inc = vec_to_spherical_inc(direc);
-	azi = vec_to_spherical_azi(direc);
+	inc = tup_to_spherical_inc(direc);
+	azi = tup_to_spherical_azi(direc);
 
 	obj = (t_objeto *)malloc(sizeof(t_objeto));
 	obj->tipo = SPHERE;
-	obj->sp.pos = spherical_to_vec_rt(distance(empty_vec(), direc), inc, azi);
-	obj->sp.raio = 0.375;
-	obj->sp.cor = 0x00FF00;
+	// obj->sp.pos = spherical_to_tup_rt(distance(empty_vec(), direc), inc, azi);
+	// obj->sp.raio = 0.375;
+	// obj->sp.cor = 0x00FF00;
 	list_add(vars.objs, obj);
 
 
@@ -498,44 +498,44 @@ t_vars	config_scene_cube_sphere(t_vars input)
 	direc.x =  0.0;
 	direc.y =  0.0;
 	direc.z =  1.0;
-	inc = vec_to_spherical_inc(direc);
-	azi = vec_to_spherical_azi(direc);
+	inc = tup_to_spherical_inc(direc);
+	azi = tup_to_spherical_azi(direc);
 	// printf("inc = % lf\n", inc);
 	// printf("azi = % lf\n", azi);
 
 	obj = (t_objeto *)malloc(sizeof(t_objeto));
 	obj->tipo = SPHERE;
-	obj->sp.pos = spherical_to_vec_rt(distance(empty_vec(), direc), inc, azi);
-	obj->sp.raio = 0.375;
-	obj->sp.cor = 0x0000FF;
+	// obj->sp.pos = spherical_to_tup_rt(distance(empty_vec(), direc), inc, azi);
+	// obj->sp.raio = 0.375;
+	// obj->sp.cor = 0x0000FF;
 	list_add(vars.objs, obj);
 
 	direc.x =  0.0;
 	direc.y =  0.0;
 	direc.z = -1.0;
-	inc = vec_to_spherical_inc(direc);
-	azi = vec_to_spherical_azi(direc);
+	inc = tup_to_spherical_inc(direc);
+	azi = tup_to_spherical_azi(direc);
 
 	obj = (t_objeto *)malloc(sizeof(t_objeto));
 	obj->tipo = SPHERE;
-	obj->sp.pos = spherical_to_vec_rt(distance(empty_vec(), direc), inc, azi);
-	obj->sp.raio = 0.375;
-	obj->sp.cor = 0x0000FF;
+	// obj->sp.pos = spherical_to_tup_rt(distance(empty_vec(), direc), inc, azi);
+	// obj->sp.raio = 0.375;
+	// obj->sp.cor = 0x0000FF;
 	list_add(vars.objs, obj);
 
 	direc.x =  1.0;
 	direc.y =  0.0;
 	direc.z =  0.0;
-	inc = vec_to_spherical_inc(direc);
-	azi = vec_to_spherical_azi(direc);
+	inc = tup_to_spherical_inc(direc);
+	azi = tup_to_spherical_azi(direc);
 
 	// i = 0;
 	// while (i < 8)
 	// {
 	// 	obj = (t_objeto *)malloc(sizeof(t_objeto));
 	// 	obj->tipo = SPHERE;
-	// 	obj->sp.pos = spherical_to_vec_rt(1.0, 0.0, i * (PI / 8));
-	// 	obj->sp.raio = 0.375;
+	// 	obj->sp.pos = spherical_to_tup_rt(1.0, 0.0, i * (PI / 8));
+	// // 	obj->sp.raio = 0.375;
 	// 	obj->sp.cor = 0xFF80FF;
 	// 	list_add(vars.objs, obj);
 	// 	i++;
@@ -546,27 +546,27 @@ t_vars	config_scene_cube_sphere(t_vars input)
 	vars.lights = NULL;
 	light = (t_light *)malloc(sizeof(t_light));
 	light->bright = 0.3;
-	light->pos.x = 1.0;
-	light->pos.y = 2.0;
-	light->pos.z = -2.0;
-	light->cor = 0xFFFFFF;
+	// light->pos.x = 1.0;
+	// light->pos.y = 2.0;
+	// light->pos.z = -2.0;
+	// light->cor = 0xFFFFFF;
 	vars.lights = list_init(light);
 
 	light = (t_light *)malloc(sizeof(t_light));
 	light->bright = 0.3;
-	light->pos.x = -1.0;
-	light->pos.y = 2.0;
-	light->pos.z = -2.0;
-	light->cor = 0xFFFFFF;
+	// light->pos.x = -1.0;
+	// light->pos.y = 2.0;
+	// light->pos.z = -2.0;
+	// light->cor = 0xFFFFFF;
 	// vars.lights = list_init(light);
 	list_add(vars.lights, light);
 
 	light = (t_light *)malloc(sizeof(t_light));
 	light->bright = 0.3;
-	light->pos.x = -3.0;
-	light->pos.y = 5.0;
-	light->pos.z = -2.0;
-	light->cor = 0xFFFFFF;
+	// light->pos.x = -3.0;
+	// light->pos.y = 5.0;
+	// light->pos.z = -2.0;
+	// light->cor = 0xFFFFFF;
 	// vars.lights = list_init(light);
 	list_add(vars.lights, light);
 

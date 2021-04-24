@@ -1,7 +1,7 @@
 
 #include "algebra.h"
 
-double	cosine_law(t_vec A, t_vec B, t_vec C)
+double	cosine_law(t_tuple A, t_tuple B, t_tuple C)
 {
 	double	BA;
 	double	BC;
@@ -16,9 +16,9 @@ double	cosine_law(t_vec A, t_vec B, t_vec C)
 }
 
 
-t_vec	spherical_to_vec(double radius, double inclination, double azimuth)
+t_tuple	spherical_to_tup(double radius, double inclination, double azimuth)
 {
-	t_vec saida;
+	t_tuple saida;
 
 	saida.x = radius * cos(azimuth) * sin(inclination);
 	saida.y = radius * cos(inclination);
@@ -26,12 +26,12 @@ t_vec	spherical_to_vec(double radius, double inclination, double azimuth)
 	return (saida);
 }
 
-t_vec	spherical_to_vec_rt(double radius, double inclination, double azimuth)
+t_tuple	spherical_to_tup_rt(double radius, double inclination, double azimuth)
 {
-	return spherical_to_vec(radius, inclination - (PI / 2), -azimuth - (PI / 2));
+	return spherical_to_tup(radius, inclination - (PI / 2), -azimuth - (PI / 2));
 }
 
-double	vec_to_spherical_inc(t_vec direc)
+double	tup_to_spherical_inc(t_tuple direc)
 {
 	double a;
 	double b;
@@ -50,7 +50,7 @@ double	vec_to_spherical_inc(t_vec direc)
 	return (-e);
 }
 
-double	vec_to_spherical_azi(t_vec direc)
+double	tup_to_spherical_azi(t_tuple direc)
 {
 	return (atan2(direc.x, direc.z));
 }

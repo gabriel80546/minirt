@@ -45,7 +45,7 @@ t_vars	config_cams(t_vars input)
 		cam->pos.x = 0.0;
 		cam->pos.y = 0.0;
 		cam->pos.z = -3.0;
-		cam->pos = rotacao_y(cam->pos, i * (PI / 8));
+		cam->pos = mat44_tuple_mul(mat44_rotate_y(i * (PI / 8)), cam->pos);
 		cam->direc.x = -cam->pos.x;
 		cam->direc.y = -cam->pos.y;
 		cam->direc.z = -cam->pos.z;
@@ -66,7 +66,7 @@ t_vars	config_scene_easy(t_vars input)
 	t_vars		vars;
 	t_objeto	*obj;
 	t_light		*light;
-	t_vec		temp_direc;
+	t_tuple		temp_direc;
 	// int			i;
 
 	vars = input;
