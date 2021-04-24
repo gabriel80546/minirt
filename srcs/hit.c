@@ -3,12 +3,10 @@
 t_hit	closest_hit(t_list *hits)
 {
 	t_hit	hit;
-	t_list	*temp_list;
 	int		hit_isfirst;
 
 	hit_isfirst = 1;
 	hit.t = -42.0;
-	temp_list = NULL;
 	if (hits != NULL)
 		hits = first_item(hits);
 	while (hits != NULL)
