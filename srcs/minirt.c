@@ -149,7 +149,7 @@ void	clean_all(t_vars vars)
 
 int	key_hook(int keycode, void *param)
 {
-	t_vars *vars;
+	t_vars	*vars;
 
 	vars = (t_vars *)param;
 	if (keycode == 65307)

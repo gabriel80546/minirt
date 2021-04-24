@@ -205,7 +205,7 @@ t_cor		color_add(t_cor a, t_cor b);
 t_cor		color_sub(t_cor a, t_cor b);
 t_cor		color_mul_scalar(t_cor cor, double scalar);
 t_cor		color_mul(t_cor a, t_cor b);
-unsigned int	cor_to_rgb(t_cor cor);
+unsigned cor_to_rgb(t_cor cor);
 
 t_ray		ray_create(t_tuple origin, t_tuple direction);
 t_tuple		ray_position(t_ray ray, double dist);
