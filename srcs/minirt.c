@@ -101,8 +101,11 @@ t_vars	config_scene_easy(t_vars input)
 		obj->cy.material.diffuse = 0.7;
 		obj->cy.material.specular = 0.3;
 		obj->cy.material.shininess = 200.0;
-		obj->cy.transform = mat44_mul(mat44_scaling(0.125, 1.0, 0.125),
-				mat44_translate(0.0, 0.0, 0.0));
+		obj->cy.direc = vector(1, -1, 1);
+		obj->cy.transform = mat44_mul(mat44_mul(mat44_rotate_y(
+						tup_to_spherical_azi(obj->cy.direc)),
+					mat44_rotate_x(tup_to_spherical_inc(obj->cy.direc))),
+				mat44_rotate_x(PI / 2));
 		obj->cy.height = 5.0;
 		list_add(vars.objs, obj);
 	}

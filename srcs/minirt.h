@@ -56,6 +56,7 @@ typedef struct s_plano
 typedef struct s_cylinder
 {
 	t_tuple		pos;
+	t_tuple		direc;
 	double		diameter;
 	double		height;
 	t_material	material;

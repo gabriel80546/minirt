@@ -1,1 +1,1 @@
-/home/gabriel/desktop/c/lint/infer/infer-linux64-v1.1.0/bin/infer run -- gcc -c \*.c ../headers/math/\*.c ../headers/list/\*.c objs/\*.c -I . -I ../assets/minilibx-linux -I ../headers/list -I ../headers/math -L ../assets/minilibx-linux -lm -lmlx -lXext -lX11
+/home/gabriel/desktop/c/lint/infer/infer-linux64-v1.1.0/bin/infer run -- gcc -c *.c ../headers/math/*.c ../headers/list/*.c objs/*.c -I . -I ../assets/minilibx-linux -I ../headers/list -I ../headers/math -L ../assets/minilibx-linux -lm -lmlx -lXext -lX11
