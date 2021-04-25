@@ -51,6 +51,7 @@ typedef struct s_plano
 	t_tuple		pos;
 	t_material	material;
 	t_mat44		transform;
+	t_tuple		direc;
 }				t_plano;
 
 typedef struct s_cylinder
@@ -245,5 +246,7 @@ t_vars		config_cams(t_vars input);
 void		clean_all(t_vars vars);
 t_vars		config_scene_easy(t_vars input);
 void		draw_main(t_vars vars, int x, int y, t_img img);
+
+t_vars		cylinder_rotation(t_vars input);
 
 #endif

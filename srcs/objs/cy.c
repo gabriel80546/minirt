@@ -6,7 +6,7 @@ t_tuple	cy_normal(t_cylinder cylinder, t_tuple world_point)
 
 	object_point = mat44_tuple_mul(
 			mat44_inverse(cylinder.transform), world_point);
-	return (vector(object_point.x, 0, object_point.z));
+	return (normalize(vector(object_point.x, 0, object_point.z)));
 }
 
 t_list	*ray_cy_intercection(t_ray ray, t_cylinder cylinder)

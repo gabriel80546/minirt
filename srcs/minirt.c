@@ -45,8 +45,8 @@ t_vars	config_scene_easy(t_vars input)
 	vars = input;
 	vars.objs = NULL;
 	obj = NULL;
-	vars.largura = 200;
-	vars.altura = 140;
+	vars.largura = 600;
+	vars.altura = 400;
 	vars.gray = 0;
 	vars.ambient = 0x404040;
 	obj = (t_objeto *)malloc(sizeof(t_objeto));
@@ -67,13 +67,16 @@ t_vars	config_scene_easy(t_vars input)
 	{
 		obj->tipo = PLANE;
 		obj->pl.pos = point(0.0, 0.0, 0.0);
-		obj->pl.material.color = color(0.4, 1.0, 0.8);
+		obj->pl.material.color = color(1.0, 0.8, 0.4);
 		obj->pl.material.ambient = 0.1;
 		obj->pl.material.diffuse = 0.7;
 		obj->pl.material.specular = 0.2;
 		obj->pl.material.shininess = 200.0;
-		obj->pl.transform = mat44_mul(mat44_rotate_x(PI / 2),
-				mat44_translate(0, 10, 0));
+		obj->pl.direc = vector(0, -0.8, 1);
+		obj->pl.transform = mat44_mul(mat44_mul(mat44_rotate_y(
+						tup_to_spherical_azi(obj->pl.direc)),
+					mat44_rotate_x(tup_to_spherical_inc(obj->pl.direc))),
+				mat44_rotate_x(PI / 2));
 		list_add(vars.objs, obj);
 	}
 	obj = (t_objeto *)malloc(sizeof(t_objeto));
@@ -90,71 +93,8 @@ t_vars	config_scene_easy(t_vars input)
 		obj->sp.transform = mat44_translate(-0.5, 1, 0.5);
 		list_add(vars.objs, obj);
 	}
-	obj = (t_objeto *)malloc(sizeof(t_objeto));
-	if (obj != NULL)
-	{
-		obj->tipo = CYLINDER;
-		obj->cy.pos = point(0.0, 0.0, 0.0);
-		obj->cy.diameter = 157.0;
-		obj->cy.material.color = color(1.0, 0.0, 0.0);
-		obj->cy.material.ambient = 0.1;
-		obj->cy.material.diffuse = 0.7;
-		obj->cy.material.specular = 0.3;
-		obj->cy.material.shininess = 200.0;
-		obj->cy.direc = vector(1, -1, 1);
-		obj->cy.transform = mat44_mul(mat44_mul(mat44_rotate_y(
-						tup_to_spherical_azi(obj->cy.direc)),
-					mat44_rotate_x(tup_to_spherical_inc(obj->cy.direc))),
-				mat44_rotate_x(PI / 2));
-		obj->cy.height = 5.0;
-		list_add(vars.objs, obj);
-	}
-	obj = (t_objeto *)malloc(sizeof(t_objeto));
-	if (obj != NULL)
-	{
-		obj->tipo = TRIANGLE;
-		obj->tr.pos_a = point(2.0, 1.0, 1.0);
-		obj->tr.pos_b = point(2.0, 2.0, 3.0);
-		obj->tr.pos_c = point(3.0, 2.0, 3.0);
-		obj->tr.material.color = color(0.0, 1.0, 0.0);
-		obj->tr.material.ambient = 0.1;
-		obj->tr.material.diffuse = 0.7;
-		obj->tr.material.specular = 0.3;
-		obj->tr.material.shininess = 200.0;
-		list_add(vars.objs, obj);
-	}
-	obj = (t_objeto *)malloc(sizeof(t_objeto));
-	if (obj != NULL)
-	{
-		obj->tipo = SPHERE;
-		obj->sp.pos = point(0.0, 0.0, 0.0);
-		obj->sp.diametro = 157.0;
-		obj->sp.material.color = color(0.5, 1, 0.1);
-		obj->sp.material.ambient = 0.1;
-		obj->sp.material.diffuse = 0.7;
-		obj->sp.material.specular = 0.3;
-		obj->sp.material.shininess = 200.0;
-		obj->sp.transform = mat44_mul(mat44_translate(1.5, 0.5, -0.5),
-				mat44_scaling(0.5, 0.5, 0.5));
-		list_add(vars.objs, obj);
-	}
-	obj = (t_objeto *)malloc(sizeof(t_objeto));
-	if (obj != NULL)
-	{
-		obj->tipo = SPHERE;
-		obj->sp.pos = point(0.0, 0.0, 0.0);
-		obj->sp.diametro = 157.0;
-		obj->sp.material.color = color(1.0, 0.8, 0.1);
-		obj->sp.material.ambient = 0.1;
-		obj->sp.material.diffuse = 0.7;
-		obj->sp.material.specular = 0.3;
-		obj->sp.material.shininess = 200.0;
-		obj->sp.transform = mat44_mul(mat44_translate(-1.5, 0.33, -0.75),
-				mat44_scaling(0.33, 0.33, 0.33));
-		list_add(vars.objs, obj);
-	}
 	temp_direc.x = -10.0;
-	temp_direc.y = 10.0;
+	temp_direc.y = 6.0;
 	temp_direc.z = -10.0;
 	vars.lights = NULL;
 	light = (t_light *)malloc(sizeof(t_light));

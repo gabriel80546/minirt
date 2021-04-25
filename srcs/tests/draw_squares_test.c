@@ -782,3 +782,33 @@ t_vars	config_scene_easy(t_vars input)
 	// list_add(vars.lights, light);
 	return (vars);
 }
+
+t_vars	cylinder_rotation(t_vars input)
+{
+	t_vars		vars;
+	t_objeto	*obj;
+
+	vars = input;
+	vars.objs = NULL;
+	obj = NULL;
+	obj = (t_objeto *)malloc(sizeof(t_objeto));
+	if (obj != NULL)
+	{
+		obj->tipo = CYLINDER;
+		obj->cy.pos = point(0.0, 0.0, 0.0);
+		obj->cy.diameter = 157.0;
+		obj->cy.material.color = color(1.0, 0.0, 0.0);
+		obj->cy.material.ambient = 0.1;
+		obj->cy.material.diffuse = 0.7;
+		obj->cy.material.specular = 0.125;
+		obj->cy.material.shininess = 200.0;
+		obj->cy.direc = vector(0, 1, 0);
+		obj->cy.transform = mat44_mul(mat44_mul(mat44_rotate_y(
+						tup_to_spherical_azi(obj->cy.direc)),
+					mat44_rotate_x(tup_to_spherical_inc(obj->cy.direc))),
+				mat44_rotate_x(PI / 2));
+		obj->cy.height = 5.0;
+		list_add(vars.objs, obj);
+	}
+	return (vars);
+}
