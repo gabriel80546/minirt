@@ -216,8 +216,8 @@ t_tuple		sp_normal(t_esfera sphere, t_tuple world_point);
 
 t_tuple		reflect(t_tuple in, t_tuple normal);
 t_cor		lighting(t_material material, t_light light, t_tuple point,
-				t_tuple eyev, t_tuple normalv, int in_shadow);
-t_cor		shade_hit(t_vars world, t_comps comps);
+				t_tuple eyev, t_tuple normalv, int in_shadow, t_debug deb);
+t_cor		shade_hit(t_vars world, t_comps comps, t_debug deb);
 int			is_shadowed(t_vars world, t_tuple point);
 
 t_mat44		view_transform(t_tuple from, t_tuple to, t_tuple up);
@@ -241,11 +241,11 @@ void		print_mat22(t_mat22 mat, char *file, const char *func, int line);
 void		print_mat33(t_mat33 mat, char *file, const char *func, int line);
 
 int			key_hook(int keycode, void *param);
-t_cor		color_at(t_vars vars, t_ray ray);
+t_cor		color_at(t_vars vars, t_ray ray, t_debug deb);
 t_vars		config_cams(t_vars input);
 void		clean_all(t_vars vars);
 t_vars		config_scene_easy(t_vars input);
-void		draw_main(t_vars vars, int x, int y, t_img img);
+void		draw_main(t_vars vars, int x, int y, t_img img, t_debug deb);
 
 t_vars		cylinder_rotation(t_vars input);
 

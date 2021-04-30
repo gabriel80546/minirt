@@ -6,7 +6,8 @@ t_tuple	reflect(t_tuple in, t_tuple normal)
 }
 
 t_cor	lighting(t_material material, t_light light,
-		t_tuple point, t_tuple eyev, t_tuple normalv, int in_shadow)
+		t_tuple point, t_tuple eyev,
+		t_tuple normalv, int in_shadow, t_debug deb)
 {
 	t_cor	effective_color;
 	t_cor	ambient;
@@ -41,13 +42,29 @@ t_cor	lighting(t_material material, t_light light,
 			specular = color_mul_scalar(light.cor, material.specular * factor);
 		}
 	}
+	if ((deb.x == deb.x_bugado && deb.y == deb.y_bugado)
+		|| (deb.x == deb.x_iluminado && deb.y == deb.y_iluminado))
+	{
+		if (deb.x == deb.x_bugado && deb.y == deb.y_bugado)
+			say("ponto bugado =>\n", DEB);
+		else
+			say("ponto normal =>\n", DEB);
+		say("in_shadow = %i\n", DEB, in_shadow);
+		say("ambient.r = % 6.6lf; ambient.g = % 6.6lf; ambient.b = % 6.6lf\n",
+			DEB, ambient.r, ambient.g, ambient.b);
+		say("diffuse.r = % 6.6lf; diffuse.g = % 6.6lf; diffuse.b = % 6.6lf\n",
+			DEB, diffuse.r, diffuse.g, diffuse.b);
+		say("ambient.r = % 6.6lf; ambient.g = % 6.6lf; ambient.b = % 6.6lf\n",
+			DEB, specular.r, specular.g, specular.b);
+		say("deb.x = %i deb.y = %i\n", DEB, deb.x, deb.y);
+	}
 	if (in_shadow == 1)
 		return (ambient);
 	else
 		return (color_add(color_add(ambient, diffuse), specular));
 }
 
-t_cor	shade_hit(t_vars world, t_comps comps)
+t_cor	shade_hit(t_vars world, t_comps comps, t_debug deb)
 {
 	t_cor		saida;
 	int			shadowed;
@@ -58,7 +75,7 @@ t_cor	shade_hit(t_vars world, t_comps comps)
 	saida = lighting(material,
 			*((t_light *)world.lights->data),
 			comps.over_point, comps.eyev,
-			comps.normalv, shadowed);
+			comps.normalv, shadowed, deb);
 	return (saida);
 }
 
