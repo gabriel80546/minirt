@@ -81,7 +81,7 @@ void	draw(t_vars vars)
 		y++;
 	}
 	say("camera[%i]\n", DEB, i);
-	i++;
 	mlx_put_image_to_window(vars.mlx, vars.win, img.ptr, 0, 0);
 	mlx_destroy_image(vars.mlx, img.ptr);
+	i++;
 }
