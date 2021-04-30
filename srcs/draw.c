@@ -46,9 +46,10 @@ void	draw_main(t_vars vars, int x, int y, t_img img)
 
 void	draw(t_vars vars)
 {
-	int		x;
-	int		y;
-	t_img	img;
+	int			x;
+	int			y;
+	t_img		img;
+	static int	i = 0;
 
 	img.ptr = mlx_new_image(vars.mlx, vars.largura, vars.altura);
 	img.data = mlx_get_data_addr(img.ptr,
@@ -65,6 +66,8 @@ void	draw(t_vars vars)
 		}
 		y++;
 	}
+	say("camera[%i]\n", DEB, i);
+	i++;
 	mlx_put_image_to_window(vars.mlx, vars.win, img.ptr, 0, 0);
 	mlx_destroy_image(vars.mlx, img.ptr);
 }

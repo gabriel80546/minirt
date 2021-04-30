@@ -5,12 +5,25 @@ t_vars	config_cams(t_vars input)
 	t_vars	saida;
 	t_cam	*cam;
 	int		i;
+	int		temp;
 
 	saida.cams = NULL;
 	saida = input;
 	i = 0;
+	temp = 0;
 	while (i < 16)
 	{
+		say("eae\n", DEB);
+		if (i == 0)
+		{
+			i = 4;
+			temp = 1;
+		}
+		else if (i == 4)
+		{
+			i = 0;
+			temp = 2;
+		}
 		cam = (t_cam *)malloc(sizeof(t_cam));
 		if (cam != NULL)
 		{
@@ -29,6 +42,16 @@ t_vars	config_cams(t_vars input)
 				saida.cams = list_init(cam);
 			else
 				list_add(saida.cams, cam);
+		}
+		if (temp == 1)
+		{
+			i = 0;
+			temp = 0;
+		}
+		else if (temp == 2)
+		{
+			i = 4;
+			temp = 0;
 		}
 		i++;
 	}
